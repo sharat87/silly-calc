@@ -4,14 +4,16 @@
 
 body {
     background-color: #FAFAFA;
-    font-family: 'Helvetica Neue', HelveticaNeue, sans-serif;
     text-shadow: white 0px 1px 1px;
+    font-size: 14px;
 }
 
 #app-container {
     width: 100%;
     height: 100%;
     border-collapse: collapse;
+    font-size: 1.4em;
+    font-family: 'Inconsolata', monospace;
 }
 
 #app-container td:first-child {
@@ -26,8 +28,6 @@ body {
 
 #app-container input {
     width: 100%;
-    font-family: monospace;
-    font-size: 1.3em;
     border: none;
     padding: 3px;
     background: transparent;
