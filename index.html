@@ -1,0 +1,23 @@
+<!doctype html>
+<html lang=en ng-app=CalcApp>
+<head>
+    <meta charset=utf-8>
+    <title>Silly simple calculator</title>
+
+    <link rel=stylesheet href=css/normalize.css>
+    <link rel=stylesheet href=css/styles.css>
+
+<body ng-controller=CalcCtrl>
+
+    <table id=app-container focus-iter="input.code-input">
+        <tr ng-repeat="entry in entries">
+            <td><input class=code-input init-focus ng-model=entry.code
+                    on-enter-key="insertAfter(entry)"></td>
+            <td>{{evalEntry(entry)}}</td>
+        </tr>
+    </table>
+
+    <script src=vendor/jquery-1.9.1.min.js></script>
+    <script src=vendor/angular.min.js></script>
+    <script src=vendor/tapdigit/TapDigit.js></script>
+    <script src=calc-ctrl.js></script>

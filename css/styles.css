@@ -1,0 +1,39 @@
+* {
+    box-sizing: border-box;
+}
+
+body {
+    background-color: #FAFAFA;
+    font-family: 'Helvetica Neue', HelveticaNeue, sans-serif;
+    text-shadow: white 0px 1px 1px;
+}
+
+#app-container {
+    width: 100%;
+    height: 100%;
+    border-collapse: collapse;
+}
+
+#app-container td:first-child {
+    border-right: 1px solid #ccc;
+    padding: 0;
+}
+
+#app-container td:last-child {
+    padding: 3px;
+    background-color: rgba(0, 0, 0, .02);
+}
+
+#app-container input {
+    width: 100%;
+    font-family: monospace;
+    font-size: 1.3em;
+    border: none;
+    padding: 3px;
+    background: transparent;
+}
+
+#app-container input:focus {
+    outline: none;
+    background: rgba(0, 0, 200, .02);
+}
