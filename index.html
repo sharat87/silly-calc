@@ -9,13 +9,16 @@
 
 <body ng-controller=CalcCtrl>
 
-    <table id=app-container focus-iter="input.code-input">
-        <tr ng-repeat="entry in entries">
-            <td><input class=code-input init-focus ng-model=entry.code
-                    on-enter-key="insertAfter(entry)"></td>
-            <td>{{evalEntry(entry)}}</td>
-        </tr>
-    </table>
+    <section id=app-container>
+        <section class=left-panel focus-iter="input.code-input">
+            <input ng-repeat="entry in entries" class=code-input init-focus
+                ng-model=entry.code on-enter-key="insertAfter(entry)">
+        </section>
+        <section class=right-panel>
+            <div class=result ng-repeat="entry in entries">
+                {{evalEntry(entry)}}</div>
+        </section>
+    </section>
 
     <script src=vendor/jquery-1.9.1.min.js></script>
     <script src=vendor/angular.min.js></script>

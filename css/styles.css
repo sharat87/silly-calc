@@ -37,3 +37,14 @@ body {
     outline: none;
     background: rgba(0, 0, 200, .02);
 }
+
+#app-container input,
+#app-container .result {
+    line-height: 32px;
+    height: 32px;
+}
+
+.left-panel {
+    float: left;
+    width: 70%;
+}
