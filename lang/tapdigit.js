@@ -374,13 +374,14 @@ TapDigit.Parser = function () {
 
     // Multiplicative ::= Unary |
     //                    Multiplicative '*' Unary |
-    //                    Multiplicative '/' Unary
+    //                    Multiplicative '/' Unary |
+    //                    Multiplicative '%' Unary
     function parseMultiplicative() {
         var token, left, right;
 
         left = parseUnary();
         token = lexer.peek();
-        if (matchOp(token, '*') || matchOp(token, '/')) {
+        if (matchOp(token, '*') || matchOp(token, '/') || matchOp(token, '%')) {
             token = lexer.next();
             right = parseMultiplicative();
             return {
@@ -526,6 +527,8 @@ TapDigit.Evaluator = function (ctx) {
                 return left * right;
             case '/':
                 return left / right;
+            case '%':
+                return left % right;
             default:
                 throw new SyntaxError('Unknown operator ' + node.operator);
             }

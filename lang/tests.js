@@ -18,7 +18,7 @@ var evaluator = new TapDigit.Evaluator(),
 describe('Language test', function () {
     assertAndPrint([
         ['1-2', -1],
-        // ['1%2', 1],
+        ['1%2', 1],
         // ['.02 * 10', 0.2],
         // ['-(2 * 10,00,000)', -2000000],
         // ['(1.2 + 2) * 3', (1.2 + 2) * 3],
