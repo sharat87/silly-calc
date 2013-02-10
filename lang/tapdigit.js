@@ -377,14 +377,35 @@ TapDigit.Parser = function () {
         return parsePrimary();
     }
 
-    // Multiplicative ::= Unary |
-    //                    Multiplicative '*' Unary |
-    //                    Multiplicative '/' Unary |
-    //                    Multiplicative '%' Unary
-    function parseMultiplicative() {
+    // Exponential ::= Unary |
+    //                 Exponential '^' Unary
+    function parseExponential() {
         var token, left, right;
 
         left = parseUnary();
+        token = lexer.peek();
+        if (matchOp(token, '^')) {
+            token = lexer.next();
+            right = parseExponential();
+            return {
+                'Binary': {
+                    operator: token.value,
+                    left: left,
+                    right: right
+                }
+            };
+        }
+        return left;
+    }
+
+    // Multiplicative ::= Exponential |
+    //                    Multiplicative '*' Exponential |
+    //                    Multiplicative '/' Exponential |
+    //                    Multiplicative '%' Exponential
+    function parseMultiplicative() {
+        var token, left, right;
+
+        left = parseExponential();
         token = lexer.peek();
         if (matchOp(token, '*') || matchOp(token, '/') || matchOp(token, '%')) {
             token = lexer.next();
@@ -534,6 +555,8 @@ TapDigit.Evaluator = function (ctx) {
                 return left / right;
             case '%':
                 return left % right;
+            case '^':
+                return Math.pow(left, right);
             default:
                 throw new SyntaxError('Unknown operator ' + node.operator);
             }
