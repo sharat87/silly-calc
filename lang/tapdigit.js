@@ -141,10 +141,15 @@ TapDigit.Lexer = function () {
             number = getNextChar();
             while (true) {
                 ch = peekNextChar();
-                if (!isDecimalDigit(ch)) {
+                if (isDecimalDigit(ch)) {
+                    number += getNextChar();
+                } else if (ch === ',') {
+                    // TODO: Commas at end of number and consecutive commas
+                    // should be reported.
+                    getNextChar();
+                } else {
                     break;
                 }
-                number += getNextChar();
             }
         }
 
