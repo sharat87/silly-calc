@@ -11,8 +11,9 @@
 
     <section id=app-container>
         <section class=left-panel focus-iter="input.code-input">
-            <input ng-repeat="entry in entries" class=code-input init-focus
-                ng-model=entry.code on-enter-key="insertAfter(entry)">
+            <input ng-repeat="entry in entries" class=code-input
+                ng-model=entry.code on-enter-key="insertAfter(entry)"
+                init-focus>
         </section>
         <section class=right-panel>
             <div class=result ng-repeat="entry in entries">

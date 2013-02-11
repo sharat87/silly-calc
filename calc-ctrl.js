@@ -2,13 +2,20 @@ var app = angular.module('CalcApp', []);
 
 // Apply given piece of code (as attribute) when the enter keyup event is
 // triggered.
-app.directive('onEnterKey', function () {
+var eventHandlerDirective = function () {
     return function (scope, elem, attrs) {
         elem.on('keydown', function (e) {
-            if (e.keyCode === 13) scope.$apply(attrs.onEnterKey);
+            if (e.which === 13 && attrs.onEnterKey)
+                scope.$apply(attrs.onEnterKey);
+            if (e.which === 8 && attrs.onBackspaceKey)
+                scope.$apply(attrs.onBackspaceKey);
+            console.info('keydown', e.which, e);
         });
     };
-});
+};
+
+app.directive('onEnterKey', eventHandlerDirective);
+app.directive('onBackspaceKey', eventHandlerDirective);
 
 // Handling up/down keys to move focus up and down within the inputs.
 app.directive('focusIter', function () {
@@ -22,17 +29,19 @@ app.directive('focusIter', function () {
 
             for (var i = atoms.length - 1; i >= 0; i--) {
                 if (atoms[i] === e.target) {
-                    if (e.keyCode === 38) {
+                    if (e.which === 38) {
                         toAtom = atoms[i - 1];
-                    } else if (e.keyCode === 40) {
+                    } else if (e.which === 40) {
                         toAtom = atoms[i + 1];
                     }
-                    e.preventDefault();
                     break;
                 }
             }
 
-            if (toAtom) toAtom.focus();
+            if (toAtom) {
+                e.preventDefault();
+                toAtom.focus();
+            }
 
         });
 
