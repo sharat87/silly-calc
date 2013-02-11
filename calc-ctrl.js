@@ -4,8 +4,8 @@ var app = angular.module('CalcApp', []);
 // triggered.
 app.directive('onEnterKey', function () {
     return function (scope, elem, attrs) {
-        elem.bind('keyup', function (e) {
-            if (e.keyCode == 13) scope.$apply(attrs.onEnterKey);
+        elem.bind('keydown', function (e) {
+            if (e.keyCode === 13) scope.$apply(attrs.onEnterKey);
         });
     };
 });
@@ -16,7 +16,7 @@ app.directive('focusIter', function () {
     return function (scope, elem, attrs) {
         var atomSelector = attrs.focusIter;
 
-        elem.on('keyup', atomSelector, function (e) {
+        elem.on('keydown', atomSelector, function (e) {
             var atoms = elem.find(atomSelector),
                 toAtom = null;
 
@@ -27,17 +27,13 @@ app.directive('focusIter', function () {
                     } else if (e.keyCode === 40) {
                         toAtom = atoms[i + 1];
                     }
+                    e.preventDefault();
                     break;
                 }
             }
 
             if (toAtom) toAtom.focus();
 
-        });
-
-        elem.on('keydown', atomSelector, function (e) {
-            if (e.keyCode === 38 || e.keyCode === 40)
-                e.preventDefault();
         });
 
     };
