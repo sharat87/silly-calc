@@ -4,7 +4,7 @@ var app = angular.module('CalcApp', []);
 // triggered.
 app.directive('onEnterKey', function () {
     return function (scope, elem, attrs) {
-        elem.bind('keydown', function (e) {
+        elem.on('keydown', function (e) {
             if (e.keyCode === 13) scope.$apply(attrs.onEnterKey);
         });
     };
