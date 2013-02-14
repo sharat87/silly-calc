@@ -11,13 +11,10 @@
 
     <section id=app-container>
         <section class=left-panel focus-iter="input.code-input">
-            <textarea autofocus spellcheck=false ng-model=code></textarea>
+            <textarea id=code-input autofocus spellcheck=false></textarea>
         </section>
-        <section class=right-panel>
-            <div class=result ng-repeat="result in results()">{{result}}</div>
-        </section>
+        <section id=results-panel class=right-panel></section>
     </section>
 
-    <script src=vendor/angular.min.js></script>
     <script src=lang/tapdigit.js></script>
-    <script src=calc-ctrl.js></script>
+    <script src=app.js></script>
