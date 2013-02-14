@@ -1,26 +1,32 @@
 (function () {
     var codeInput = document.getElementById('code-input'),
-        resultsPanel = document.getElementById('results-panel');
+        resultsPanel = document.getElementById('results-panel'),
+        gutter = document.getElementById('gutter');
 
-    var updateResults = function () {
+    var updateSheet = function () {
         var lines = codeInput.value.split('\n'),
             evaluator = new TapDigit.Evaluator(),
-            htmls = [];
+            resultHtmls = [],
+            gutterHtmls = [];
 
         for (var i = 0, len = lines.length; i < len; i++) {
-            var code = 'L' + (i + 1) + ' = ' + lines[i],
+            var varname = 'L' + (i + 1),
+                code = varname + ' = ' + lines[i],
                 result = evaluator.evaluate(code);
-            htmls.splice(htmls.length, 0,
+            resultHtmls.splice(resultHtmls.length, 0,
                          '<div class=result>', result, '</div>');
+            gutterHtmls.splice(gutterHtmls.length, 0,
+                               '<div>', varname, ': ', '</div>');
         }
 
-        resultsPanel.innerHTML = htmls.join('');
+        resultsPanel.innerHTML = resultHtmls.join('');
+        gutter.innerHTML = gutterHtmls.join('');
     };
 
     codeInput.addEventListener('keydown', function () {
-        setTimeout(updateResults, 0);
+        setTimeout(updateSheet, 0);
     });
-    codeInput.addEventListener('change', updateResults);
+    codeInput.addEventListener('change', updateSheet);
 
     codeInput.value = [
         'a = 2',
@@ -29,6 +35,6 @@
         'L3'
     ].join('\n');
 
-    updateResults();
+    updateSheet();
 
 }());
