@@ -11,17 +11,15 @@
 
     <section id=app-container>
         <section class=left-panel focus-iter="input.code-input">
-            <input ng-repeat="entry in entries" class=code-input
-                ng-model=entry.code on-enter-key="insertAfter(entry)"
-                init-focus>
+            <textarea autofocus ng-model=code rows=20 cols=80></textarea>
         </section>
         <section class=right-panel>
-            <div class=result ng-repeat="entry in entries">
-                {{evalEntry(entry)}}</div>
+            <div ng-repeat="result in results()">
+                <div>{{result}}</div>
+            </div>
         </section>
     </section>
 
-    <script src=vendor/jquery-1.9.1.min.js></script>
     <script src=vendor/angular.min.js></script>
     <script src=lang/tapdigit.js></script>
     <script src=calc-ctrl.js></script>
