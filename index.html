@@ -11,7 +11,7 @@
 
     <section id=app-container>
         <section class=left-panel focus-iter="input.code-input">
-            <textarea autofocus ng-model=code></textarea>
+            <textarea autofocus spellcheck=false ng-model=code></textarea>
         </section>
         <section class=right-panel>
             <div class=result ng-repeat="result in results()">{{result}}</div>
