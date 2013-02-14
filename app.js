@@ -14,7 +14,7 @@
                 code = varname + ' = ' + lines[i],
                 result = evaluator.evaluate(code);
             resultHtmls.splice(resultHtmls.length, 0,
-                         '<div class=result>', result, '</div>');
+                         '<div class=result data-label="', varname, ': ">', result, '</div>');
             gutterHtmls.splice(gutterHtmls.length, 0,
                                '<div>', varname, ': ', '</div>');
         }

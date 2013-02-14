@@ -29,6 +29,7 @@ html, body {
     height: 100%;
     width: 70%;
     float: left;
+    margin-right: 12px;
 }
 
 #app-container .right-panel {
@@ -58,4 +59,9 @@ html, body {
 
 #app-container .result {
     height: 32px;
+}
+
+#app-container .result:before {
+    content: attr(data-label);
+    opacity: .4;
 }
