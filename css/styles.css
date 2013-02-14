@@ -37,6 +37,7 @@ html, body {
     padding: 3px;
     background: transparent;
     height: 100%;
+    resize: none;
 }
 
 #app-container textarea:focus {
