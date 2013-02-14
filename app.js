@@ -12,9 +12,10 @@
         for (var i = 0, len = lines.length; i < len; i++) {
             var varname = 'L' + (i + 1),
                 code = varname + ' = ' + lines[i],
-                result = evaluator.evaluate(code);
+                result = lines[i] ? evaluator.evaluate(code) : '-';
             resultHtmls.splice(resultHtmls.length, 0,
-                         '<div class=result data-label="', varname, ': ">', result, '</div>');
+                               '<div class=result data-label="', varname,
+                               ': ">', result, '</div>');
             gutterHtmls.splice(gutterHtmls.length, 0,
                                '<div>', varname, ': ', '</div>');
         }
