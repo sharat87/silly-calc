@@ -2,10 +2,11 @@
     box-sizing: border-box;
 }
 
-body {
+html, body {
     background-color: #FAFAFA;
     text-shadow: white 0px 1px 1px;
     font-size: 14px;
+    height: 100%;
 }
 
 #app-container {
@@ -16,35 +17,37 @@ body {
     font-family: 'Inconsolata', monospace;
 }
 
-#app-container td:first-child {
+#app-container .left-panel {
     border-right: 1px solid #ccc;
     padding: 0;
+    height: 100%;
+    width: 70%;
+    float: left;
 }
 
-#app-container td:last-child {
+#app-container .right-panel {
     padding: 3px;
     background-color: rgba(0, 0, 0, .02);
+    height: 100%;
 }
 
-#app-container input {
+#app-container textarea {
     width: 100%;
     border: none;
     padding: 3px;
     background: transparent;
+    height: 100%;
 }
 
-#app-container input:focus {
+#app-container textarea:focus {
     outline: none;
-    background: rgba(0, 0, 200, .02);
 }
 
-#app-container input,
+#app-container textarea,
 #app-container .result {
     line-height: 32px;
-    height: 32px;
 }
 
-.left-panel {
-    float: left;
-    width: 70%;
+#app-container .result {
+    height: 32px;
 }

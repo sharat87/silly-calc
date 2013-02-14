@@ -11,12 +11,10 @@
 
     <section id=app-container>
         <section class=left-panel focus-iter="input.code-input">
-            <textarea autofocus ng-model=code rows=20 cols=80></textarea>
+            <textarea autofocus ng-model=code></textarea>
         </section>
         <section class=right-panel>
-            <div ng-repeat="result in results()">
-                <div>{{result}}</div>
-            </div>
+            <div class=result ng-repeat="result in results()">{{result}}</div>
         </section>
     </section>
 
