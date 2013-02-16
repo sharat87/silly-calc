@@ -15,6 +15,8 @@
                 lexerDisplay.innerText = err.toString() + '\n' + code + '\n' +
                     repeat(' ', err.column) + '↑';
                 return;
+            } else {
+                throw err;
             }
         }
 
