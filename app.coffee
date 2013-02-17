@@ -22,8 +22,8 @@ updateSheet = ->
   gutter.innerHTML = gutterHtmls.join('')
 
 codeInput.addEventListener 'keydown', -> setTimeout updateSheet, 0
-
 codeInput.addEventListener 'change', updateSheet
+
 codeInput.value = [
   'a = 2'
   'a'
