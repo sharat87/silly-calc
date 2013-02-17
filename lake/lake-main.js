@@ -1,11 +1,12 @@
 (function () {
 
     var codeInput = document.getElementById('source-input'),
-        lexerDisplay = document.getElementById('lexer-display');
+        lexerDisplay = document.getElementById('lexer-display'),
+        parserDisplay = document.getElementById('parser-display');
 
     var update = function () {
         var code = codeInput.value,
-            tokens = null;
+            tokens = null, ast = null;
 
         try {
             tokens = Lake.lex(code);
@@ -22,6 +23,21 @@
 
         lexerDisplay.classList.remove('error');
         lexerDisplay.innerText = tokensToString(tokens);
+
+        try {
+            ast = Lake.parse(tokens);
+        } catch (err) {
+            if (err instanceof SyntaxError) {
+                parserDisplay.classList.add('error');
+                parserDisplay.innerText = err.toString();
+                return;
+            } else {
+                throw err;
+            }
+        }
+
+        parserDisplay.classList.remove('error');
+        parserDisplay.innerText = JSON.stringify(ast, null, 4);
     };
 
     codeInput.addEventListener('change', update);
