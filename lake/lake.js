@@ -8,58 +8,104 @@
     // The Lake lexer.
     Lake.lex = (function () {
 
-        var reWhiteSpace = /^\s+/,
-            reIdentifier = /^[a-zA-Z_][a-zA-Z0-9_]*/,
-            reNumber = /^\d+/,
-            reOperator = /^[=\-\+\*\/\^]+/;
+        // Mapping of token name to a boolean indicating whether the token
+        // has semantic `val` or not.
+        var tokenSpec = [
+            // reWhiteSpace = /^\s+/,
+            // Triplets of (<token-name>, <matcher>[, <data-part>])
+            // If <matcher> is a regex, then <data-part> can refer to the group
+            // indicating the semantic data, and defaults to 0.
+            ['number', /^\d+/],
+            ['operator', /^[=\-\+\*\/\^]+/],
+            ['identifier', /^[a-zA-Z_][a-zA-Z0-9_]*/],
+
+            // If <matcher> is a string, the input is checked whether it starts
+            // with the matcher. <data-part> is ignored.
+            ['openParen', '('],
+            ['closeParen', ')'],
+            ['comma', ','],
+
+            // When using regex, if <data-part> is null, no semantic data is
+            // saved in the token.
+            ['end', /^$/, null]
+        ];
+
+        function Token(name, val) {
+            if (!(this instanceof Token)) return new Token(name, val);
+            this.name = name;
+
+            if (arguments.length === 0)
+                this.val = null;
+            else if (val instanceof Object)
+                this.set(val);
+            else
+                this.val = val;
+        }
+
+        Token.prototype = {
+
+            set: function (props) {
+                for (var key in props) {
+                    if (props.hasOwnProperty(key))
+                        this[key] = props[key];
+                }
+            },
+
+            toString: function () {
+                return '<' + this.name +
+                    (this.val === null ? '' : ' ' + this.val) + '>';
+            }
+
+        };
 
         return function lex(input) {
             var token = null,
                 tokens = [],
-                inputSize = input.length,
-                m, matchLen;
+                inputSize = input.length;
 
             do {
                 /*jshint boss:true */
-                input = input.replace(reWhiteSpace, '');
+                input = input.replace(/^\s+/, '');
+                token = null;
 
-                if (input.length === 0) {
-                    token = {type: 'end', val: null};
-                    matchLen = 0;
+                for (var i = 0; i < tokenSpec.length; i++) {
+                    var name = tokenSpec[i][0],
+                        matcher = tokenSpec[i][1],
+                        dataPart = tokenSpec[i][2],
+                        match;
 
-                } else if (input[0] === '(') {
-                    token = {type: 'open-paren', val: null};
-                    matchLen = 1;
+                    if (typeof matcher === 'string') {
+                        if (input.substr(0, matcher.length) === matcher)
+                            token = Token(name, {
+                                val: null,
+                                matchLen: matcher.length
+                            });
 
-                } else if (input[0] === ')') {
-                    token = {type: 'close-paren', val: null};
-                    matchLen = 1;
+                    } else if (matcher instanceof RegExp) {
+                        if (match = input.match(matcher))
+                            token = Token(name, {
+                                val: dataPart === null ?
+                                    null : match[dataPart || 0],
+                                matchLen: match[0].length
+                            });
 
-                } else if (input[0] === ',') {
-                    token = {type: 'comma', val: null};
-                    matchLen = 1;
+                    }
 
-                } else if (m = input.match(reNumber)) {
-                    token = {type: 'number', val: m};
+                    if (token) break;
 
-                } else if (m = input.match(reOperator)) {
-                    token = {type: 'operator', val: m[0]};
+                }
 
-                } else if (m = input.match(reIdentifier)) {
-                    token = {type: 'identifier', val: m[0]};
-
-                } else {
+                if (token === null) {
                     var err = SyntaxError('Lake: Unidentified input');
                     err.line = 1;
                     err.column = inputSize - input.length;
                     throw err;
-
                 }
 
                 tokens.push(token);
-                input = input.substr(matchLen || m[0].length);
-                matchLen = null;
-            } while (token.type !== 'end');
+                input = input.substr(token.matchLen);
+
+            } while (token.name !== 'end');
 
             return tokens;
         };
@@ -82,7 +128,7 @@
 
         function popToken() {
             var token = tokens[0];
-            if (token.type !== 'end') tokens.shift();
+            if (token.name !== 'end') tokens.shift();
             return token;
         }
 
@@ -97,28 +143,28 @@
                 throw SyntaxError('Lake: Unexpected end of input.');
             }
 
-            if (t.type === 'open-paren') {
+            if (t.name === 'openParen') {
                 var e = parseExpr(0), closeToken = popToken();
-                if (closeToken.type !== 'close-paren' &&
-                    closeToken.type !== 'end') {
+                if (closeToken.name !== 'closeParen' &&
+                    closeToken.name !== 'end') {
                     throw SyntaxError('Unclosed paren');
                 }
                 return e;
             }
 
-            if (t.type === 'operator' && t.val === '-') {
+            if (t.name === 'operator' && t.val === '-') {
                 return {op: '-', left: 0, right: parseAtom()};
             }
 
-            if (t.type === 'number') {
+            if (t.name === 'number') {
                 return parseFloat(t.val, 10);
             }
 
-            if (t.type === 'identifier') {
+            if (t.name === 'identifier') {
                 return {op: 'ref', name: t.val};
             }
 
-            throw SyntaxError('Lake: Unexpected "' + t.type + '"');
+            throw SyntaxError('Lake: Unexpected "' + t.name + '"');
 
         }
 
@@ -127,7 +173,7 @@
 
             while (true) {
                 var t = peekToken();
-                if (!t || t.type !== 'operator') break;
+                if (!t || t.name !== 'operator') break;
 
                 var prec = opTable[t.val][0],
                     assoc = opTable[t.val][1],

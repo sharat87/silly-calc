@@ -51,8 +51,7 @@
     function tokensToString(tokens) {
         var sTokens = [];
         for (var i = 0; i < tokens.length; i++) {
-            var type = tokens[i].type, val = tokens[i].val;
-            sTokens.push(type + (val ? ': ' + val : ''));
+            sTokens.push(tokens[i].toString());
         }
         return sTokens.join('\n');
     }
