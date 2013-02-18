@@ -2,12 +2,13 @@
 
     var codeInput = document.getElementById('source-input'),
         lexerDisplay = document.getElementById('lexer-display'),
-        parserDisplay = document.getElementById('parser-display');
+        parserDisplay = document.getElementById('parser-display'),
+        interpreterDisplay = document.getElementById('interpreter-display');
 
     var update = function () {
         var code = codeInput.value,
             lake = new Lake(),
-            tokens = null, ast = null;
+            tokens = null, ast = null, result = null;
 
         try {
             tokens = lake.lex(code);
@@ -39,6 +40,17 @@
 
         parserDisplay.classList.remove('error');
         parserDisplay.innerText = JSON.stringify(ast, null, 4);
+
+        try {
+            result = lake.interpret(ast);
+        } catch (err) {
+            interpreterDisplay.classList.add('error');
+            interpreterDisplay.innerText = err.toString();
+            return;
+        }
+
+        interpreterDisplay.classList.remove('error');
+        interpreterDisplay.innerText = result.toString();
     };
 
     codeInput.addEventListener('change', update);
