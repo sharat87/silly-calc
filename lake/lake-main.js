@@ -10,17 +10,16 @@
             lake = new Lake(),
             tokens = null, ast = null, result = null;
 
+        parserDisplay.innerText = '';
+        interpreterDisplay.innerText = '';
+
         try {
             tokens = lake.lex(code);
         } catch (err) {
-            if (err instanceof SyntaxError) {
-                lexerDisplay.parentNode.classList.add('error');
-                lexerDisplay.innerText = err.toString() + '\n' + code + '\n' +
-                    repeat(' ', err.column) + '↑';
-                return;
-            } else {
-                throw err;
-            }
+            lexerDisplay.parentNode.classList.add('error');
+            lexerDisplay.innerText = err.toString() + '\n' + code + '\n' +
+                repeat(' ', err.column) + '↑';
+            throw err;
         }
 
         lexerDisplay.parentNode.classList.remove('error');
@@ -29,13 +28,9 @@
         try {
             ast = lake.parse(tokens);
         } catch (err) {
-            if (err instanceof SyntaxError) {
-                parserDisplay.parentNode.classList.add('error');
-                parserDisplay.innerText = err.toString();
-                return;
-            } else {
-                throw err;
-            }
+            parserDisplay.parentNode.classList.add('error');
+            parserDisplay.innerText = err.toString();
+            throw err;
         }
 
         parserDisplay.parentNode.classList.remove('error');
@@ -46,7 +41,7 @@
         } catch (err) {
             interpreterDisplay.parentNode.classList.add('error');
             interpreterDisplay.innerText = err.toString();
-            return;
+            throw err;
         }
 
         interpreterDisplay.parentNode.classList.remove('error');

@@ -3,8 +3,8 @@ function Lake(scope) {
     this.scope = scope || {};
 }
 
-// The Lake lexer.
-Lake.prototype.lex = (function () {
+// Lake.prototype.lex
+(function () {
 
     // Mapping of token name to a boolean indicating whether the token
     // has semantic `val` or not.
@@ -56,7 +56,7 @@ Lake.prototype.lex = (function () {
 
     };
 
-    return function lex(input) {
+    Lake.prototype.lex = function (input) {
         var token = null,
             tokens = [],
             inputSize = input.length;
@@ -110,10 +110,10 @@ Lake.prototype.lex = (function () {
 
 }());
 
-// The Lake parser.
+// Lake.prototype.parse
 // Precedence climbing used for `parseAtom` and `parseExpr` from:
 // http://eli.thegreenplace.net/2012/08/02/parsing-expressions-by-precedence-climbing/
-Lake.prototype.parse = (function () {
+(function () {
 
     var tokens = null;
 
@@ -154,7 +154,7 @@ Lake.prototype.parse = (function () {
             nextMinPrec = minPrec + (assoc === 'left');
 
             right = parseExpr(nextMinPrec);
-            result = {op: t.val, left: result, right: right};
+            result = {op: 'call', name: t.val, args: [result, right]};
         }
 
         return result;
@@ -192,16 +192,66 @@ Lake.prototype.parse = (function () {
 
     }
 
-    return function parse(_tokens) {
+    Lake.prototype.parse = function (_tokens) {
         tokens = _tokens;
         return parseExpr();
     };
 
 }());
 
-Lake.prototype.interpret = function (ast) {
-    throw Error('Not implemented yet yo!');
-};
+// Lake.prototype.interpret
+(function () {
+
+    // Builtins.
+    var builtins = {
+        '+': function (x, y) { return x + y; },
+        '-': function (x, y) { return x - y; },
+        '*': function (x, y) { return x * y; },
+        '/': function (x, y) { return x / y; },
+        '^': function (x, y) { return Math.pow(x, y); },
+
+        '=': function (ref, value) {
+            return this.scope[ref.name] = this.interpret(value);
+        }
+
+    };
+
+    // OpCode implementations.
+    var ops = {
+
+        ref: function (ast) {
+            return this.scope[ast.name];
+        },
+
+        call: function (ast) {
+            var fn = this.scope[ast.name] || builtins[ast.name],
+                iArgs;
+
+            if (ast.name === '=') {
+                iArgs = ast.args;
+            } else {
+                iArgs = [];
+                for (var i = 0, len = ast.args.length; i < len; ++i) {
+                    iArgs.push(this.interpret(ast.args[i]));
+                }
+            }
+
+            return fn.apply(this, iArgs);
+        }
+
+    };
+
+    Lake.prototype.interpret = function (ast) {
+        if (typeof ast === 'number') {
+            return ast;
+        } else if (ast instanceof Object) {
+            return ops[ast.op].call(this, ast);
+        } else {
+            throw Error('Lake: Unrecognizable ast: ' + ast);
+        }
+    };
+
+}());
 
 Lake.prototype.evaluate = function (input) {
     throw Error('Not implemented yet yo!');
