@@ -6,10 +6,11 @@
 
     var update = function () {
         var code = codeInput.value,
+            lake = new Lake(),
             tokens = null, ast = null;
 
         try {
-            tokens = Lake.lex(code);
+            tokens = lake.lex(code);
         } catch (err) {
             if (err instanceof SyntaxError) {
                 lexerDisplay.classList.add('error');
@@ -25,7 +26,7 @@
         lexerDisplay.innerText = tokensToString(tokens);
 
         try {
-            ast = Lake.parse(tokens);
+            ast = lake.parse(tokens);
         } catch (err) {
             if (err instanceof SyntaxError) {
                 parserDisplay.classList.add('error');
