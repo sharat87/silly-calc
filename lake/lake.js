@@ -151,7 +151,7 @@ function Lake(scope) {
             if (prec < minPrec) break;
             popToken();
 
-            nextMinPrec = minPrec + (assoc === 'left');
+            nextMinPrec = prec + (assoc === 'left');
 
             right = parseExpr(nextMinPrec);
             result = {op: 'call', name: t.val, args: [result, right]};
