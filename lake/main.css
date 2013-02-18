@@ -14,18 +14,26 @@ html, body {
     overflow: auto;
 }
 
+.pane.error {
+    background-color: #FFB8B8;
+}
+
 .pane > .label {
-    position: absolute;
-    border-width: 0 0 1px 1px;
-    border-color: gray;
-    border-style: solid;
-    border-radius: 0 0 0 6px;
-    background-color: #EEE;
-    color: gray;
+    width: 100%;
+    color: #555;
     cursor: default;
     padding: 3px;
-    top: 0;
-    right: 0;
+    background-color: #EEE;
+}
+
+.pane.error > .label {
+    background-color: maroon;
+    color: white;
+}
+
+.pane pre {
+    margin: 0;
+    padding: 3px;
 }
 
 #source-pane { width: 100%; height: 15%; }
@@ -45,19 +53,4 @@ html, body {
 
 #source-input:focus {
     outline: none;
-}
-
-.pane pre {
-    margin: 0;
-    padding: 3px;
-    min-height: 100%;
-}
-
-.error {
-    background-color: #FFB8B8;
-}
-
-.error + .label {
-    background-color: maroon;
-    color: white;
 }

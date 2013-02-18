@@ -14,7 +14,7 @@
             tokens = lake.lex(code);
         } catch (err) {
             if (err instanceof SyntaxError) {
-                lexerDisplay.classList.add('error');
+                lexerDisplay.parentNode.classList.add('error');
                 lexerDisplay.innerText = err.toString() + '\n' + code + '\n' +
                     repeat(' ', err.column) + '↑';
                 return;
@@ -23,14 +23,14 @@
             }
         }
 
-        lexerDisplay.classList.remove('error');
+        lexerDisplay.parentNode.classList.remove('error');
         lexerDisplay.innerText = tokensToString(tokens);
 
         try {
             ast = lake.parse(tokens);
         } catch (err) {
             if (err instanceof SyntaxError) {
-                parserDisplay.classList.add('error');
+                parserDisplay.parentNode.classList.add('error');
                 parserDisplay.innerText = err.toString();
                 return;
             } else {
@@ -38,18 +38,18 @@
             }
         }
 
-        parserDisplay.classList.remove('error');
+        parserDisplay.parentNode.classList.remove('error');
         parserDisplay.innerText = JSON.stringify(ast, null, 4);
 
         try {
             result = lake.interpret(ast);
         } catch (err) {
-            interpreterDisplay.classList.add('error');
+            interpreterDisplay.parentNode.classList.add('error');
             interpreterDisplay.innerText = err.toString();
             return;
         }
 
-        interpreterDisplay.classList.remove('error');
+        interpreterDisplay.parentNode.classList.remove('error');
         interpreterDisplay.innerText = result.toString();
     };
 
