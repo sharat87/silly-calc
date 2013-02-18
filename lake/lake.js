@@ -254,7 +254,7 @@ function Lake(scope) {
 }());
 
 Lake.prototype.evaluate = function (input) {
-    throw Error('Not implemented yet yo!');
+    return this.interpret(this.parse(this.lex(input)));
 };
 
 window.Lake = Lake;
