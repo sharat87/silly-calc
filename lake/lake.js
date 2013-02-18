@@ -13,7 +13,7 @@ function Lake(scope) {
         // Triplets of (<token-name>, <matcher>[, <data-part>])
         // If <matcher> is a regex, then <data-part> can refer to the group
         // indicating the semantic data, and defaults to 0.
-        ['number', /^\d+/],
+        ['number', /^\d+(\.\d+)?|^\.\d+/],
         ['operator', /^[=\-\+\*\/\^]+/],
         ['identifier', /^[a-zA-Z_][a-zA-Z0-9_]*/],
 

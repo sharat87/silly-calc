@@ -7,8 +7,22 @@ describe("Lake language", function () {
 
     var lake = new Lake();
 
-    it("reads numbers", function () {
-        lake.expect('1').toBe(1);
+    describe("reads numbers like", function () {
+
+        it("integers", function () {
+            lake.expect('42').toBe(42);
+            lake.expect('042').toBe(42);
+        });
+
+        it("decimals", function () {
+            lake.expect('42.2').toBe(42.2);
+            lake.expect('42.200').toBe(42.2);
+            lake.expect('0.05').toBe(0.05);
+            lake.expect('00.5').toBe(0.5);
+            lake.expect('.5').toBe(0.5);
+            lake.expect('.500').toBe(0.5);
+        });
+
     });
 
     describe("does mathematical", function () {
