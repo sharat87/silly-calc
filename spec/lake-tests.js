@@ -23,6 +23,24 @@ describe("Lake language", function () {
             lake.expect('.500').toBe(0.5);
         });
 
+        it("hex numbers", function () {
+            lake.expect('0x1').toBe(1);
+            lake.expect('0xB').toBe(11);
+            lake.expect('0x10').toBe(16);
+        });
+
+        it("oct numbers", function () {
+            lake.expect('0o1').toBe(1);
+            lake.expect('0o7').toBe(7);
+            lake.expect('0o10').toBe(8);
+        });
+
+        it("exponential notations", function () {
+            lake.expect('1e2').toBe(100);
+            lake.expect('1E3').toBe(1000);
+            lake.expect('1.23e1').toBe(12.3);
+        });
+
     });
 
     describe("does mathematical", function () {

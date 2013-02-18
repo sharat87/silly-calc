@@ -13,6 +13,9 @@ function Lake(scope) {
         // Triplets of (<token-name>, <matcher>[, <data-part>])
         // If <matcher> is a regex, then <data-part> can refer to the group
         // indicating the semantic data, and defaults to 0.
+        ['hexNumber', /^0x([0-9A-F]+)/, 1],
+        ['octNumber', /^0o([0-7]+)/, 1],
+        ['number', /^(\d+(\.\d+)?|^\.\d+)(e\d+)?/i],
         ['number', /^\d+(\.\d+)?|^\.\d+/],
         ['operator', /^[=\-\+\*\/\^]+/],
         ['identifier', /^[a-zA-Z_][a-zA-Z0-9_]*/],
@@ -182,6 +185,14 @@ function Lake(scope) {
 
         if (t.name === 'number') {
             return parseFloat(t.val, 10);
+        }
+
+        if (t.name === 'hexNumber') {
+            return parseInt(t.val, 16);
+        }
+
+        if (t.name === 'octNumber') {
+            return parseInt(t.val, 8);
         }
 
         if (t.name === 'identifier') {
