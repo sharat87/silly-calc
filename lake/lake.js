@@ -113,6 +113,8 @@
     }());
 
     // The Lake parser.
+    // Precedence climbing used for `parseAtom` and `parseExpr` from:
+    // http://eli.thegreenplace.net/2012/08/02/parsing-expressions-by-precedence-climbing/
     Lake.parse = (function () {
 
         var tokens = null;
@@ -132,8 +134,32 @@
             return token;
         }
 
-        function peekToken() {
-            return tokens[0];
+        function peekToken(lookAhead) {
+            return tokens[lookAhead || 0];
+        }
+
+        function parseExpr(minPrec) {
+            minPrec = minPrec || 0;
+            var left = parseAtom(), result = left;
+
+            while (true) {
+                var t = peekToken();
+                if (!t || t.name !== 'operator') break;
+
+                var prec = opTable[t.val][0],
+                    assoc = opTable[t.val][1],
+                    nextMinPrec;
+
+                if (prec < minPrec) break;
+                popToken();
+
+                nextMinPrec = minPrec + (assoc === 'left');
+
+                right = parseExpr(nextMinPrec);
+                result = {op: t.val, left: result, right: right};
+            }
+
+            return result;
         }
 
         function parseAtom(minPrec) {
@@ -144,7 +170,7 @@
             }
 
             if (t.name === 'openParen') {
-                var e = parseExpr(0), closeToken = popToken();
+                var e = parseExpr(), closeToken = popToken();
                 if (closeToken.name !== 'closeParen' &&
                     closeToken.name !== 'end') {
                     throw SyntaxError('Unclosed paren');
@@ -168,32 +194,9 @@
 
         }
 
-        function parseExpr(minPrec) {
-            var left = parseAtom(), result = left;
-
-            while (true) {
-                var t = peekToken();
-                if (!t || t.name !== 'operator') break;
-
-                var prec = opTable[t.val][0],
-                    assoc = opTable[t.val][1],
-                    nextMinPrec;
-
-                if (prec < minPrec) break;
-                popToken();
-
-                nextMinPrec = minPrec + (assoc === 'left');
-
-                right = parseExpr(nextMinPrec);
-                result = {op: t.val, left: result, right: right};
-            }
-
-            return result;
-        }
-
         return function parse(_tokens) {
             tokens = _tokens;
-            return parseExpr(0);
+            return parseExpr();
         };
 
     }());
