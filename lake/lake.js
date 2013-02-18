@@ -64,7 +64,6 @@
                 inputSize = input.length;
 
             do {
-                /*jshint boss:true */
                 input = input.replace(/^\s+/, '');
                 token = null;
 
@@ -82,7 +81,8 @@
                             });
 
                     } else if (matcher instanceof RegExp) {
-                        if (match = input.match(matcher))
+                        match = input.match(matcher);
+                        if (match)
                             token = Token(name, {
                                 val: dataPart === null ?
                                     null : match[dataPart || 0],
