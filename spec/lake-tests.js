@@ -37,6 +37,7 @@ describe("Lake language", function () {
 
         it("exponential notations", function () {
             lake.expect('1e2').toBe(100);
+            lake.expect('1e-2').toBe(0.01);
             lake.expect('1E3').toBe(1000);
             lake.expect('1.23e1').toBe(12.3);
         });
@@ -53,6 +54,11 @@ describe("Lake language", function () {
         it("subtraction", function () {
             lake.expect('5 - 2').toBe(3);
             lake.expect('5 - 1 - 2').toBe(2);
+        });
+
+        it("negation", function () {
+            lake.expect('-10').toBe(-10);
+            lake.expect('-0xA').toBe(-10);
         });
 
         it("multiplication", function () {
