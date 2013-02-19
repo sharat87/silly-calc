@@ -67,13 +67,12 @@
     var Layout = (function layout() {
         var sourcePane = document.getElementById('source-pane'),
             lexerPane = document.getElementById('lexer-pane'),
-            parserPane = document.getElementById('parser-pane'),
-            sourceInput = document.getElementById('source-input');
+            parserPane = document.getElementById('parser-pane');
 
         function reTile() {
             lexerPane.style.height = parserPane.style.height =
                 (window.innerHeight - sourcePane.offsetHeight) + 'px';
-            sourceInput.style.width = (sourceInput.value.length * 13) + 'px';
+            codeInput.style.width = (codeInput.value.length * 13) + 'px';
         }
 
         return {reTile: reTile};
