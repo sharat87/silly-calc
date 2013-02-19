@@ -3,15 +3,15 @@
     var codeInput = document.getElementById('source-input'),
         lexerDisplay = document.getElementById('lexer-display'),
         parserDisplay = document.getElementById('parser-display'),
-        interpreterDisplay = document.getElementById('interpreter-display');
+        resultDisplay = document.getElementById('result-display');
 
-    var update = function () {
+    function updateSheet() {
         var code = codeInput.value,
             lake = new Lake(),
             tokens = null, ast = null, result = null;
 
         parserDisplay.innerText = '';
-        interpreterDisplay.innerText = '';
+        resultDisplay.innerText = '???';
 
         try {
             tokens = lake.lex(code);
@@ -39,21 +39,14 @@
         try {
             result = lake.interpret(ast);
         } catch (err) {
-            interpreterDisplay.parentNode.classList.add('error');
-            interpreterDisplay.innerText = err.toString();
+            resultDisplay.classList.add('error');
+            resultDisplay.innerText = err.toString();
             throw err;
         }
 
-        interpreterDisplay.parentNode.classList.remove('error');
-        interpreterDisplay.innerText = result.toString();
-    };
-
-    codeInput.addEventListener('change', update);
-    codeInput.addEventListener('keydown', function () {
-        setTimeout(update, 0);
-    });
-
-    update();
+        resultDisplay.classList.remove('error');
+        resultDisplay.innerText = result.toString();
+    }
 
     // Helper functions
     function tokensToString(tokens) {
@@ -69,5 +62,40 @@
         while (count--) strs.push(str);
         return strs.join('');
     }
+
+    // Layout management
+    var Layout = (function layout() {
+        var sourcePane = document.getElementById('source-pane'),
+            lexerPane = document.getElementById('lexer-pane'),
+            parserPane = document.getElementById('parser-pane'),
+            sourceInput = document.getElementById('source-input');
+
+        function reTile() {
+            lexerPane.style.height = parserPane.style.height =
+                (window.innerHeight - sourcePane.offsetHeight) + 'px';
+            sourceInput.style.width = (sourceInput.value.length * 13) + 'px';
+        }
+
+        return {reTile: reTile};
+    }());
+
+    // Startup the app.
+    (function startup() {
+
+        var onInputChange = function () {
+            updateSheet();
+            Layout.reTile();
+        };
+
+        codeInput.addEventListener('change', onInputChange);
+        codeInput.addEventListener('keydown', function () {
+            setTimeout(onInputChange, 0);
+        });
+
+        window.addEventListener('resize', Layout.reTile);
+
+        Layout.reTile();
+        updateSheet();
+    }());
 
 }());

@@ -10,8 +10,9 @@
 <body>
 
     <section class=pane id=source-pane>
-        <textarea id=source-input autofocus spellcheck=false
-            >a = 2 * (3 + 3)</textarea>
+        <input id=source-input value="a = 2 * (3 + 3)" autofocus
+            spellcheck=false>
+        <span id=result-display></span>
     </section>
 
     <section class=pane id=lexer-pane>
@@ -22,11 +23,6 @@
     <section class=pane id=parser-pane>
         <div class=label>Parser</div>
         <pre id=parser-display></pre>
-    </section>
-
-    <section class=pane id=interpreter-pane>
-        <div class=label>Interpreter</div>
-        <pre id=interpreter-display></pre>
     </section>
 
     <script src=lake.js></script>
