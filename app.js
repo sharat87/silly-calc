@@ -1,9 +1,12 @@
 (function () {
     var codeInput = document.getElementById('code-input'),
         resultsPanel = document.getElementById('results-panel'),
-        gutter = document.getElementById('gutter');
+        gutter = document.getElementById('gutter'),
+        lastEvaledCode = null;
 
     function updateSheet() {
+        if (lastEvaledCode === codeInput.value) return;
+        lastEvaledCode = codeInput.value;
 
         var lines = codeInput.value.split('\n'),
             // evaluator = new TapDigit.Evaluator(),
