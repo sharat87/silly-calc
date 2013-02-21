@@ -242,11 +242,26 @@ function Lake(scope) {
 
     // Builtins.
     var builtins = {
+        PI: Math.PI,
+        E: Math.E,
+
         '+': function (x, y) { return x + y; },
         '-': function (x, y) { return x - y; },
         '*': function (x, y) { return x * y; },
         '/': function (x, y) { return x / y; },
         '^': function (x, y) { return Math.pow(x, y); },
+
+        ln: Math.log,
+        log: function (n, base) {
+            return Math.log(n) / Math.log(base || Math.E);
+        },
+        log10: function (n) {
+            return Math.log(n) / Math.LN10;
+        },
+
+        sin: Math.sin,
+        cos: Math.cos,
+        tan: Math.tan,
 
         '=': function (ref, value) {
             return this.scope[ref.name] = this.interpret(value);
