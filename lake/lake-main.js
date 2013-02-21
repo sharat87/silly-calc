@@ -34,7 +34,7 @@
         }
 
         parserDisplay.parentNode.classList.remove('error');
-        parserDisplay.innerText = JSON.stringify(ast, null, 4);
+        parserDisplay.innerText = JSON.stringify(ast, null, 2);
 
         try {
             result = lake.interpret(ast);
