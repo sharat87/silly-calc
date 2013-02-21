@@ -145,7 +145,7 @@ function Lake(scope) {
 
         while (true) {
             var t = peekToken();
-            if (!t || t.name !== 'operator') break;
+            if (t.name !== 'operator') break;
 
             var prec = opTable[t.val][0],
                 assoc = opTable[t.val][1],
