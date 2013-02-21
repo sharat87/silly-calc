@@ -250,6 +250,7 @@ function Lake(scope) {
         '*': function (x, y) { return x * y; },
         '/': function (x, y) { return x / y; },
         '^': function (x, y) { return Math.pow(x, y); },
+        sqrt: Math.sqrt,
 
         ln: Math.log,
         log: function (n, base) {
@@ -273,7 +274,7 @@ function Lake(scope) {
     var ops = {
 
         ref: function (ast) {
-            return this.scope[ast.name];
+            return this.scope[ast.name] || builtins[ast.name];
         },
 
         call: function (ast) {

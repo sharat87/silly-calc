@@ -6,20 +6,23 @@
     function updateSheet() {
 
         var lines = codeInput.value.split('\n'),
-            evaluator = new TapDigit.Evaluator(),
+            // evaluator = new TapDigit.Evaluator(),
+            evaluator = new Lake(),
             resultHtmls = [],
             gutterHtmls = [];
 
         for (var i = 0, len = lines.length; i < len; ++i) {
             var line = lines[i],
                 varname = 'L' + (i + 1),
-                code = varname + ' = ' + line,
-                result = line ? evaluator.evaluate(code) : '-';
+                result = line ? evaluator.evaluate(line) : '-';
+
             resultHtmls.splice(resultHtmls.length, 0,
                 '<div class=result data-label="', varname, ': ">', result,
                 '</div>');
             gutterHtmls.splice(gutterHtmls.length, 0,
                 '<div>', varname, ': ', '</div>');
+
+            evaluator.evaluate(varname + ' = ' + result);
         }
 
         resultsPanel.innerHTML = resultHtmls.join('');
@@ -34,7 +37,7 @@
     codeInput.value = [
         'a = 2',
         'a',
-        'sin(pi/4) * sqrt(a) + 42',
+        'sin(PI/4) * sqrt(a) + 42',
         'L3'
     ].join('\n');
 
