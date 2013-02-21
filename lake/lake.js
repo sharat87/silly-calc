@@ -232,7 +232,10 @@ function Lake(scope) {
 
     Lake.prototype.parse = function (_tokens) {
         tokens = _tokens;
-        return parseExpr();
+        if (peekToken().name === 'end')
+            return null;
+        else
+            return parseExpr();
     };
 
 }());
@@ -296,7 +299,9 @@ function Lake(scope) {
     };
 
     Lake.prototype.interpret = function (ast) {
-        if (typeof ast === 'number') {
+        if (ast === null) {
+            return '';
+        } else if (typeof ast === 'number') {
             return ast;
         } else if (ast instanceof Object) {
             return ops[ast.op].call(this, ast);

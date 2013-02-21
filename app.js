@@ -14,7 +14,7 @@
         for (var i = 0, len = lines.length; i < len; ++i) {
             var line = lines[i],
                 varname = 'L' + (i + 1),
-                result = line ? evaluator.evaluate(line) : '-';
+                result = line ? evaluator.evaluate(line) : '';
 
             resultHtmls.splice(resultHtmls.length, 0,
                 '<div class=result data-label="', varname, ': ">', result,
@@ -22,7 +22,8 @@
             gutterHtmls.splice(gutterHtmls.length, 0,
                 '<div>', varname, ': ', '</div>');
 
-            evaluator.evaluate(varname + ' = ' + result);
+            if (result)
+                evaluator.evaluate(varname + ' = ' + result);
         }
 
         resultsPanel.innerHTML = resultHtmls.join('');
