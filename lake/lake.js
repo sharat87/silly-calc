@@ -196,10 +196,37 @@ function Lake(scope) {
         }
 
         if (t.name === 'identifier') {
-            return {op: 'ref', name: t.val};
+            if (peekToken().name === 'openParen') {
+                popToken(); // opening paren.
+                var args = parseArgList();
+                popToken(); // closing paren.
+                return {op: 'call', name: t.val, args: args};
+            } else {
+                return {op: 'ref', name: t.val};
+            }
         }
 
         throw SyntaxError('Lake: Unexpected "' + t.name + '"');
+
+    }
+
+    function parseArgList() {
+        var args = [];
+
+        while (true) {
+            args.push(parseExpr());
+
+            if (peekToken().name === 'comma') {
+                popToken();
+            } else if (peekToken().name === 'closeParen') {
+                popToken();
+                return args;
+            } else {
+                throw SyntaxError('Lake: Unexpected "' + t.name +
+                                  '" in args list');
+            }
+
+        }
 
     }
 
