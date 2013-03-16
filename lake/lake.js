@@ -255,12 +255,16 @@ function Lake(scope) {
         '^': function (x, y) { return Math.pow(x, y); },
         sqrt: Math.sqrt,
 
+        exp: Math.exp,
         ln: Math.log,
         log: function (n, base) {
             return Math.log(n) / Math.log(base || Math.E);
         },
         log10: function (n) {
             return Math.log(n) / Math.LN10;
+        },
+        log2: function (n) {
+            return Math.log(n) / Math.LN2;
         },
 
         sin: Math.sin,
