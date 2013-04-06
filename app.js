@@ -2,9 +2,10 @@
     var codeInput = document.getElementById('code-input'),
         resultsPanel = document.getElementById('results-panel'),
         gutter = document.getElementById('gutter'),
+        cursorHl = document.getElementById('cursor-hl'),
         lastEvaledCode = null;
 
-    function updateSheet() {
+    function recalculate() {
         if (lastEvaledCode === codeInput.value) return;
         lastEvaledCode = codeInput.value;
 
@@ -30,6 +31,19 @@
 
         resultsPanel.innerHTML = resultHtmls.join('');
         gutter.innerHTML = gutterHtmls.join('');
+    }
+
+    function updateCursorLine() {
+        var cursorLine = codeInput.value
+            .substr(0, codeInput.selectionStart)
+            .split('\n')
+            .length;
+        cursorHl.style.top = cursorHl.offsetHeight * (cursorLine - 1) + 'px';
+    }
+
+    function updateSheet() {
+        updateCursorLine();
+        recalculate();
     }
 
     codeInput.addEventListener('change', updateSheet);
