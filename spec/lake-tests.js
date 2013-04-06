@@ -151,4 +151,19 @@ describe("Lake language", function () {
 
     });
 
+    describe("functions", function () {
+
+        it("can take arguments", function () {
+            lake.expect('sin(3.14)').toBe(Math.sin(3.14));
+        });
+
+        it("are atoms", function () {
+            lake.expect('cos(3.14) * sin(0)').toBe(0);
+            lake.expect('cos(sin(0))').toBe(1);
+        });
+
+    });
+
 });
+
+// vim: se fdm=indent :

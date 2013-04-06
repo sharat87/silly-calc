@@ -17,15 +17,27 @@
         for (var i = 0, len = lines.length; i < len; ++i) {
             var line = lines[i],
                 varname = 'L' + (i + 1),
-                result = line ? evaluator.evaluate(line) : '';
+                result = '',
+                evalSuccess = false;
+
+            if (line) {
+                try {
+                    result = evaluator.evaluate(line);
+                    evalSuccess = true;
+                } catch (e) {
+                    if (e instanceof SyntaxError) {
+                        result = '<em>Error</em>';
+                    } else throw e;
+                }
+            }
 
             resultHtmls.splice(resultHtmls.length, 0,
-                '<div class=result data-label="', varname, ': ">', result,
-                '</div>');
+                '<div class="result', line && !evalSuccess ? ' err' : '',
+                '" data-label="', varname, ': ">', result, '</div>');
             gutterHtmls.splice(gutterHtmls.length, 0,
-                '<div>', varname, ': ', '</div>');
+                '<div', '>', varname, ': ', '</div>');
 
-            if (result)
+            if (evalSuccess)
                 evaluator.evaluate(varname + ' = ' + result);
         }
 

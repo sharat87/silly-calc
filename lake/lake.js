@@ -222,7 +222,6 @@ function Lake(scope) {
             if (peekToken().name === 'comma') {
                 popToken();
             } else if (peekToken().name === 'closeParen') {
-                popToken();
                 return args;
             } else {
                 throw SyntaxError('Lake: Unexpected "' + t.name +
