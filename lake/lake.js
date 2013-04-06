@@ -213,6 +213,9 @@ function Lake(scope) {
     function parseArgList() {
         var args = [];
 
+        if (peekToken().name === 'closeParen')
+            return args;
+
         while (true) {
             args.push(parseExpr());
 
