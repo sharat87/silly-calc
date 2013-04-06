@@ -9,7 +9,6 @@
         lastEvaledCode = codeInput.value;
 
         var lines = codeInput.value.split('\n'),
-            // evaluator = new TapDigit.Evaluator(),
             evaluator = new Lake(),
             resultHtmls = [],
             gutterHtmls = [];
