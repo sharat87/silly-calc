@@ -33,10 +33,11 @@
         gutter.innerHTML = gutterHtmls.join('');
     }
 
-    codeInput.addEventListener('keydown', function () {
+    codeInput.addEventListener('change', updateSheet);
+    codeInput.addEventListener('click', updateSheet);
+    codeInput.addEventListener('keydown', function (e) {
         setTimeout(updateSheet, 0);
     });
-    codeInput.addEventListener('change', updateSheet);
 
     codeInput.value = [
         'a = 2',
