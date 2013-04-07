@@ -67,7 +67,7 @@
         updateCursorLine();
     }
 
-    function onKeydown() {
+    function onKeydown(e) {
         // <C-b> - Wrap in parens.
         if (e.ctrlKey && e.which === 66) {
 
