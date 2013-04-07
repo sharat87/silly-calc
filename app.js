@@ -102,8 +102,8 @@
         setTimeout(updateSheet, 0);
     }
 
-    function setupDropdowns() {
-        var buttons = topbar.querySelectorAll('[data-dropdown]');
+    function setupPopups() {
+        var buttons = topbar.querySelectorAll('[data-popup]');
 
         for (var i = 0, len = buttons.length; i < len; ++i) {
             buttons[i].addEventListener('click', onBtnClick);
@@ -112,13 +112,13 @@
         function onBtnClick(e) {
             e.preventDefault();
             var btn = e.currentTarget,
-                dropdown = document.querySelector(btn.dataset.dropdown);
-            console.log('show dropdown =', dropdown);
+                popup = document.querySelector(btn.dataset.popup);
+            console.log('show popup =', popup);
         }
     }
 
     function main() {
-        setupDropdowns();
+        setupPopups();
 
         codeInput.addEventListener('change', updateSheet);
         codeInput.addEventListener('keydown', onKeydown);
