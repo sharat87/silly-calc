@@ -12,7 +12,7 @@ html, body {
 body, textarea {
     font-size: 20px;
     color: #333;
-    text-shadow: rgba(0, 0, 0, .2) 0px 1px 1px;
+    text-shadow: rgba(0, 0, 0, .1) 0px 1px 1px;
 }
 
 #topbar {
@@ -50,17 +50,16 @@ body, textarea {
 
 .popup {
     display: none;
-}
-
-.popup.active {
-    display: block;
     position: absolute;
     top: 0;
     right: 120px;
     border-radius: 0 0 6px 6px;
-    box-shadow: 0 20px 150px rgba(0, 0, 0, .5);
+    box-shadow: 0 20px 150px rgba(0, 0, 0, .6);
+    width: 50%;
     min-height: 120px;
-    min-width: 40%;
+    max-height: 80%;
+    padding: 12px;
+    overflow-y: auto;
     background-color: white;
     background-image: linear-gradient(to bottom, #FFFFFF 0%, #E2DEDE 100%); /* W3C */
     background-image: -webkit-linear-gradient(top, #FFFFFF 0%, #E2DEDE 100%); /* Safari5.1+ */
@@ -69,22 +68,31 @@ body, textarea {
     background-image: -ms-linear-gradient(top, #FFFFFF 0%, #E2DEDE 100%); /* IE10+ */
 }
 
+.popup.active {
+    display: block;
+}
+
+.popup h2 {
+    margin: 0 0 12px 0;
+}
+
 .popup .close {
     position: absolute;
     top: 6px;
     right: 6px;
     display: inline-block;
-    width: 20px;
-    height: 20px;
-    line-height: 20px;
-    border-radius: 10px;
     border: none;
+    background: none;
     font-family: Inconsolata;
+    color: #BBB;
+}
+
+.popup .close:after {
+    content: "×ESC";
 }
 
 .popup .close:hover {
-    background-color: red;
-    color: white;
+    color: red;
 }
 
 #app-container {
