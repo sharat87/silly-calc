@@ -16,6 +16,11 @@ body, textarea {
     text-shadow: rgba(0, 0, 0, .1) 0px 1px 1px;
 }
 
+button:active {
+    -webkit-transform: translatey(1px);
+    transform: translatey(1px);
+}
+
 #topbar {
     position: fixed;
     top: 0;
