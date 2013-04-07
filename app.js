@@ -130,7 +130,7 @@
             e.preventDefault();
             var btn = e.currentTarget,
                 popup = document.querySelector(btn.dataset.popup);
-            popup.classList.add('active');
+            popup.classList.toggle('active');
         }
 
         function onPopupClick(e) {
