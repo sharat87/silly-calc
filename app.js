@@ -114,6 +114,7 @@
             var btn = e.currentTarget,
                 popup = document.querySelector(btn.dataset.popup);
             console.log('show popup =', popup);
+            popup.classList.add('active');
         }
     }
 
