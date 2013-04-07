@@ -103,18 +103,29 @@
     }
 
     function setupPopups() {
-        var buttons = topbar.querySelectorAll('[data-popup]');
+        var buttons = topbar.querySelectorAll('[data-popup]'),
+            popups = document.getElementsByClassName('popup');
 
-        for (var i = 0, len = buttons.length; i < len; ++i) {
+        var i, len;
+        for (i = 0, len = buttons.length; i < len; ++i) {
             buttons[i].addEventListener('click', onBtnClick);
+        }
+
+        for (i = 0, len = popups.length; i < len; ++i) {
+            popups[i].addEventListener('click', onPopupClick);
         }
 
         function onBtnClick(e) {
             e.preventDefault();
             var btn = e.currentTarget,
                 popup = document.querySelector(btn.dataset.popup);
-            console.log('show popup =', popup);
             popup.classList.add('active');
+        }
+
+        function onPopupClick(e) {
+            if (e.target.classList.contains('close')) {
+                e.currentTarget.classList.remove('active');
+            }
         }
     }
 
