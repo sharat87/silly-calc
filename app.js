@@ -51,9 +51,6 @@
             .split('\n')
             .length;
 
-        if (resultsPanel.prevCursorLine === cursorLine)
-            return;
-
         if (resultsPanel.prevCursorLine <= resultsPanel.childElementCount)
             resultsPanel.children[resultsPanel.prevCursorLine - 1]
                 .classList.remove('cursor-hl');
