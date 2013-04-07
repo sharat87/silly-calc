@@ -93,8 +93,9 @@ body, textarea {
     content: "×ESC";
 }
 
-.popup .close:hover {
-    color: red;
+.popup .close:hover,
+.popup .close:focus {
+    color: #F77;
 }
 
 #app-container {
