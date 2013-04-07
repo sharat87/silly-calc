@@ -115,6 +115,17 @@
             popups[i].addEventListener('click', onPopupClick);
         }
 
+        document.addEventListener('keydown', function (e) {
+            // ESC key.
+            if (e.which === 27) {
+                var activePopups =
+                    document.getElementsByClassName('active popup');
+                if (activePopups.length)
+                    activePopups[activePopups.length - 1]
+                        .classList.remove('active');
+            }
+        });
+
         function onBtnClick(e) {
             e.preventDefault();
             var btn = e.currentTarget,
