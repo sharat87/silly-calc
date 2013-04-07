@@ -67,11 +67,7 @@
         updateCursorLine();
     }
 
-    codeInput.addEventListener('change', updateSheet);
-    codeInput.addEventListener('click', updateSheet);
-
-    codeInput.addEventListener('keydown', function (e) {
-
+    function onKeydown() {
         // <C-b> - Wrap in parens.
         if (e.ctrlKey && e.which === 66) {
 
@@ -107,16 +103,39 @@
         }
 
         setTimeout(updateSheet, 0);
+    }
 
-    });
+    function setupDropdowns() {
+        var buttons = topbar.querySelectorAll('[data-dropdown]');
 
-    codeInput.value = [
-        'a = 2',
-        'a',
-        'sin(PI/4) * sqrt(a) + 42',
-        'L3'
-    ].join('\n');
+        for (var i = 0, len = buttons.length; i < len; ++i) {
+            buttons[i].addEventListener('click', onBtnClick);
+        }
 
-    updateSheet();
+        function onBtnClick(e) {
+            e.preventDefault();
+            var btn = e.currentTarget,
+                dropdown = document.querySelector(btn.dataset.dropdown);
+            console.log('show dropdown =', dropdown);
+        }
+    }
 
+    function main() {
+        setupDropdowns();
+
+        codeInput.addEventListener('change', updateSheet);
+        codeInput.addEventListener('click', updateSheet);
+        codeInput.addEventListener('keydown', onKeydown);
+
+        codeInput.value = [
+            'a = 2',
+            'a',
+            'sin(PI/4) * sqrt(a) + 42',
+            'L3'
+        ].join('\n');
+
+        updateSheet();
+    }
+
+    main();
 }());
