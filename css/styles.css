@@ -36,6 +36,10 @@ body, textarea {
     float: right;
 }
 
+#topbar .left {
+    float: left;
+}
+
 #topbar button {
     height: 36px;
     width: 36px;
