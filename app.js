@@ -121,8 +121,10 @@
         setupDropdowns();
 
         codeInput.addEventListener('change', updateSheet);
-        codeInput.addEventListener('click', updateSheet);
         codeInput.addEventListener('keydown', onKeydown);
+        codeInput.addEventListener('mousedown', function () {
+            setTimeout(updateCursorLine, 0);
+        });
 
         codeInput.value = [
             'a = 2',
