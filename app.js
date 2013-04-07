@@ -50,12 +50,21 @@
             .substr(0, codeInput.selectionStart)
             .split('\n')
             .length;
-        cursorHl.style.top = cursorHl.offsetHeight * (cursorLine - 1) + 'px';
+
+        if (resultsPanel.prevCursorLine === cursorLine)
+            return;
+
+        if (resultsPanel.prevCursorLine)
+            resultsPanel.children[resultsPanel.prevCursorLine - 1]
+                .classList.remove('cursor-hl');
+
+        resultsPanel.children[cursorLine - 1].classList.add('cursor-hl');
+        resultsPanel.prevCursorLine = cursorLine;
     }
 
     function updateSheet() {
-        updateCursorLine();
         recalculate();
+        updateCursorLine();
     }
 
     codeInput.addEventListener('change', updateSheet);
