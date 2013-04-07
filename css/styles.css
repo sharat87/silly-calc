@@ -51,16 +51,16 @@ body, textarea {
 }
 
 .popup {
-    display: none;
     position: absolute;
-    top: 0;
+    top: -80%;
     right: 120px;
     border-radius: 0 0 6px 6px;
-    box-shadow: 0 20px 150px rgba(0, 0, 0, .6);
     width: 50%;
     min-height: 120px;
     max-height: 80%;
     padding: 12px;
+    opacity: 0;
+    transition: all .5s ease;
     overflow-y: auto;
     background-color: white;
     background-image: linear-gradient(to bottom, #FFFFFF 0%, #E2DEDE 100%); /* W3C */
@@ -71,7 +71,9 @@ body, textarea {
 }
 
 .popup.active {
-    display: block;
+    top: 0;
+    opacity: .95;
+    box-shadow: 0 20px 150px rgba(0, 0, 0, .6);
 }
 
 .popup h2 {
