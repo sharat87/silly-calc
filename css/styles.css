@@ -12,7 +12,7 @@ html, body {
 body, textarea {
     font-size: 20px;
     color: #333;
-    text-shadow: white 0px 1px 1px;
+    text-shadow: rgba(0, 0, 0, .2) 0px 1px 1px;
 }
 
 #topbar {
@@ -65,7 +65,6 @@ body, textarea {
 
 .right-panel {
     padding: 3px;
-    background-color: rgba(0, 0, 0, .02);
     height: 100%;
 }
 
