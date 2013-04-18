@@ -1,0 +1,20 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset=utf-8>
+    <title>Editor Playground</title>
+    <style>
+        * { box-sizing: border-box; }
+        body { background: #EEE; }
+        #editor { background: white; margin: 10px auto;
+            width: 960px; min-height: 320px; border-radius: 2px;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, .2);
+            cursor: text;
+        }
+        #editor:focus { outline: none; }
+        .line { padding: 3px 6px; font: 20px Monaco; }
+        .line.current { outline: none; background: #DEF; }
+    </style>
+<body>
+    <div id=editor contenteditable></div>
+    <script src=editor.js></script>
