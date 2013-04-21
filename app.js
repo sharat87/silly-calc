@@ -10,9 +10,11 @@
 
     function setupEditor() {
         editor = ace.edit('code-input');
+        var session = editor.getSession();
         editor.setTheme('ace/theme/tomorrow');
-        // editor.getSession().setMode('ace/mode/javascript');
-        // editor.getSession().setUseWorker(true);
+        session.on('change', updateSheet);
+        // session.setMode('ace/mode/javascript');
+        // session.setUseWorker(true);
     }
 
     function recalculate() {
