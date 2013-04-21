@@ -174,6 +174,9 @@
         updateSheet();
 
         inEditor.on('change', updateSheet);
+        inEditor.selection.on('changeCursor', function (e) {
+            outEditor.gotoLine(inEditor.selection.getCursor().row + 1);
+        });
     }
 
     main();
