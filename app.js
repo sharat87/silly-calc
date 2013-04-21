@@ -3,9 +3,7 @@
     /*global Lake ace */
     "use strict";
 
-    var inputElem = document.getElementById('input-editor'),
-        inEditor = null,
-        outputElem = document.getElementById('output-editor'),
+    var inEditor = null,
         outEditor = null,
         cursorHl = document.getElementById('cursor-hl'),
         lastEvaledCode = null;
@@ -16,9 +14,6 @@
 
         outEditor = ace.edit('output-editor');
         outEditor.setReadOnly(true);
-
-        // inEditor.setTheme('ace/theme/tomorrow');
-        // outEditor.setTheme('ace/theme/tomorrow');
 
         // inSession.setMode('ace/mode/javascript');
         // inSession.setUseWorker(true);
@@ -178,7 +173,7 @@
 
         updateSheet();
 
-        inEditor.getSession().on('change', updateSheet);
+        inEditor.on('change', updateSheet);
     }
 
     main();
