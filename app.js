@@ -5,7 +5,6 @@
 
     var editor = null,
         resultsPanel = document.getElementById('results-panel'),
-        gutter = document.getElementById('gutter'),
         cursorHl = document.getElementById('cursor-hl'),
         lastEvaledCode = null;
 
@@ -23,8 +22,7 @@
 
         var lines = code.split('\n'),
             evaluator = new Lake(),
-            resultHtmls = [],
-            gutterHtmls = [];
+            resultHtmls = [];
 
         for (var i = 0, len = lines.length; i < len; ++i) {
             var line = lines[i],
@@ -46,15 +44,12 @@
             resultHtmls.splice(resultHtmls.length, 0,
                 '<div class="result', line && !evalSuccess ? ' err' : '',
                 '" data-label="', varname, ': ">', result, '</div>');
-            gutterHtmls.splice(gutterHtmls.length, 0,
-                '<div', '>', varname, ': ', '</div>');
 
             if (evalSuccess)
                 evaluator.evaluate(varname + ' = ' + result);
         }
 
         resultsPanel.innerHTML = resultHtmls.join('');
-        gutter.innerHTML = gutterHtmls.join('');
     }
 
     function updateCursorLine() {
