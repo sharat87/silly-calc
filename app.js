@@ -3,55 +3,60 @@
     /*global Lake ace */
     "use strict";
 
-    var editor = null,
-        resultsPanel = document.getElementById('results-panel'),
+    var inputElem = document.getElementById('input-editor'),
+        inEditor = null,
+        outputElem = document.getElementById('output-editor'),
+        outEditor = null,
         cursorHl = document.getElementById('cursor-hl'),
         lastEvaledCode = null;
 
     function setupEditor() {
-        editor = ace.edit('code-input');
-        var session = editor.getSession();
-        editor.setTheme('ace/theme/tomorrow');
-        session.on('change', updateSheet);
-        // session.setMode('ace/mode/javascript');
-        // session.setUseWorker(true);
+        inEditor = ace.edit('input-editor');
+        inEditor.setShowPrintMargin(false);
+
+        outEditor = ace.edit('output-editor');
+        outEditor.setReadOnly(true);
+
+        // inEditor.setTheme('ace/theme/tomorrow');
+        // outEditor.setTheme('ace/theme/tomorrow');
+
+        // inSession.setMode('ace/mode/javascript');
+        // inSession.setUseWorker(true);
     }
 
     function recalculate() {
-        var code = editor.getValue();
+        var code = inEditor.getValue();
         if (lastEvaledCode === code) return;
         lastEvaledCode = code;
 
         var lines = code.split('\n'),
             evaluator = new Lake(),
-            resultHtmls = [];
+            results = [];
 
         for (var i = 0, len = lines.length; i < len; ++i) {
             var line = lines[i],
                 varname = 'L' + (i + 1),
                 result = '',
-                evalSuccess = false;
+                isFail = false;
 
             if (line) {
                 try {
                     result = evaluator.evaluate(line);
-                    evalSuccess = true;
                 } catch (e) {
+                    isFail = true;
                     if (e instanceof SyntaxError) {
                         result = '<em>Error</em>';
                     } else throw e;
                 }
+
+                if (!isFail)
+                    evaluator.evaluate(varname + ' = ' + result);
             }
 
-            resultHtmls.splice(resultHtmls.length, 0,
-                '<div class="result', line && !evalSuccess ? ' err' : '',
-                '" data-label="', varname, ': ">', result, '</div>');
-
-            if (evalSuccess)
-                evaluator.evaluate(varname + ' = ' + result);
+            results.splice(results.length, 0, isFail ? 'Error' : result);
         }
 
-        resultsPanel.innerHTML = resultHtmls.join('');
+        outEditor.setValue(results.join('\n'));
     }
 
     function updateCursorLine() {
@@ -163,14 +168,17 @@
         //     setTimeout(updateCursorLine, 0);
         // });
 
-        editor.setValue([
+        inEditor.setValue([
             'a = 2',
             'a',
             'sin(PI/4) * sqrt(a) + 42',
-            'L3'
+            'L3',
+            ''
         ].join('\n'));
 
         updateSheet();
+
+        inEditor.getSession().on('change', updateSheet);
     }
 
     main();
