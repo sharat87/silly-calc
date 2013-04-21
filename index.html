@@ -23,9 +23,7 @@
 
     <section id=app-container>
         <section id=gutter></section>
-        <section class=left-panel>
-            <textarea id=code-input autofocus spellcheck=false></textarea>
-        </section>
+        <section class=left-panel><div id=code-input></div></section>
         <section id=results-panel class=right-panel></section>
     </section>
 
@@ -45,5 +43,6 @@
         <button class=close />
     </section>
 
+    <script src=vendor/ace/ace.js></script>
     <script src=lake/lake.js></script>
     <script src=app.js></script>

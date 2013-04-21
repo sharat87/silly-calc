@@ -1,15 +1,27 @@
 (function () {
-    var codeInput = document.getElementById('code-input'),
+    /*jshint browser:true */
+    /*global Lake ace */
+    "use strict";
+
+    var editor = null,
         resultsPanel = document.getElementById('results-panel'),
         gutter = document.getElementById('gutter'),
         cursorHl = document.getElementById('cursor-hl'),
         lastEvaledCode = null;
 
-    function recalculate() {
-        if (lastEvaledCode === codeInput.value) return;
-        lastEvaledCode = codeInput.value;
+    function setupEditor() {
+        editor = ace.edit('code-input');
+        editor.setTheme('ace/theme/tomorrow');
+        // editor.getSession().setMode('ace/mode/javascript');
+        // editor.getSession().setUseWorker(true);
+    }
 
-        var lines = codeInput.value.split('\n'),
+    function recalculate() {
+        var code = editor.getValue();
+        if (lastEvaledCode === code) return;
+        lastEvaledCode = code;
+
+        var lines = code.split('\n'),
             evaluator = new Lake(),
             resultHtmls = [],
             gutterHtmls = [];
@@ -46,17 +58,17 @@
     }
 
     function updateCursorLine() {
-        var cursorLine = codeInput.value
-            .substr(0, codeInput.selectionStart)
-            .split('\n')
-            .length;
+        // var cursorLine = editor.getValue()
+        //         .substr(0, codeInput.selectionStart)
+        //         .split('\n')
+        //         .length;
 
-        if (resultsPanel.prevCursorLine <= resultsPanel.childElementCount)
-            resultsPanel.children[resultsPanel.prevCursorLine - 1]
-                .classList.remove('cursor-hl');
+        // if (resultsPanel.prevCursorLine <= resultsPanel.childElementCount)
+        //     resultsPanel.children[resultsPanel.prevCursorLine - 1]
+        //         .classList.remove('cursor-hl');
 
-        resultsPanel.children[cursorLine - 1].classList.add('cursor-hl');
-        resultsPanel.prevCursorLine = cursorLine;
+        // resultsPanel.children[cursorLine - 1].classList.add('cursor-hl');
+        // resultsPanel.prevCursorLine = cursorLine;
     }
 
     function updateSheet() {
@@ -68,42 +80,46 @@
         // <C-b> - Wrap in parens.
         if (e.ctrlKey && e.which === 66) {
 
-            var oldCode = codeInput.value,
-                start = codeInput.selectionStart,
-                end = codeInput.selectionEnd,
-                prefix = oldCode.substr(0, start),
-                selection = oldCode.substr(start, end - start),
-                suffix = oldCode.substr(end);
+            // TODO: Reimplement for Ace editor.
+            return;
 
-            if (selection) {
-                // Wrap the selection in parens.
-                codeInput.value =
-                    [prefix, '(', selection, ')', suffix].join('');
-                codeInput.selectionStart = start + 1;
-                codeInput.selectionEnd = end + 1;
+            // var oldCode = codeInput.value,
+            //     start = codeInput.selectionStart,
+            //     end = codeInput.selectionEnd,
+            //     prefix = oldCode.substr(0, start),
+            //     selection = oldCode.substr(start, end - start),
+            //     suffix = oldCode.substr(end);
 
-            } else {
-                // Nothing selection. Wrap whole current line in parens.
-                var nlBegin = prefix.split('').reverse().indexOf('\n'),
-                    nlEnd = suffix.indexOf('\n'),
-                    lineStart = nlBegin === -1 ? 0 : prefix.length - nlBegin,
-                    lineEnd = nlEnd === -1 ?
-                        oldCode.length : prefix.length + nlEnd;
+            // if (selection) {
+            //     // Wrap the selection in parens.
+            //     codeInput.value =
+            //         [prefix, '(', selection, ')', suffix].join('');
+            //     codeInput.selectionStart = start + 1;
+            //     codeInput.selectionEnd = end + 1;
 
-                codeInput.value = oldCode.substr(0, lineStart) + '(' +
-                    oldCode.substr(lineStart, lineEnd - lineStart) + ')' +
-                    oldCode.substr(lineEnd);
+            // } else {
+            //     // Nothing selection. Wrap whole current line in parens.
+            //     var nlBegin = prefix.split('').reverse().indexOf('\n'),
+            //         nlEnd = suffix.indexOf('\n'),
+            //         lineStart = nlBegin === -1 ? 0 : prefix.length - nlBegin,
+            //         lineEnd = nlEnd === -1 ?
+            //             oldCode.length : prefix.length + nlEnd;
 
-                codeInput.selectionStart = codeInput.selectionEnd = start + 1;
+            //     codeInput.value = oldCode.substr(0, lineStart) + '(' +
+            //         oldCode.substr(lineStart, lineEnd - lineStart) + ')' +
+            //         oldCode.substr(lineEnd);
 
-            }
+            //     codeInput.selectionStart = codeInput.selectionEnd = start + 1;
+
+            // }
         }
 
         setTimeout(updateSheet, 0);
     }
 
     function setupPopups() {
-        var buttons = topbar.querySelectorAll('[data-popup]'),
+        var buttons = document.getElementById('topbar')
+                .querySelectorAll('[data-popup]'),
             popups = document.getElementsByClassName('popup');
 
         var i, len;
@@ -141,20 +157,21 @@
     }
 
     function main() {
+        setupEditor();
         setupPopups();
 
-        codeInput.addEventListener('change', updateSheet);
-        codeInput.addEventListener('keydown', onKeydown);
-        codeInput.addEventListener('mousedown', function () {
-            setTimeout(updateCursorLine, 0);
-        });
+        // codeInput.addEventListener('change', updateSheet);
+        // codeInput.addEventListener('keydown', onKeydown);
+        // codeInput.addEventListener('mousedown', function () {
+        //     setTimeout(updateCursorLine, 0);
+        // });
 
-        codeInput.value = [
+        editor.setValue([
             'a = 2',
             'a',
             'sin(PI/4) * sqrt(a) + 42',
             'L3'
-        ].join('\n');
+        ].join('\n'));
 
         updateSheet();
     }

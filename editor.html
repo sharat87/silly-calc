@@ -6,15 +6,20 @@
     <style>
         * { box-sizing: border-box; }
         body { background: #EEE; }
-        #editor { background: white; margin: 10px auto;
+        #editor { background: white; margin: 10px auto; font-size: 20px;
             width: 960px; min-height: 320px; border-radius: 2px;
-            box-shadow: 0 5px 20px rgba(0, 0, 0, .2);
-            cursor: text;
-        }
-        #editor:focus { outline: none; }
-        .line { padding: 3px 6px; font: 20px Monaco; }
-        .line.current { outline: none; background: #DEF; }
+            box-shadow: 0 5px 20px rgba(0, 0, 0, .2); }
     </style>
 <body>
-    <div id=editor contenteditable></div>
-    <script src=editor.js></script>
+    <div id=editor>function foo(items) {
+    var x = "All this is syntax highlighted";
+    return x;
+}</div>
+
+    <script src=vendor/ace/ace.js></script>
+    <script>
+        var editor = ace.edit('editor');
+        editor.setTheme('ace/theme/tomorrow');
+        editor.getSession().setMode('ace/mode/javascript');
+        editor.getSession().setUseWorker(true);
+    </script>

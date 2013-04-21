@@ -10,8 +10,7 @@ html, body {
     font-family: Lato, sans-serif;
 }
 
-body, textarea {
-    font-size: 20px;
+body {
     color: #333;
     text-shadow: rgba(0, 0, 0, .1) 0px 1px 1px;
 }
@@ -113,6 +112,7 @@ button:active {
 
 #app-container, #code-input {
     font-family: 'Inconsolata', monospace;
+    font-size: 20px;
 }
 
 #gutter {

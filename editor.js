@@ -1,10 +1,15 @@
 function Editor(el) {
-    this.el = el;
-    this.lines = [];
-    this.render();
+    var self = this;
+    self.el = el;
+    self.lines = [];
+    self.render();
+    self.el.addEventListener('keydown', function (e) {
+        setTimeout(function () { self.update(e); }, 0);
+    });
 }
 
 Editor.prototype = {
+
     render: function () {
         var htmls = [];
         for (var i = 0, len = this.lines.length; i < len; ++i) {
@@ -12,7 +17,12 @@ Editor.prototype = {
                        this.lines[i] + '</div>');
         }
         this.el.innerHTML = htmls.join('');
+    },
+
+    update: function (e) {
+        this.updateCursorLine();
     }
+
 };
 
 var editor = new Editor(document.getElementById('editor'));
