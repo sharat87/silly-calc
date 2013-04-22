@@ -7,6 +7,10 @@ describe("Lake language", function () {
 
     var lake = new Lake();
 
+    it("nulls on empty input", function () {
+        lake.expect('', null).toBeNull();
+    });
+
     describe("reads numbers like", function () {
 
         it("integers", function () {

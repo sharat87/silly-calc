@@ -309,7 +309,7 @@ function Lake(scope) {
 
     Lake.prototype.interpret = function (ast) {
         if (ast === null) {
-            return '';
+            return null;
         } else if (typeof ast === 'number') {
             return ast;
         } else if (ast instanceof Object) {
