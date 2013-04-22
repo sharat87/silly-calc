@@ -10,7 +10,17 @@
         inEditor.setShowPrintMargin(false);
 
         outEditor = ace.edit('output-editor');
+        outEditor.setShowPrintMargin(false);
         outEditor.setReadOnly(true);
+
+        // Hide the editor's builtin scrollbar.
+        inEditor.renderer.scrollBar.element.style.display =
+            outEditor.renderer.scrollBar.element.style.display = 'none';
+
+        // Remove the small gap at the right edge, reserved for the vertical
+        // scrollbar.
+        inEditor.renderer.scrollBar.width =
+            outEditor.renderer.scrollBar.width = 0;
 
         inEditor.session.setMode('lake/ace-mode-js');
         // inSession.setUseWorker(true);
