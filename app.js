@@ -34,7 +34,6 @@ ace.define('ace/mode/lake', function(require, exports, module) {
 
     var inEditor = null,
         outEditor = null,
-        cursorHl = document.getElementById('cursor-hl'),
         lastEvaledCode = null;
 
     function setupEditor() {
@@ -51,7 +50,6 @@ ace.define('ace/mode/lake', function(require, exports, module) {
     function recalculate() {
         var code = inEditor.getValue();
         if (lastEvaledCode === code) return;
-        lastEvaledCode = code;
 
         var lines = code.split('\n'),
             evaluator = new Lake(),
@@ -77,66 +75,11 @@ ace.define('ace/mode/lake', function(require, exports, module) {
         }
 
         outEditor.setValue(results.join('\n'));
-    }
-
-    function updateCursorLine() {
-        // var cursorLine = editor.getValue()
-        //         .substr(0, codeInput.selectionStart)
-        //         .split('\n')
-        //         .length;
-
-        // if (resultsPanel.prevCursorLine <= resultsPanel.childElementCount)
-        //     resultsPanel.children[resultsPanel.prevCursorLine - 1]
-        //         .classList.remove('cursor-hl');
-
-        // resultsPanel.children[cursorLine - 1].classList.add('cursor-hl');
-        // resultsPanel.prevCursorLine = cursorLine;
+        lastEvaledCode = code;
     }
 
     function updateSheet() {
         recalculate();
-        updateCursorLine();
-    }
-
-    function onKeydown(e) {
-        // <C-b> - Wrap in parens.
-        if (e.ctrlKey && e.which === 66) {
-
-            // TODO: Reimplement for Ace editor.
-            return;
-
-            // var oldCode = codeInput.value,
-            //     start = codeInput.selectionStart,
-            //     end = codeInput.selectionEnd,
-            //     prefix = oldCode.substr(0, start),
-            //     selection = oldCode.substr(start, end - start),
-            //     suffix = oldCode.substr(end);
-
-            // if (selection) {
-            //     // Wrap the selection in parens.
-            //     codeInput.value =
-            //         [prefix, '(', selection, ')', suffix].join('');
-            //     codeInput.selectionStart = start + 1;
-            //     codeInput.selectionEnd = end + 1;
-
-            // } else {
-            //     // Nothing selection. Wrap whole current line in parens.
-            //     var nlBegin = prefix.split('').reverse().indexOf('\n'),
-            //         nlEnd = suffix.indexOf('\n'),
-            //         lineStart = nlBegin === -1 ? 0 : prefix.length - nlBegin,
-            //         lineEnd = nlEnd === -1 ?
-            //             oldCode.length : prefix.length + nlEnd;
-
-            //     codeInput.value = oldCode.substr(0, lineStart) + '(' +
-            //         oldCode.substr(lineStart, lineEnd - lineStart) + ')' +
-            //         oldCode.substr(lineEnd);
-
-            //     codeInput.selectionStart = codeInput.selectionEnd = start + 1;
-
-            // }
-        }
-
-        setTimeout(updateSheet, 0);
     }
 
     function setupPopups() {
@@ -181,12 +124,6 @@ ace.define('ace/mode/lake', function(require, exports, module) {
     function main() {
         setupEditor();
         setupPopups();
-
-        // codeInput.addEventListener('change', updateSheet);
-        // codeInput.addEventListener('keydown', onKeydown);
-        // codeInput.addEventListener('mousedown', function () {
-        //     setTimeout(updateCursorLine, 0);
-        // });
 
         inEditor.setValue([
             'a = 2',
