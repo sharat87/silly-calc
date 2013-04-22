@@ -3,9 +3,7 @@
     /*global Lake ace */
     "use strict";
 
-    var inEditor = null,
-        outEditor = null,
-        lastEvaledCode = null;
+    var inEditor, outEditor;
 
     function setupEditor() {
         inEditor = ace.edit('input-editor');
@@ -20,7 +18,7 @@
 
     function recalculate() {
         var code = inEditor.getValue();
-        if (lastEvaledCode === code) return;
+        if (recalculate.last === code) return;
 
         var lines = code.split('\n'),
             evaluator = new Lake(),
@@ -47,7 +45,7 @@
 
         outEditor.setValue(results.join('\n'));
         outEditor.clearSelection();
-        lastEvaledCode = code;
+        recalculate.last = code;
     }
 
     function updateSheet() {
@@ -102,6 +100,7 @@
         setupPopups();
 
         inEditor.on('change', updateSheet);
+
         inEditor.selection.on('changeCursor', function (e) {
             outEditor.gotoLine(inEditor.selection.getCursor().row + 1);
         });
