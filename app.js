@@ -1,3 +1,32 @@
+ace.define('ace/mode/lake', function(require, exports, module) {
+
+    var oop = require('ace/lib/oop'),
+        TextMode = require('ace/mode/text').Mode,
+        Tokenizer = require('ace/tokenizer').Tokenizer,
+        TextHighlightRules =
+            require('ace/mode/text_highlight_rules').TextHighlightRules;
+
+    var LakeHighlightRules = function() {
+        this.$rules = {
+            start: [
+                {token: 'constant.numeric', regex: /\d+/}
+            ]
+        };
+    };
+    oop.inherits(LakeHighlightRules, TextHighlightRules);
+
+    var Mode = function() {
+        this.$tokenizer = new Tokenizer(new LakeHighlightRules().getRules());
+    };
+    oop.inherits(Mode, TextMode);
+
+    (function() {
+        // Extra logic goes here. (see below)
+    }).call(Mode.prototype);
+
+    exports.Mode = Mode;
+});
+
 (function () {
     /*jshint browser:true */
     /*global Lake ace */
@@ -15,7 +44,7 @@
         outEditor = ace.edit('output-editor');
         outEditor.setReadOnly(true);
 
-        // inSession.setMode('ace/mode/javascript');
+        inEditor.getSession().setMode('ace/mode/lake');
         // inSession.setUseWorker(true);
     }
 
