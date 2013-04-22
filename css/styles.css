@@ -29,7 +29,6 @@ button:active {
     box-shadow: 0 0 4px rgba(0, 0, 0, .6);
     background-color: white;
     background-image: linear-gradient(to bottom, #FFFFFF 0%, #E2DEDE 100%); /* W3C */
-    background-image: -webkit-linear-gradient(top, #FFFFFF 0%, #E2DEDE 100%); /* Safari5.1+ */
     background-image: -moz-linear-gradient(top, #FFFFFF 0%, #E2DEDE 100%); /* FF3.6+ */
     background-image: -o-linear-gradient(top, #FFFFFF 0%, #E2DEDE 100%); /* Opera 11.10+ */
     background-image: -ms-linear-gradient(top, #FFFFFF 0%, #E2DEDE 100%); /* IE10+ */
@@ -68,7 +67,6 @@ button:active {
     overflow-y: auto;
     background-color: white;
     background-image: linear-gradient(to bottom, #FFFFFF 0%, #E2DEDE 100%); /* W3C */
-    background-image: -webkit-linear-gradient(top, #FFFFFF 0%, #E2DEDE 100%); /* Safari5.1+ */
     background-image: -moz-linear-gradient(top, #FFFFFF 0%, #E2DEDE 100%); /* FF3.6+ */
     background-image: -o-linear-gradient(top, #FFFFFF 0%, #E2DEDE 100%); /* Opera 11.10+ */
     background-image: -ms-linear-gradient(top, #FFFFFF 0%, #E2DEDE 100%); /* IE10+ */
