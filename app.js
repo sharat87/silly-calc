@@ -82,8 +82,12 @@
         function onBtnClick(e) {
             e.preventDefault();
             var btn = e.currentTarget,
+                popups = document.getElementsByClassName('popup'),
                 popup = document.querySelector(btn.dataset.popup);
-            popup.classList.toggle('active');
+            for (var i = 0, len = popups.length; i < len; ++i) {
+                popups[i].classList[
+                    popup === popups[i] ? 'toggle' : 'remove']('active');
+            }
         }
 
         function onPopupClick(e) {
