@@ -29,26 +29,22 @@
             results = [];
 
         for (var i = 0, len = lines.length; i < len; ++i) {
-            var line = lines[i],
-                varname = 'L' + (i + 1),
-                result = '',
-                isFail = false;
+            var line = lines[i], result;
 
-            if (line) {
-                try {
-                    result = evaluator.evaluate(line);
-                } catch (e) {
-                    isFail = true;
-                    if (e instanceof SyntaxError) {
-                        result = '<em>Error</em>';
-                    } else throw e;
-                }
-
-                if (!isFail)
-                    evaluator.evaluate(varname + ' = ' + result);
+            try {
+                result = evaluator.evaluate(line);
+            } catch (e) {
+                if (e instanceof SyntaxError) {
+                    result = null;
+                } else throw e;
             }
 
-            results.splice(results.length, 0, isFail ? 'Error' : result);
+            if (result) {
+                evaluator.evaluate('L' + (i + 1) + ' = ' + result);
+                results.push(result);
+            } else {
+                results.push('');
+            }
         }
 
         outEditor.setValue(results.join('\n'));
