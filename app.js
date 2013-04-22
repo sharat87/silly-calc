@@ -25,7 +25,7 @@
                     result = evaluator.evaluate(line);
                     evalSuccess = true;
                 } catch (e) {
-                    if (e instanceof SyntaxError) {
+                    if (e instanceof Lake.Error) {
                         result = '<em>Error</em>';
                     } else throw e;
                 }
