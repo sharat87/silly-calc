@@ -145,19 +145,27 @@ function Lake(scope) {
 
         while (true) {
             var t = peekToken();
-            if (t.name !== 'operator') break;
 
-            var prec = opTable[t.val][0],
-                assoc = opTable[t.val][1],
-                nextMinPrec;
+            if (t.name === 'operator') {
+                var prec = opTable[t.val][0],
+                    assoc = opTable[t.val][1],
+                    nextMinPrec;
 
-            if (prec < minPrec) break;
-            popToken();
+                if (prec < minPrec) break;
+                popToken();
 
-            nextMinPrec = prec + (assoc === 'left');
+                nextMinPrec = prec + (assoc === 'left');
 
-            right = parseExpr(nextMinPrec);
-            result = {op: 'call', name: t.val, args: [result, right]};
+                right = parseExpr(nextMinPrec);
+                result = {op: 'call', name: t.val, args: [result, right]};
+
+            } else if (t.name === 'end' || t.name === 'closeParen') {
+                break;
+
+            } else {
+                throw new SyntaxError('Lake: Unexpected "' + t.name + '".');
+
+            }
         }
 
         return result;
@@ -167,7 +175,7 @@ function Lake(scope) {
         var t = popToken();
 
         if (!t) {
-            throw SyntaxError('Lake: Unexpected end of input.');
+            throw new SyntaxError('Lake: Unexpected end of input.');
         }
 
         if (t.name === 'openParen') {
@@ -234,10 +242,7 @@ function Lake(scope) {
 
     Lake.prototype.parse = function (_tokens) {
         tokens = _tokens;
-        if (peekToken().name === 'end')
-            return null;
-        else
-            return parseExpr();
+        return peekToken().name === 'end' ? null : parseExpr();
     };
 
 }());
