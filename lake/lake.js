@@ -29,7 +29,7 @@ function Lake(scope) {
 
         // When using regex, if <data-part> is null, no semantic data is
         // saved in the token.
-        ['end', /^$/, null]
+        ['end', /^(;.*)?$/, null]
     ];
 
     function Token(name, val) {

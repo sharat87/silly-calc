@@ -11,6 +11,11 @@ describe("Lake language", function () {
         lake.expect('', null).toBeNull();
     });
 
+    it("has comments marked by semicolon", function () {
+        lake.expect(';').toBeNull();
+        lake.expect('; holly ho!').toBeNull();
+    });
+
     describe("reads numbers like", function () {
 
         it("integers", function () {
