@@ -79,12 +79,6 @@ describe("Lake language", function () {
 
     });
 
-    // describe("bails on unknown operators like", function () {
-    //     it("++", function () {
-    //         lake.expect('1 ++ 2').toBe(3);
-    //     });
-    // });
-
     describe("handles precedence as:", function () {
 
         it("addition = subtraction", function () {
