@@ -7,6 +7,15 @@ describe("Lake language", function () {
 
     var lake = new Lake();
 
+    it("nulls on empty input", function () {
+        lake.expect('', null).toBeNull();
+    });
+
+    it("has comments marked by semicolon", function () {
+        lake.expect(';').toBeNull();
+        lake.expect('; holly ho!').toBeNull();
+    });
+
     describe("reads numbers like", function () {
 
         it("integers", function () {
@@ -78,12 +87,6 @@ describe("Lake language", function () {
         });
 
     });
-
-    // describe("bails on unknown operators like", function () {
-    //     it("++", function () {
-    //         lake.expect('1 ++ 2').toBe(3);
-    //     });
-    // });
 
     describe("handles precedence as:", function () {
 

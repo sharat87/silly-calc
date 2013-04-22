@@ -5,6 +5,7 @@ function Lake(scope) {
 
 // Lake.prototype.lex
 (function () {
+    "use strict";
 
     // Mapping of token name to a boolean indicating whether the token
     // has semantic `val` or not.
@@ -28,11 +29,10 @@ function Lake(scope) {
 
         // When using regex, if <data-part> is null, no semantic data is
         // saved in the token.
-        ['end', /^$/, null]
+        ['end', /^(;.*)?$/, null]
     ];
 
     function Token(name, val) {
-        if (!(this instanceof Token)) return new Token(name, val);
         this.name = name;
 
         if (arguments.length === 0)
@@ -76,7 +76,7 @@ function Lake(scope) {
 
                 if (typeof matcher === 'string') {
                     if (input.substr(0, matcher.length) === matcher)
-                        token = Token(name, {
+                        token = new Token(name, {
                             val: null,
                             matchLen: matcher.length
                         });
@@ -84,7 +84,7 @@ function Lake(scope) {
                 } else if (matcher instanceof RegExp) {
                     match = input.match(matcher);
                     if (match)
-                        token = Token(name, {
+                        token = new Token(name, {
                             val: dataPart === null ?
                                 null : match[dataPart || 0],
                             matchLen: match[0].length
@@ -96,12 +96,10 @@ function Lake(scope) {
 
             }
 
-            if (token === null) {
-                var err = SyntaxError('Lake: Unidentified input');
-                err.line = 1;
-                err.column = inputSize - input.length;
-                throw err;
-            }
+            if (token === null)
+                throw new Lake.Error('Unidentified input.', {
+                    column: inputSize - input.length
+                });
 
             tokens.push(token);
             input = input.substr(token.matchLen);
@@ -145,19 +143,27 @@ function Lake(scope) {
 
         while (true) {
             var t = peekToken();
-            if (t.name !== 'operator') break;
 
-            var prec = opTable[t.val][0],
-                assoc = opTable[t.val][1],
-                nextMinPrec;
+            if (t.name === 'operator') {
+                var prec = opTable[t.val][0],
+                    assoc = opTable[t.val][1],
+                    nextMinPrec;
 
-            if (prec < minPrec) break;
-            popToken();
+                if (prec < minPrec) break;
+                popToken();
 
-            nextMinPrec = prec + (assoc === 'left');
+                nextMinPrec = prec + (assoc === 'left');
 
-            right = parseExpr(nextMinPrec);
-            result = {op: 'call', name: t.val, args: [result, right]};
+                right = parseExpr(nextMinPrec);
+                result = {op: 'call', name: t.val, args: [result, right]};
+
+            } else if (t.name === 'end' || t.name === 'closeParen') {
+                break;
+
+            } else {
+                throw new Lake.Error('Unexpected "' + t.name + '".');
+
+            }
         }
 
         return result;
@@ -167,14 +173,14 @@ function Lake(scope) {
         var t = popToken();
 
         if (!t) {
-            throw SyntaxError('Lake: Unexpected end of input.');
+            throw new Lake.Error('Unexpected end of input.');
         }
 
         if (t.name === 'openParen') {
             var e = parseExpr(), closeToken = popToken();
             if (closeToken.name !== 'closeParen' &&
                 closeToken.name !== 'end') {
-                throw SyntaxError('Unclosed paren');
+                throw new Lake.Error('Unclosed paren');
             }
             return e;
         }
@@ -206,7 +212,7 @@ function Lake(scope) {
             }
         }
 
-        throw SyntaxError('Lake: Unexpected "' + t.name + '"');
+        throw new Lake.Error('Unexpected "' + t.name + '"');
 
     }
 
@@ -224,7 +230,7 @@ function Lake(scope) {
             } else if (peekToken().name === 'closeParen') {
                 return args;
             } else {
-                throw SyntaxError('Lake: Unexpected "' + t.name +
+                throw new Lake.Error('Unexpected "' + t.name +
                                   '" in args list');
             }
 
@@ -234,10 +240,7 @@ function Lake(scope) {
 
     Lake.prototype.parse = function (_tokens) {
         tokens = _tokens;
-        if (peekToken().name === 'end')
-            return null;
-        else
-            return parseExpr();
+        return peekToken().name === 'end' ? null : parseExpr();
     };
 
 }());
@@ -306,13 +309,13 @@ function Lake(scope) {
 
     Lake.prototype.interpret = function (ast) {
         if (ast === null) {
-            return '';
+            return null;
         } else if (typeof ast === 'number') {
             return ast;
         } else if (ast instanceof Object) {
             return ops[ast.op].call(this, ast);
         } else {
-            throw Error('Lake: Unrecognizable ast: ' + ast);
+            throw new Lake.Error('Unrecognizable ast: ' + ast);
         }
     };
 
@@ -322,4 +325,11 @@ Lake.prototype.evaluate = function (input) {
     return this.interpret(this.parse(this.lex(input)));
 };
 
-window.Lake = Lake;
+Lake.Error = function LakeError(msg, props) {
+    this.msg = msg;
+    for (var name in props) this[name] = props[name];
+};
+
+Lake.Error.prototype.toString = function () {
+    return this.constructor.name + ': ' + this.msg;
+};

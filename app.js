@@ -34,12 +34,12 @@
             try {
                 result = evaluator.evaluate(line);
             } catch (e) {
-                if (e instanceof SyntaxError) {
+                if (e instanceof Lake.Error) {
                     result = null;
                 } else throw e;
             }
 
-            if (result) {
+            if (result !== null) {
                 evaluator.evaluate('L' + (i + 1) + ' = ' + result);
                 results.push(result);
             } else {
