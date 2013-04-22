@@ -12,7 +12,7 @@
         outEditor = ace.edit('output-editor');
         outEditor.setReadOnly(true);
 
-        inEditor.getSession().setMode('lake/ace-mode-js');
+        inEditor.session.setMode('lake/ace-mode-js');
         // inSession.setUseWorker(true);
     }
 
@@ -48,8 +48,19 @@
         recalculate.last = code;
     }
 
+    function resizeEditors() {
+        var height = inEditor.session.getScreenLength() *
+            inEditor.renderer.lineHeight +
+            inEditor.renderer.scrollBar.getWidth();
+        inEditor.container.style.minHeight = height + 'px';
+        inEditor.resize();
+        outEditor.container.style.minHeight = height + 'px';
+        outEditor.resize();
+    }
+
     function updateSheet() {
         recalculate();
+        resizeEditors();
     }
 
     function setupPopups() {
