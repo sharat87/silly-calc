@@ -46,6 +46,7 @@
         }
 
         outEditor.setValue(results.join('\n'));
+        outEditor.clearSelection();
         lastEvaledCode = code;
     }
 
@@ -96,6 +97,11 @@
         setupEditor();
         setupPopups();
 
+        inEditor.on('change', updateSheet);
+        inEditor.selection.on('changeCursor', function (e) {
+            outEditor.gotoLine(inEditor.selection.getCursor().row + 1);
+        });
+
         inEditor.setValue([
             'a = 2',
             'a',
@@ -103,13 +109,8 @@
             'L3',
             ''
         ].join('\n'));
-
-        updateSheet();
-
-        inEditor.on('change', updateSheet);
-        inEditor.selection.on('changeCursor', function (e) {
-            outEditor.gotoLine(inEditor.selection.getCursor().row + 1);
-        });
+        inEditor.clearSelection();
+        inEditor.focus();
     }
 
     main();
