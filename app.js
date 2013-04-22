@@ -14,7 +14,7 @@
         outEditor = ace.edit('output-editor');
         outEditor.setReadOnly(true);
 
-        inEditor.getSession().setMode('lake/ace-mode');
+        inEditor.getSession().setMode('lake/ace-mode-js');
         // inSession.setUseWorker(true);
     }
 
