@@ -475,8 +475,9 @@ ace.define('lake/fold-mode', function(require, exports, module) {
                 if (line) endRow = row;
             }
 
-            return new Range(startRow, match.index + 1,
-                             endRow, session.getLine(endRow).length);
+            if (endRow > startRow)
+                return new Range(startRow, match.index + 1,
+                                endRow, session.getLine(endRow).length);
         };
 
     }).call(FoldMode.prototype);
