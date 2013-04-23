@@ -450,22 +450,33 @@ exports.CstyleBehaviour = CstyleBehaviour;
 
 
 ace.define('lake/fold-mode', function(require, exports, module) {
+    "use strict";
 
     var oop = require('ace/lib/oop'),
-        BaseFoldMode = require('ace/mode/folding/fold_mode').FoldMode;
+        BaseFoldMode = require('ace/mode/folding/fold_mode').FoldMode,
+        Range = require("ace/range").Range;
 
     var FoldMode = exports.FoldMode = function () {};
     oop.inherits(FoldMode, BaseFoldMode);
 
     (function() {
 
-        this.foldingStartMarker = /\{$/;
-        this.foldingStopMarker = /\}$/;
+        this.foldingStartMarker = /:-?$/;
 
         this.getFoldWidgetRange = function (session, foldStyle, row) {
             var match = session.getLine(row).match(this.foldingStartMarker);
-            return match &&
-                this.openingBracketBlock(session, match[0], row, match.index);
+            if (!match) return null;
+
+            var startRow = row, endRow = row, maxRow = session.getLength();
+
+            while (++row < maxRow) {
+                var line = session.getLine(row);
+                if (line.match(this.foldingStartMarker)) break;
+                if (line) endRow = row;
+            }
+
+            return new Range(startRow, match.index + 1,
+                             endRow, session.getLine(endRow).length);
         };
 
     }).call(FoldMode.prototype);
