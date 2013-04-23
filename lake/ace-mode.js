@@ -451,23 +451,23 @@ exports.CstyleBehaviour = CstyleBehaviour;
 
 ace.define('lake/fold-mode', function(require, exports, module) {
 
-var oop = require('ace/lib/oop');
-var BaseFoldMode = require('ace/mode/folding/fold_mode').FoldMode;
+    var oop = require('ace/lib/oop'),
+        BaseFoldMode = require('ace/mode/folding/fold_mode').FoldMode;
 
-var FoldMode = exports.FoldMode = function () { };
-oop.inherits(FoldMode, BaseFoldMode);
+    var FoldMode = exports.FoldMode = function () {};
+    oop.inherits(FoldMode, BaseFoldMode);
 
-(function() {
+    (function() {
 
-    this.foldingStartMarker = /\{$/;
-    this.foldingStopMarker = /\}$/;
+        this.foldingStartMarker = /\{$/;
+        this.foldingStopMarker = /\}$/;
 
-    this.getFoldWidgetRange = function (session, foldStyle, row) {
-        var match = session.getLine(row).match(this.foldingStartMarker);
-        return match &&
-            this.openingBracketBlock(session, match[0], row, match.index);
-    };
+        this.getFoldWidgetRange = function (session, foldStyle, row) {
+            var match = session.getLine(row).match(this.foldingStartMarker);
+            return match &&
+                this.openingBracketBlock(session, match[0], row, match.index);
+        };
 
-}).call(FoldMode.prototype);
+    }).call(FoldMode.prototype);
 
 });
