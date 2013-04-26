@@ -135,6 +135,7 @@ button:active {
     text-align: right;
     padding-right: 3px;
     float: left;
+    height: 100%;
 }
 
 #output-display .gutter .current {
@@ -144,6 +145,7 @@ button:active {
 #output-display .output {
     width: calc(100% - 43px);
     float: right;
+    height: 100%;
 }
 
 #output-display .line:empty:before {
