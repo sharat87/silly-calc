@@ -126,6 +126,24 @@ button:active {
 #output-display {
     width: 30%;
     float: right;
+    position: relative;
+}
+
+#output-display .gutter {
+    width: 43px;
+    background-color: rgba(0, 0, 0, .1);
+    text-align: right;
+    padding-right: 3px;
+    float: left;
+}
+
+#output-display .gutter .current {
+    background-color: rgba(0, 0, 0, .2);
+}
+
+#output-display .output {
+    width: calc(100% - 43px);
+    float: right;
 }
 
 #output-display .line:empty:before {

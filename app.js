@@ -3,6 +3,12 @@
     /*global Lake ace */
     "use strict";
 
+    Array.prototype.extendWith = function () {
+        var args = this.slice.call(arguments, 0);
+        args.splice(0, 0, this.length, 0);
+        this.splice.apply(this, args);
+    };
+
     var inEditor, outDisplay;
 
     function OutputDisplay(elementId, value) {
@@ -18,11 +24,17 @@
         },
 
         render: function () {
-            var htmls = [], i = 0, len = this.values.length;
-            while (i < len)
-                htmls.splice(htmls.length, 0, '<div class=line>',
-                             this.values[i++], '</div>');
-            this.container.innerHTML = htmls.join('');
+            var gutterMarkup = [],
+                outputMarkup = [],
+                i = 0, len = this.values.length;
+            while (i < len) {
+                outputMarkup.extendWith('<div class=line>', this.values[i++],
+                                    '</div>');
+                gutterMarkup.extendWith('<div>', i, '</div>');
+            }
+            this.container.innerHTML =
+                '<div class=gutter>' + gutterMarkup.join('') + '</div>' +
+                '<div class=output>' + outputMarkup.join('') + '</div>';
         },
 
         hiLine: function (lineNo) {
