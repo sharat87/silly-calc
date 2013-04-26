@@ -113,9 +113,8 @@ button:active {
     background-color: #FCC;
 }
 
-#input-editor, #output-editor {
+#input-editor, #output-display {
     height: 100%;
-    padding: 3px;
     font: 20px 'Inconsolata', monospace;
 }
 
@@ -124,9 +123,18 @@ button:active {
     float: left;
 }
 
-#output-editor {
+#output-display {
     width: 30%;
     float: right;
+}
+
+#output-display .line:empty:before {
+    content: "-";
+    opacity: 0;
+}
+
+#output-display .line.current {
+    background-color: rgba(0, 0, 0, .1);
 }
 
 #app-container .result:before {

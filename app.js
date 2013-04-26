@@ -3,24 +3,49 @@
     /*global Lake ace */
     "use strict";
 
-    var inEditor, outEditor;
+    var inEditor, outDisplay;
+
+    function OutputDisplay(elementId, value) {
+        this.container = document.getElementById(elementId);
+        this.setValue(value || '');
+    }
+
+    OutputDisplay.prototype = {
+
+        setValue: function (values) {
+            this.values = values;
+            this.render();
+        },
+
+        render: function () {
+            var htmls = [], i = 0, len = this.values.length;
+            while (i < len)
+                htmls.splice(htmls.length, 0, '<div class=line>',
+                             this.values[i++], '</div>');
+            this.container.innerHTML = htmls.join('');
+        },
+
+        hiLine: function (lineNo) {
+            var current = this.container.querySelector('.line.current');
+            if (current) current.classList.remove('current');
+            this.container.querySelectorAll('.line')[lineNo - 1]
+                .classList.add('current');
+        }
+
+    };
 
     function setupEditor() {
         inEditor = ace.edit('input-editor');
         inEditor.setShowPrintMargin(false);
 
-        outEditor = ace.edit('output-editor');
-        outEditor.setShowPrintMargin(false);
-        outEditor.setReadOnly(true);
+        outDisplay = new OutputDisplay('output-display');
 
         // Hide the editor's builtin scrollbar.
-        inEditor.renderer.scrollBar.element.style.display =
-            outEditor.renderer.scrollBar.element.style.display = 'none';
+        inEditor.renderer.scrollBar.element.style.display = 'none';
 
         // Remove the small gap at the right edge, reserved for the vertical
         // scrollbar.
-        inEditor.renderer.scrollBar.width =
-            outEditor.renderer.scrollBar.width = 0;
+        inEditor.renderer.scrollBar.width = 0;
 
         inEditor.session.setMode('lake/ace-mode-js');
         // inSession.setUseWorker(true);
@@ -53,8 +78,7 @@
             }
         }
 
-        outEditor.setValue(results.join('\n'));
-        outEditor.clearSelection();
+        outDisplay.setValue(results);
         recalculate.last = code;
     }
 
@@ -64,8 +88,7 @@
             inEditor.renderer.scrollBar.getWidth();
         inEditor.container.style.minHeight = height + 'px';
         inEditor.resize();
-        outEditor.container.style.minHeight = height + 'px';
-        outEditor.resize();
+        outDisplay.container.style.minHeight = height + 'px';
     }
 
     function updateSheet() {
@@ -123,7 +146,7 @@
         inEditor.on('change', updateSheet);
 
         inEditor.selection.on('changeCursor', function (e) {
-            outEditor.gotoLine(inEditor.selection.getCursor().row + 1);
+            outDisplay.hiLine(inEditor.selection.getCursor().row + 1);
         });
 
         inEditor.setValue([
