@@ -157,6 +157,10 @@ button:active {
     background-color: rgba(0, 0, 0, .1);
 }
 
+#output-display .collapsed {
+    display: none;
+}
+
 #app-container .result:before {
     content: attr(data-label);
     opacity: .4;

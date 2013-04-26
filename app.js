@@ -3,38 +3,65 @@
     /*global Lake ace */
     "use strict";
 
-    Array.prototype.extendWith = function () {
-        var args = this.slice.call(arguments, 0);
-        args.splice(0, 0, this.length, 0);
-        this.splice.apply(this, args);
+    function extend(array) {
+        var args = array.slice.call(arguments, 1);
+        args.splice(0, 0, array.length, 0);
+        array.splice.apply(array, args);
     };
 
     var inEditor, outDisplay;
 
     function OutputDisplay(elementId, value) {
         this.container = document.getElementById(elementId);
-        this.setValue(value || '');
+        this.values = [];
+        this.folds = [];
+        this.render();
     }
 
     OutputDisplay.prototype = {
 
-        setValue: function (values) {
+        render: function () {
+            var gutterMarkup = [],
+                outputMarkup = [],
+                foldNo = 0,
+                i = 0,
+                len = this.values.length;
+
+            console.log('Rendering with folds', this.folds);
+
+            while (i < len) {
+                var isCollapsed = this.isRowCollapsed(i);
+                extend(outputMarkup, '<div class="line',
+                    (isCollapsed ? ' collapsed' : ''), '">', this.values[i],
+                    '</div>');
+                extend(gutterMarkup, '<div',
+                    (isCollapsed ? ' class=collapsed' : ''), '>', i + 1,
+                    '</div>');
+                ++i;
+            }
+
+            this.container.innerHTML =
+                '<div class=gutter>' + gutterMarkup.join('') + '</div>' +
+                '<div class=output>' + outputMarkup.join('') + '</div>';
+        },
+
+        setValues: function (values) {
             this.values = values;
             this.render();
         },
 
-        render: function () {
-            var gutterMarkup = [],
-                outputMarkup = [],
-                i = 0, len = this.values.length;
-            while (i < len) {
-                outputMarkup.extendWith('<div class=line>', this.values[i++],
-                                    '</div>');
-                gutterMarkup.extendWith('<div>', i, '</div>');
+        setFolds: function (folds) {
+            this.folds = folds;
+            this.render();
+        },
+
+        isRowCollapsed: function (rowNo) {
+            for (var i = this.folds.length - 1; i >= 0; i--) {
+                var fold = this.folds[i];
+                if (fold.start.row < rowNo && rowNo <= fold.end.row)
+                    return true;
             }
-            this.container.innerHTML =
-                '<div class=gutter>' + gutterMarkup.join('') + '</div>' +
-                '<div class=output>' + outputMarkup.join('') + '</div>';
+            return false;
         },
 
         hiLine: function (lineNo) {
@@ -90,7 +117,7 @@
             }
         }
 
-        outDisplay.setValue(results);
+        outDisplay.setValues(results);
         recalculate.last = code;
     }
 
@@ -161,10 +188,14 @@
             outDisplay.hiLine(inEditor.selection.getCursor().row + 1);
         });
 
+        inEditor.session.on('changeFold', function () {
+            outDisplay.setFolds(inEditor.session.getAllFolds());
+        });
+
         inEditor.setValue([
             'a = 2',
             'a',
-            'sin(PI/4) * sqrt(a) + 42',
+            'sin(PI/4) * sqrt(a) + 42 ;:',
             'L3',
             ''
         ].join('\n'));
