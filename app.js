@@ -1,6 +1,6 @@
 (function () {
     /*jshint browser:true */
-    /*global Lake ace */
+    /*global Lang ace */
     "use strict";
 
     function extend(array) {
@@ -26,8 +26,6 @@
                 foldNo = 0,
                 i = 0,
                 len = this.values.length;
-
-            console.log('Rendering with folds', this.folds);
 
             while (i < len) {
                 var isCollapsed = this.isRowCollapsed(i);
@@ -86,7 +84,7 @@
         // scrollbar.
         inEditor.renderer.scrollBar.width = 0;
 
-        inEditor.session.setMode('lake/ace-mode-js');
+        inEditor.session.setMode('lang/ace-mode-js');
         // inSession.setUseWorker(true);
     }
 
@@ -95,22 +93,26 @@
         if (recalculate.last === code) return;
 
         var lines = code.split('\n'),
-            evaluator = new Lake(),
+            lang = new Lang(),
             results = [];
 
         for (var i = 0, len = lines.length; i < len; ++i) {
             var line = lines[i], result;
 
             try {
-                result = evaluator.evaluate(line);
+                result = lang.calc(line);
             } catch (e) {
-                if (e instanceof Lake.Error) {
+                if (e instanceof lang.parser.SyntaxError) {
                     result = null;
                 } else throw e;
             }
 
-            if (result !== null) {
-                evaluator.evaluate('L' + (i + 1) + ' = ' + result);
+	    // Parser returns a list of results, one each for each line.
+	    if (result)
+		result = result[0];
+
+            if (result) {
+                lang.set('L' + (i + 1), result)
                 results.push(result);
             } else {
                 results.push('');

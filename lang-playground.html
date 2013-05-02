@@ -1,0 +1,25 @@
+<!doctype html>
+<html lang=en>
+<head>
+    <meta charset=utf-8>
+    <title>Lake - SSCalc Language v2</title>
+
+    <link rel=stylesheet href=css/normalize.css>
+    <link rel=stylesheet href=playground.css>
+
+<body>
+
+    <section class=pane id=source-pane>
+        <div class=label>Input</div>
+        <textarea class=content id=source-input autofocus
+            spellcheck=false>1 + 2</textarea>
+    </section>
+
+    <section class=pane id=result-pane>
+        <div class=label>Result</div>
+        <pre class=content id=result-display></pre>
+    </section>
+
+    <script src=vendor/peg-0.7.0.min.js></script>
+    <script src=lang.js></script>
+    <script src=playground.js></script>

@@ -12,10 +12,7 @@ html, body {
     float: left;
     border: thin solid gray;
     overflow: auto;
-}
-
-.pane.error {
-    background-color: #FFB8B8;
+    height: 100%;
 }
 
 .pane > .label {
@@ -24,37 +21,28 @@ html, body {
     cursor: default;
     padding: 3px;
     background-color: #EEE;
+    height: 40px;
+    line-height: 40px;
 }
 
-.pane.error > .label {
-    background-color: maroon;
-    color: white;
-}
-
-.pane pre {
+.pane .content {
     margin: 0;
     padding: 3px;
+    width: 100%;
+    height: calc(100% - 40px);
 }
 
-#source-pane { width: 100%; height: 42px; }
-#lexer-pane { width: 25%; }
-#parser-pane { width: 50%; }
+#source-pane { width: 30%; }
+#result-pane { width: 70%; }
 
 #source-input {
-    min-width: 25%;
-    height: 100%;
     border: none;
     resize: none;
     font-size: 1em;
-    padding: 3px;
     color: #333;
 }
 
 #source-input:focus {
     outline: none;
-    background-color: #FFFF99;
-}
-
-#result-display:before {
-    content: ' = ';
+    background-color: #FFB;
 }

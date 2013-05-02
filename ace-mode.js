@@ -28,7 +28,7 @@
  *
  * ***** END LICENSE BLOCK ***** */
 
-ace.define('lake/ace-mode', function(require, exports, module) {
+ace.define('lang/ace-mode', function(require, exports, module) {
 
     var oop = require('ace/lib/oop'),
         TextMode = require('ace/mode/text').Mode,
@@ -58,7 +58,7 @@ ace.define('lake/ace-mode', function(require, exports, module) {
 });
 
 
-ace.define('lake/ace-mode-js', function(require, exports, module) {
+ace.define('lang/ace-mode-js', function(require, exports, module) {
 
 var oop = require('ace/lib/oop'),
     TextMode = require('ace/mode/text').Mode,
