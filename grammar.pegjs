@@ -1,4 +1,4 @@
- {
+{
   // `this` is the same as `Lang.parser`.
   var self = this;
   self.scope = self.scope || {
