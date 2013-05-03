@@ -13,7 +13,7 @@ var Lang = (function () {
         set: function (name, value) {
             this.parser.scope[name] = value;
         }
-        
+
     };
 
     var xhr = new XMLHttpRequest();
