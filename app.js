@@ -103,7 +103,6 @@
             } else throw e;
         }
 
-        console.log('results =', results);
         if (results !== null)
             outDisplay.setValues(results);
 

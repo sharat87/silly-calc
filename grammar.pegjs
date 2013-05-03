@@ -8,6 +8,8 @@
     sin: Math.sin,
     cos: Math.cos
   };
+  // For lineRef values.
+  var lineResults = [], lineNo = 0;
 }
 
 start = langScript
@@ -22,10 +24,10 @@ langScript
 
 exprLine
   = expr:expr (';' [^\n]*)?
-    { return expr; }
+    { return (lineResults[lineNo++] = expr); }
   / (';' .*)?
-    { return ''; }
-  / { return 'err'; }
+    { lineResults[lineNo++] = 0; return ''; }
+  / { lineResults[lineNo++] = 0; return 'err'; }
 
 expr
   = result:assignment __
@@ -78,6 +80,7 @@ atom
   / '(' expr:expr ')'?
     { return expr; }
   / number
+  / lineRef
   / name:identifier
     { return self.scope[name]; }
 
@@ -113,8 +116,13 @@ octNumber
     { return parseInt(digits.join(''), 8); }
 
 identifier "an identifier"
-  = head:[a-zA-Z_] tail:[a-zA-Z0-9_]*
+  = head:[a-zA-Z] tail:[a-zA-Z0-9_]*
     { return head + tail.join(''); }
+
+lineRef "a line reference"
+  = '_' ds:[0-9]+
+    { var refNo = parseInt(ds.join(''), 10);
+      return lineResults[lineResults.length - refNo - 1]; }
 
 __ "whitespace"
   = (' ' / '\t')*
