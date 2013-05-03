@@ -15,6 +15,7 @@
         this.container = document.getElementById(elementId);
         this.values = [];
         this.folds = [];
+        this.currentLine = 1;
         this.render();
     }
 
@@ -30,6 +31,7 @@
             while (i < len) {
                 var isCollapsed = this.isRowCollapsed(i);
                 extend(outputMarkup, '<div class="line',
+                    (this.currentLine === i + 1 ? ' current' : ''),
                     (isCollapsed ? ' collapsed' : ''), '">', this.values[i],
                     '</div>');
                 extend(gutterMarkup, '<div',
@@ -41,6 +43,7 @@
             this.container.innerHTML =
                 '<div class=gutter>' + gutterMarkup.join('') + '</div>' +
                 '<div class=output>' + outputMarkup.join('') + '</div>';
+
         },
 
         setValues: function (values) {
@@ -53,6 +56,12 @@
             this.render();
         },
 
+        setCurrentLine: function (lineNo) {
+            if (this.currentLine === lineNo) return;
+            this.currentLine = lineNo;
+            this.render();
+        },
+
         isRowCollapsed: function (rowNo) {
             for (var i = this.folds.length - 1; i >= 0; i--) {
                 var fold = this.folds[i];
@@ -60,13 +69,6 @@
                     return true;
             }
             return false;
-        },
-
-        hiLine: function (lineNo) {
-            var current = this.container.querySelector('.line.current');
-            if (current) current.classList.remove('current');
-            this.container.querySelectorAll('.line')[lineNo - 1]
-                .classList.add('current');
         }
 
     };
@@ -173,7 +175,7 @@
         inEditor.on('change', updateSheet);
 
         inEditor.selection.on('changeCursor', function (e) {
-            outDisplay.hiLine(inEditor.selection.getCursor().row + 1);
+            outDisplay.setCurrentLine(inEditor.selection.getCursor().row + 1);
         });
 
         inEditor.session.on('changeFold', function () {
