@@ -185,12 +185,13 @@
         });
 
         inEditor.setValue([
-            'a = 2',
-            'a',
+            'a = 3',
+            'a ^ 2',
             '',
             'Using functions and line references:',
             'sin(PI/4) * sqrt(a) + 41',
-            '_1 + 10'
+            '_1 + 10',
+            ''
         ].join('\n'));
         inEditor.clearSelection();
         inEditor.focus();
