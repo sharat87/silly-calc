@@ -1,6 +1,8 @@
 {
   // `this` is the same as `Lang.parser`.
   var self = this;
+  // For lineRef values.
+  var lineResults = [], lineNo = 0, currentBlockStartedAt = null;
   self.scope = self.scope || {
     PI: Math.PI,
     sqrt: Math.sqrt,
@@ -8,26 +10,36 @@
     sin: Math.sin,
     cos: Math.cos
   };
-  // For lineRef values.
-  var lineResults = [], lineNo = 0;
+
+  function updateCurrentBlock() {
+    var lastResult = '';
+    for (var i = lineResults.length - 1; i > currentBlockStartedAt; --i)
+      if (lineResults[i] !== '') {
+        lastResult = lineResults[i];
+        break;
+      }
+    lineResults[currentBlockStartedAt] = lastResult;
+  }
 }
 
 start = langScript
 
 langScript
-  = init:(exprLine '\n')* last:exprLine '\n'?
-    { var results = [last];
-      for (var i = init.length; i-- > 0;)
-        results.unshift(init[i][0]);
-      return results; }
+  = (exprLine '\n')* exprLine '\n'?
+    { updateCurrentBlock();
+      return lineResults.slice(0, lineResults.length - 1); }
   / ''
 
 exprLine
-  = expr:expr (';' [^\n]*)?
+  = [^\n:]* ':'
+    { if (currentBlockStartedAt !== null) updateCurrentBlock();
+      currentBlockStartedAt = lineNo++;
+      return (lineResults[currentBlockStartedAt] = ''); }
+  / expr:expr (';' [^\n]*)?
     { return (lineResults[lineNo++] = expr); }
   / (';' .*)?
-    { lineResults[lineNo++] = 0; return ''; }
-  / { lineResults[lineNo++] = 0; return 'err'; }
+    { return (lineResults[lineNo++] = ''); }
+  / { return (lineResults[lineNo++] = 'err'); }
 
 expr
   = result:assignment __
@@ -122,7 +134,7 @@ identifier "an identifier"
 lineRef "a line reference"
   = '_' ds:[0-9]+
     { var refNo = parseInt(ds.join(''), 10);
-      return lineResults[lineResults.length - refNo - 1]; }
+      return lineResults[lineResults.length - refNo] || 0; }
 
 __ "whitespace"
   = (' ' / '\t')*

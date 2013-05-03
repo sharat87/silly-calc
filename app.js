@@ -183,9 +183,10 @@
         inEditor.setValue([
             'a = 2',
             'a',
-            'sin(PI/4) * sqrt(a) + 42 ;:',
-            '3',
-            ''
+            '',
+            'Using functions and line references:',
+            'sin(PI/4) * sqrt(a) + 41',
+            '_1 + 10'
         ].join('\n'));
         inEditor.clearSelection();
         inEditor.focus();
