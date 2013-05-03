@@ -1,8 +1,8 @@
 {
   // `this` is the same as `Lang.parser`.
   var self = this;
-  // For lineRef values.
-  var lineResults = [], lineNo = 0, currentBlockStartedAt = null;
+  // For lineRef values. `line` is 1-based, so put a dummy `null` at 0.
+  var lineResults = [null], headerLineNo = null;
   self.scope = self.scope || {
     PI: Math.PI,
     sqrt: Math.sqrt,
@@ -10,36 +10,24 @@
     sin: Math.sin,
     cos: Math.cos
   };
-
-  function updateCurrentBlock() {
-    var lastResult = '';
-    for (var i = lineResults.length - 1; i > currentBlockStartedAt; --i)
-      if (lineResults[i] !== '') {
-        lastResult = lineResults[i];
-        break;
-      }
-    lineResults[currentBlockStartedAt] = lastResult;
-  }
 }
 
 start = langScript
 
 langScript
   = (exprLine '\n')* exprLine '\n'?
-    { updateCurrentBlock();
-      return lineResults.slice(0, lineResults.length - 1); }
+    { return lineResults.slice(1); }
   / ''
 
 exprLine
   = [^\n:]* ':'
-    { if (currentBlockStartedAt !== null) updateCurrentBlock();
-      currentBlockStartedAt = lineNo++;
-      return (lineResults[currentBlockStartedAt] = ''); }
+    { lineResults[headerLineNo = line] = ''; }
   / expr:expr (';' [^\n]*)?
-    { return (lineResults[lineNo++] = expr); }
+    { if (headerLineNo) lineResults[headerLineNo] = expr;
+      lineResults[line] = expr; }
   / (';' .*)?
-    { return (lineResults[lineNo++] = ''); }
-  / { return (lineResults[lineNo++] = 'err'); }
+    { lineResults[line] = ''; }
+  / { lineResults[line] = 'err'; }
 
 expr
   = result:assignment __
