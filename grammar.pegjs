@@ -1,5 +1,5 @@
 {
-  // `this` is the same as `Lang.parser`.
+  // `this` is the same as `Lang.parser`.  
   var self = this;
   self.scope = self.scope || {
     PI: Math.PI,
@@ -117,6 +117,6 @@ identifier "an identifier"
     { return head + tail.join(''); }
 
 __ "whitespace"
-  = ' ' / '\t' / ''
+  = (' ' / '\t')*
 
 // vim: se ai sw=2 sts=2 :
