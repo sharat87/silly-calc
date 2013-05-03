@@ -92,34 +92,21 @@
         var code = inEditor.getValue();
         if (recalculate.last === code) return;
 
-        var lines = code.split('\n'),
-            lang = new Lang(),
-            results = [];
+        var lang = new Lang(), results;
 
-        for (var i = 0, len = lines.length; i < len; ++i) {
-            var line = lines[i], result;
-
-            try {
-                result = lang.calc(line);
-            } catch (e) {
-                if (e instanceof lang.parser.SyntaxError) {
-                    result = null;
-                } else throw e;
-            }
-
-            // Parser returns a list of results, one each for each line.
-            if (result)
-                result = result[0];
-
-            if (result) {
-                lang.set('L' + (i + 1), result);
-                results.push(result);
-            } else {
-                results.push('');
-            }
+        try {
+            results = lang.calc(code);
+        } catch (e) {
+            if (e instanceof lang.parser.SyntaxError) {
+                console.error(e);
+                results = null;
+            } else throw e;
         }
 
-        outDisplay.setValues(results);
+        console.log('results =', results);
+        if (results !== null)
+            outDisplay.setValues(results);
+
         recalculate.last = code;
     }
 
@@ -198,7 +185,7 @@
             'a = 2',
             'a',
             'sin(PI/4) * sqrt(a) + 42 ;:',
-            'L3',
+            '3',
             ''
         ].join('\n'));
         inEditor.clearSelection();

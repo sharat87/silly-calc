@@ -13,7 +13,7 @@
 start = langScript
 
 langScript
-  = init:(exprLine '\n'+)* last:exprLine '\n'*
+  = init:(exprLine '\n')* last:exprLine '\n'?
     { var results = [last];
       for (var i = init.length; i-- > 0;)
         results.unshift(init[i][0]);
@@ -21,7 +21,7 @@ langScript
   / ''
 
 exprLine
-  = expr:expr (';' .*)?
+  = expr:expr (';' [^\n]*)?
     { return expr; }
   / (';' .*)?
     { return ''; }
