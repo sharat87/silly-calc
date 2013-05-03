@@ -125,7 +125,7 @@ button:active {
 
 #output-display {
     width: 30%;
-    float: right;
+    float: left;
     position: relative;
 }
 
@@ -147,7 +147,7 @@ button:active {
 }
 
 #output-display .output {
-    width: calc(100% - 43px);
+    width: calc(100% - 42.5px);
     float: right;
     height: 100%;
 }
