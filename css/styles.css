@@ -133,10 +133,13 @@ button:active {
     width: 43px;
     background-color: rgba(0, 0, 0, .1);
     text-align: right;
-    padding-right: 6px;
     float: left;
     height: 100%;
     opacity: .6;
+}
+
+#output-display .gutter > div {
+    padding-right: 6px;
 }
 
 #output-display .gutter .current {

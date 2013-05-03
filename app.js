@@ -29,13 +29,15 @@
                 len = this.values.length;
 
             while (i < len) {
-                var isCollapsed = this.isRowCollapsed(i);
+                var isCollapsed = this.isRowCollapsed(i),
+                    isCurrent = this.currentLine === i + 1;
                 extend(outputMarkup, '<div class="line',
-                    (this.currentLine === i + 1 ? ' current' : ''),
+                    (isCurrent ? ' current' : ''),
                     (isCollapsed ? ' collapsed' : ''), '">', this.values[i],
                     '</div>');
-                extend(gutterMarkup, '<div',
-                    (isCollapsed ? ' class=collapsed' : ''), '>', i + 1,
+                extend(gutterMarkup, '<div class="',
+                    (isCurrent ? ' current' : ''),
+                    (isCollapsed ? ' collapsed' : ''), '">', i + 1,
                     '</div>');
                 ++i;
             }
