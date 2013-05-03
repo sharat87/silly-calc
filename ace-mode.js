@@ -112,8 +112,10 @@ var LakeHighlightRules = function() {
 
     this.$rules = {
         start: [
-            {token: 'variable', regex: /[a-zA-Z_][a-zA-Z0-9_]*/},
+            {token: 'comment.block.documentation', regex: /[^\n:]+\:/},
+            {token: 'variable', regex: /[a-zA-Z][a-zA-Z0-9_]*/},
             {token: 'keyword.operator', regex: /[=\-\+\*\/\^]+/},
+            {token: 'keyword.other', regex: /_\d+/},
             {token: 'constant.numeric', regex: /\d+/},
             {token: 'comment.line.semicolon', regex: /;.*$/}
         ]
