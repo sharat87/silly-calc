@@ -7,7 +7,7 @@
         var args = array.slice.call(arguments, 1);
         args.splice(0, 0, array.length, 0);
         array.splice.apply(array, args);
-    };
+    }
 
     var inEditor, outDisplay;
 
@@ -107,12 +107,12 @@
                 } else throw e;
             }
 
-	    // Parser returns a list of results, one each for each line.
-	    if (result)
-		result = result[0];
+            // Parser returns a list of results, one each for each line.
+            if (result)
+                result = result[0];
 
             if (result) {
-                lang.set('L' + (i + 1), result)
+                lang.set('L' + (i + 1), result);
                 results.push(result);
             } else {
                 results.push('');

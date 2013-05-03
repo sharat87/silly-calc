@@ -1,5 +1,5 @@
 {
-  // `this` is the same as `Lang.parser`.  
+  // `this` is the same as `Lang.parser`.
   var self = this;
   self.scope = self.scope || {
     PI: Math.PI,
