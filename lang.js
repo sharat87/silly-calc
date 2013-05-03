@@ -1,7 +1,9 @@
 var Lang = (function () {
     function Lang() {
         if (!Lang.grammar) throw new TypeError('Language grammar is not set');
-        this.parser = PEG.buildParser(Lang.grammar, {trackLineAndColumn: true});
+        this.parser = PEG.buildParser(Lang.grammar, {
+            trackLineAndColumn: true
+        });
     }
 
     Lang.prototype = {
