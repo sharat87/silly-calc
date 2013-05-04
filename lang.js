@@ -1,11 +1,17 @@
 var Lang = (function () {
 
     BUILTINS = {
+
+        // Constants
         PI: Math.PI,
+
+        // Functions
+        abs: Math.abs,
         sqrt: Math.sqrt,
         log: Math.log,
         sin: Math.sin,
         cos: Math.cos
+
     };
 
     function Lang() {
