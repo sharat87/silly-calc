@@ -134,11 +134,23 @@
         localStorage.setItem('input', inEditor.getValue());
     }
 
-    function updateSheet() {
-        recalculate();
-        resizeEditor();
-        save()
-    }
+    // Update should happen after a 200ms idle time.
+    var updateSheet = (function () {
+        var lastChangeAt = 0;
+
+        setInterval(function () {
+            if (Date.now() - lastChangeAt < 150)
+                return;
+            lastChangeAt = Date.now();
+            recalculate();
+            save();
+        }, 50);
+
+        return function updateSheet() {
+            resizeEditor();
+            lastChangeAt = Date.now();
+        };
+    }());
 
     function setupPopups() {
         var buttons = document.getElementById('topbar')
