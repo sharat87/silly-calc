@@ -121,7 +121,7 @@
         recalculate.last = code;
     }
 
-    function resizeEditors() {
+    function resizeEditor() {
         var height = inEditor.session.getScreenLength() *
             inEditor.renderer.lineHeight +
             inEditor.renderer.scrollBar.getWidth();
@@ -130,9 +130,14 @@
         outDisplay.container.style.minHeight = height + 'px';
     }
 
+    function save() {
+        localStorage.input = inEditor.getValue();
+    }
+
     function updateSheet() {
         recalculate();
-        resizeEditors();
+        resizeEditor();
+        save()
     }
 
     function setupPopups() {
@@ -192,7 +197,7 @@
             outDisplay.setFolds(inEditor.session.getAllFolds());
         });
 
-        inEditor.setValue([
+        inEditor.setValue(localStorage.input || [
             'a = 3',
             'a ^ 2',
             '',
