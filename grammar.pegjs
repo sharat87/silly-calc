@@ -79,6 +79,7 @@ atom
   = functionCall
   / '(' expr:expr ')'?
     { return expr; }
+  / percentage
   / number
   / lineRef
   / name:identifier
@@ -92,6 +93,10 @@ functionCall
       for (var i = 0; i < rest.length; i++)
         args.push(rest[i][1]);
       return scope[name].apply(scope, args); }
+
+percentage
+  = num:(float / integer) '%'
+    { return num / 100; }
 
 number "a number"
   = float
