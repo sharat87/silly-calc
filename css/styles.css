@@ -1,4 +1,4 @@
-@import url(http://fonts.googleapis.com/css?family=Inconsolata|Lobster|Lato);
+@import url(http://fonts.googleapis.com/css?family=Inconsolata|Bree+Serif|Lato);
 
 * { box-sizing: border-box; }
 
@@ -41,7 +41,7 @@ button:active {
 
 #topbar .left {
     float: left;
-    font-family: Lobster, cursive;
+    font-family: 'Bree Serif', cursive;
     font-size: 20px;
 }
 
