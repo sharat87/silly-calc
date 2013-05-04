@@ -1,9 +1,7 @@
 {
-  // `this` is the same as `Lang.parser`.
-  var self = this;
   // For lineRef values. `line` is 1-based, so put a dummy `null` at 0.
   var lineResults = [null], headerLineNo = null;
-  self.scope = self.scope || {
+  var scope = {
     PI: Math.PI,
     sqrt: Math.sqrt,
     log: Math.log,
@@ -37,7 +35,7 @@ expr
 
 assignment
   = name:identifier __ '=' __ value:expr
-    { self.scope[name] = value; return value; }
+    { scope[name] = value; return value; }
 
 addition
   = left:subtraction __ '+' __ right:addition
@@ -82,7 +80,7 @@ atom
   / number
   / lineRef
   / name:identifier
-    { return self.scope[name]; }
+    { return scope[name]; }
 
 // Functions cannot not take any arguments. Currently.
 // TODO: Error checking.
@@ -91,7 +89,7 @@ functionCall
     { var args = [arg1];
       for (var i = 0; i < rest.length; i++)
         args.push(rest[i][1]);
-      return self.scope[name].apply(self.scope, args); }
+      return scope[name].apply(scope, args); }
 
 number "a number"
   = float
