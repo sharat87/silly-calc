@@ -17,12 +17,14 @@ langScript
     { return lineResults.slice(1); }
   / ''
 
+// The order of the first two entries is awkward, but necessary for sensible
+// error messages to be generated.
 exprLine
-  = [^\n:]* ':'
-    { lineResults[headerLineNo = line] = ''; }
-  / expr:expr (';' [^\n]*)?
+  = !([^\n:]* ':') expr:expr (';' [^\n]*)?
     { if (headerLineNo) lineResults[headerLineNo] = expr;
       lineResults[line] = expr; }
+  / [^\n:]* ':'
+    { lineResults[headerLineNo = line] = ''; }
   / (';' .*)?
     { lineResults[line] = ''; }
   / { lineResults[line] = 'err'; }
