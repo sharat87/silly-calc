@@ -102,7 +102,7 @@
         try {
             results = lang.calc(code);
         } catch (e) {
-            if (e instanceof lang.parser.SyntaxError) {
+            if (e.name === 'SyntaxError') {
                 inEditor.session.setAnnotations([{
                     row: e.line - 1,
                     column: e.column - 1,

@@ -1,9 +1,19 @@
 var Lang = (function () {
+
+    BUILTINS = {
+        PI: Math.PI,
+        sqrt: Math.sqrt,
+        log: Math.log,
+        sin: Math.sin,
+        cos: Math.cos
+    };
+
     function Lang() {
         if (!Lang.grammar) throw new TypeError('Language grammar is not set');
         this.parser = PEG.buildParser(Lang.grammar, {
             trackLineAndColumn: true
         });
+        this.parser.defaultScope = BUILTINS;
     }
 
     Lang.prototype = {

@@ -1,13 +1,14 @@
 {
   // For lineRef values. `line` is 1-based, so put a dummy `null` at 0.
-  var lineResults = [null], headerLineNo = null;
-  var scope = {
-    PI: Math.PI,
-    sqrt: Math.sqrt,
-    log: Math.log,
-    sin: Math.sin,
-    cos: Math.cos
-  };
+  var self = this, lineResults = [null], headerLineNo = null, _scope = {};
+
+  function getVar(name) {
+    return _scope.hasOwnProperty(name) ? _scope[name] : self.defaultScope[name];
+  }
+
+  function setVar(name, value) {
+    return _scope[name] = value;
+  }
 }
 
 start = langScript
@@ -37,7 +38,7 @@ expr
 
 assignment
   = name:identifier __ '=' __ value:expr
-    { scope[name] = value; return value; }
+    { return setVar(name, value); }
 
 addition
   = left:subtraction __ '+' __ right:addition
@@ -83,7 +84,7 @@ atom
   / number
   / lineRef
   / name:identifier
-    { return scope[name]; }
+    { return getVar(name); }
 
 // Functions cannot not take any arguments. Currently.
 // TODO: Error checking.
@@ -92,7 +93,7 @@ functionCall
     { var args = [arg1];
       for (var i = 0; i < rest.length; i++)
         args.push(rest[i][1]);
-      return scope[name].apply(scope, args); }
+      return getVar(name).apply(null, args); }
 
 percentage
   = num:(float / integer) '%'
