@@ -1,6 +1,6 @@
 (function () {
     /*jshint browser:true */
-    /*global Lang ace */
+    /*global Lang ace CustomEvent */
     "use strict";
 
     var inEditor, outDisplay,
@@ -30,16 +30,22 @@
                 len = this.values.length;
 
             while (i < len) {
-                var isCollapsed = this.isRowCollapsed(i),
+                var val = this.values[i],
+                    isCollapsed = this.isRowCollapsed(i),
                     isCurrent = this.currentLine === i + 1;
+
+                if (typeof val === 'number')
+                    val = parseFloat(this.values[i]
+                                        .toFixed(localStorage.confFix));
+
                 extend(outputMarkup, '<div class="line',
                     (isCurrent ? ' current' : ''),
-                    (isCollapsed ? ' collapsed' : ''), '">', this.values[i],
-                    '</div>');
+                    (isCollapsed ? ' collapsed' : ''), '">', val, '</div>');
                 extend(gutterMarkup, '<div class="',
                     (isCurrent ? ' current' : ''),
                     (isCollapsed ? ' collapsed' : ''), '">', i + 1,
                     '</div>');
+
                 ++i;
             }
 
@@ -213,6 +219,13 @@
         settingsElem.addEventListener('change', function (e) {
             if (e.target.tagName.toLowerCase() != 'input') return;
             localStorage.setItem(e.target.dataset.keyName, e.target.value);
+            var event = new CustomEvent('conf-change', { detail: {
+                name: e.target.name,
+                key: e.target.dataset.keyName,
+                value: e.target.value,
+                input: e.target
+            }});
+            document.dispatchEvent(event);
         });
 
         function titleCase(text) {
@@ -224,7 +237,6 @@
     function main() {
         setupEditor();
         setupPopups();
-        initSettings();
 
         inEditor.on('change', updateSheet);
 
@@ -248,6 +260,13 @@
 
         window.addEventListener('storage', function (e) {
             inEditor.setValue(localStorage.input);
+        });
+
+        initSettings();
+        document.addEventListener('conf-change', function (e) {
+            if (e.detail.name === 'fix') {
+                outDisplay.render();
+            }
         });
 
         inEditor.clearSelection();

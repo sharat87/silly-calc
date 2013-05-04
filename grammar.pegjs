@@ -32,7 +32,7 @@ exprLine
 
 expr
   = result:(assignment / addition) __
-    { return parseFloat(result.toPrecision(12)); }
+    { return result; }
 
 assignment
   = name:identifier __ '=' __ value:expr
