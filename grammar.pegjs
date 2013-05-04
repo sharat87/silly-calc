@@ -31,10 +31,8 @@ exprLine
   / { lineResults[line] = 'err'; }
 
 expr
-  = result:assignment __
-    { return result; }
-  / result:addition __
-    { return result; }
+  = result:(assignment / addition) __
+    { return parseFloat(result.toPrecision(12)); }
 
 assignment
   = name:identifier __ '=' __ value:expr
