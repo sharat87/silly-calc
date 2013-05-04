@@ -96,19 +96,27 @@
         var code = inEditor.getValue();
         if (recalculate.last === code) return;
 
-        var lang = new Lang(), results;
+        var lang = new Lang(), results = null;
 
         try {
             results = lang.calc(code);
         } catch (e) {
             if (e instanceof lang.parser.SyntaxError) {
-                console.error(e);
-                results = null;
+                inEditor.session.setAnnotations([{
+                    row: e.line - 1,
+                    column: e.column - 1,
+                    text: e.message,
+                    type: 'error',
+                    raw: e
+                }]);
             } else throw e;
         }
 
-        if (results !== null)
+
+        if (results !== null) {
             outDisplay.setValues(results);
+            inEditor.session.clearAnnotations();
+        }
 
         recalculate.last = code;
     }
