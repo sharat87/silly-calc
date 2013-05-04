@@ -199,9 +199,32 @@
         }
     }
 
+    function initSettings() {
+        var settingsElem = document.getElementById('settings'),
+            inputs = settingsElem.querySelectorAll('input[name]');
+
+        for (var i = inputs.length; i-- > 0;) {
+            var input = inputs[i],
+                key = input.dataset.keyName = 'conf' + titleCase(input.name);
+            if (localStorage.hasOwnProperty(key))
+                input.value = localStorage[key];
+        }
+
+        settingsElem.addEventListener('change', function (e) {
+            if (e.target.tagName.toLowerCase() != 'input') return;
+            localStorage.setItem(e.target.dataset.keyName, e.target.value);
+        });
+
+        function titleCase(text) {
+            return text.replace(/^./, function (m) { return m.toUpperCase(); });
+        }
+
+    }
+
     function main() {
         setupEditor();
         setupPopups();
+        initSettings();
 
         inEditor.on('change', updateSheet);
 
