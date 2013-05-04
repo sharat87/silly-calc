@@ -131,7 +131,7 @@
     }
 
     function save() {
-        localStorage.input = inEditor.getValue();
+        localStorage.setItem('input', inEditor.getValue());
     }
 
     function updateSheet() {
@@ -208,6 +208,10 @@
         ].join('\n'));
         inEditor.clearSelection();
         inEditor.focus();
+
+        window.addEventListener('storage', function (e) {
+            inEditor.setValue(localStorage.input);
+        });
     }
 
     main();
