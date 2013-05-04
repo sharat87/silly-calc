@@ -3,13 +3,14 @@
     /*global Lang ace */
     "use strict";
 
+    var inEditor, outDisplay,
+        dirtyIndicator = document.getElementById('dirty-indicator');
+
     function extend(array) {
         var args = array.slice.call(arguments, 1);
         args.splice(0, 0, array.length, 0);
         array.splice.apply(array, args);
     }
-
-    var inEditor, outDisplay;
 
     function OutputDisplay(elementId, value) {
         this.container = document.getElementById(elementId);
@@ -145,11 +146,13 @@
             lastChangeAt = null;
             recalculate();
             save();
+            dirtyIndicator.classList.remove('dirty');
         }, 100);
 
         return function updateSheet() {
             resizeEditor();
             lastChangeAt = Date.now();
+            dirtyIndicator.classList.add('dirty');
         };
     }());
 
@@ -219,12 +222,13 @@
             '_1 + 10',
             ''
         ].join('\n'));
-        inEditor.clearSelection();
-        inEditor.focus();
 
         window.addEventListener('storage', function (e) {
             inEditor.setValue(localStorage.input);
         });
+
+        inEditor.clearSelection();
+        inEditor.focus();
     }
 
     main();

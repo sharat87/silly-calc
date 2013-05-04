@@ -103,6 +103,14 @@ button:active {
     color: #F77;
 }
 
+#dirty-indicator.dirty:before {
+    content: "Unsaved ";
+    color: red;
+    text-transform: uppercase;
+    letter-spacing: -1px;
+    opacity: .6;
+}
+
 #app-container {
     width: 100%;
     height: 100%;
