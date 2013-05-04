@@ -134,17 +134,18 @@
         localStorage.setItem('input', inEditor.getValue());
     }
 
-    // Update should happen after a 200ms idle time.
     var updateSheet = (function () {
+        // `lastChangeAt` is `null` when input is not dirty, and the time of
+        // last change, when input is dirty.
         var lastChangeAt = 0;
 
         setInterval(function () {
-            if (Date.now() - lastChangeAt < 150)
+            if (lastChangeAt === null || Date.now() - lastChangeAt < 150)
                 return;
-            lastChangeAt = Date.now();
+            lastChangeAt = null;
             recalculate();
             save();
-        }, 50);
+        }, 100);
 
         return function updateSheet() {
             resizeEditor();
