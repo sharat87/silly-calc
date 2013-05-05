@@ -108,7 +108,7 @@
         try {
             results = lang.calc(code);
         } catch (e) {
-            if (e.name === 'SyntaxError') {
+            if (e.name === 'LangError') {
                 inEditor.session.setAnnotations([{
                     row: e.line - 1,
                     column: e.column - 1,

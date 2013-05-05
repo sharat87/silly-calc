@@ -29,10 +29,19 @@ var Lang = (function () {
     Lang.prototype = {
 
         calc: function (input) {
-            var lines = input.split('\n');
+            var lines = input.split('\n'), output;
 
             for (var i = 0, len = lines.length; i < len; ++i) {
-                var output = this.parser.parse(lines[i]);
+
+                try {
+                    output = this.parser.parse(lines[i]);
+                } catch (e) {
+                    if (e.name !== 'SyntaxError') throw e;
+                    e.name = 'LangError';
+                    e.line = this.parser.row + 1;
+                    throw e;
+                }
+
                 this.parser.results[this.parser.row++] = output;
 
                 if (this.parser.headerRow && typeof output == 'number')
