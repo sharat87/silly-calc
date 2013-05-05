@@ -123,8 +123,9 @@ identifier "an identifier"
 
 lineRef "a line reference"
   = '_' ds:[0-9]+
-    { var refNo = parseInt(ds.join(''), 10);
-      return self.results[self.row - refNo]; }
+    { var refNo = parseInt(ds.join(''), 10),
+          result = self.results[self.row - refNo];
+      return result.hasValue ? result.value : ''; }
 
 __ "whitespace"
   = (' ' / '\t')*

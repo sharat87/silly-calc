@@ -121,11 +121,8 @@
         var code = inEditor.getValue();
         if (recalculate.last === code) return;
 
-        var lang = new Lang(), results = null;
-
-        results = lang.calc(code);
-
-        outDisplay.setValues(results);
+        var lang = new Lang();
+        outDisplay.setValues(lang.calc(code));
 
         recalculate.last = code;
     }
