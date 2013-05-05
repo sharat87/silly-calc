@@ -26,31 +26,27 @@ var Lang = (function () {
         this.parser.results = [];
     }
 
-    Lang.prototype = {
+    Lang.prototype.calc = function (input) {
+        var lines = input.split('\n'), output;
 
-        calc: function (input) {
-            var lines = input.split('\n'), output;
+        for (var i = 0, len = lines.length; i < len; ++i) {
 
-            for (var i = 0, len = lines.length; i < len; ++i) {
-
-                try {
-                    output = this.parser.parse(lines[i]);
-                } catch (e) {
-                    if (e.name !== 'SyntaxError') throw e;
-                    e.name = 'LangError';
-                    e.line = this.parser.row + 1;
-                    throw e;
-                }
-
-                this.parser.results[this.parser.row++] = output;
-
-                if (this.parser.headerRow && typeof output == 'number')
-                    this.parser.results[this.parser.headerRow] = output;
+            try {
+                output = this.parser.parse(lines[i]);
+            } catch (e) {
+                if (e.name !== 'SyntaxError') throw e;
+                e.name = 'LangError';
+                e.line = this.parser.row + 1;
+                throw e;
             }
 
-            return this.parser.results;
+            this.parser.results[this.parser.row++] = output;
+
+            if (this.parser.headerRow && typeof output == 'number')
+                this.parser.results[this.parser.headerRow] = output;
         }
 
+        return this.parser.results;
     };
 
     var xhr = new XMLHttpRequest();
