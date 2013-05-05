@@ -214,6 +214,8 @@
                 key = input.dataset.keyName = 'conf' + titleCase(input.name);
             if (localStorage.hasOwnProperty(key))
                 input.value = localStorage[key];
+            else
+                localStorage.setItem(key, input.value);
         }
 
         settingsElem.addEventListener('change', function (e) {
