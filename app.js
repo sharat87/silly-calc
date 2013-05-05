@@ -207,7 +207,7 @@
 
     function initSettings() {
         var settingsElem = document.getElementById('settings'),
-            inputs = settingsElem.querySelectorAll('input[name]');
+            inputs = settingsElem.querySelectorAll('input[name], select');
 
         for (var i = inputs.length; i-- > 0;) {
             var input = inputs[i],
@@ -219,7 +219,6 @@
         }
 
         settingsElem.addEventListener('change', function (e) {
-            if (e.target.tagName.toLowerCase() != 'input') return;
             localStorage.setItem(e.target.dataset.keyName, e.target.value);
             var event = new CustomEvent('conf-change', { detail: {
                 name: e.target.name,
