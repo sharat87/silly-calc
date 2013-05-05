@@ -20,16 +20,26 @@ var Lang = (function () {
             trackLineAndColumn: true
         });
         this.parser.defaultScope = BUILTINS;
+        this.parser.scope = {};
+        this.parser.row = 0;
+        this.parser.headerRow = null;
+        this.parser.results = [];
     }
 
     Lang.prototype = {
 
         calc: function (input) {
-            return this.parser.parse(input);
-        },
+            var lines = input.split('\n');
 
-        set: function (name, value) {
-            this.parser.scope[name] = value;
+            for (var i = 0, len = lines.length; i < len; ++i) {
+                var output = this.parser.parse(lines[i]);
+                this.parser.results[this.parser.row++] = output;
+
+                if (this.parser.headerRow && typeof output == 'number')
+                    this.parser.results[this.parser.headerRow] = output;
+            }
+
+            return this.parser.results;
         }
 
     };

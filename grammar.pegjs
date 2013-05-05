@@ -1,34 +1,28 @@
 {
-  // For lineRef values. `line` is 1-based, so put a dummy `null` at 0.
-  var self = this, lineResults = [null], headerLineNo = null, _scope = {};
+  var self = this;
 
   function getVar(name) {
-    return _scope.hasOwnProperty(name) ? _scope[name] : self.defaultScope[name];
+    return self.scope.hasOwnProperty(name) ?
+              self.scope[name] : self.defaultScope[name];
   }
 
   function setVar(name, value) {
-    return _scope[name] = value;
+    return self.scope[name] = value;
   }
 }
 
-start = langScript
-
-langScript
-  = (exprLine '\n')* exprLine '\n'?
-    { return lineResults.slice(1); }
-  / ''
+start = exprLine
 
 // The order of the first two entries is awkward, but necessary for sensible
 // error messages to be generated.
 exprLine
-  = !([^\n:]* ':') expr:expr (';' [^\n]*)?
-    { if (headerLineNo) lineResults[headerLineNo] = expr;
-      lineResults[line] = expr; }
-  / [^\n:]* ':'
-    { lineResults[headerLineNo = line] = ''; }
+  = [^\n:]* ':'
+    { self.headerRow = self.row;
+      return ''; }
+  / expr:expr (';' [^\n]*)?
+    { return expr; }
   / (';' .*)?
-    { lineResults[line] = ''; }
-  / { lineResults[line] = 'err'; }
+    { return ''; }
 
 expr
   = result:(assignment / addition) __
@@ -126,7 +120,7 @@ identifier "an identifier"
 lineRef "a line reference"
   = '_' ds:[0-9]+
     { var refNo = parseInt(ds.join(''), 10);
-      return lineResults[line - refNo] || 0; }
+      return self.results[self.row - refNo]; }
 
 __ "whitespace"
   = (' ' / '\t')*
