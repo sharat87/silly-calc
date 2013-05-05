@@ -27,7 +27,8 @@
                 outputMarkup = [],
                 foldNo = 0,
                 i = 0,
-                len = this.values.length;
+                len = this.values.length,
+                annotations = [];
 
             inEditor.session.clearAnnotations();
 
@@ -39,13 +40,13 @@
 
                 if (!result.ok) {
                     val = '';
-                    inEditor.session.setAnnotations([{
+                    annotations.push({
                         row: result.error.line - 1,
                         column: result.error.column - 1,
                         text: result.error.message,
                         type: 'error',
                         raw: result
-                    }]);
+                    });
 
                 } else if (result.hasValue) {
                     val = parseFloat(result.value
@@ -71,6 +72,7 @@
                 '<div class=gutter>' + gutterMarkup.join('') + '</div>' +
                 '<div class=output>' + outputMarkup.join('') + '</div>';
 
+            inEditor.session.setAnnotations(annotations);
         },
 
         setValues: function (values) {
