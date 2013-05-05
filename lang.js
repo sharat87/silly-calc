@@ -1,6 +1,9 @@
 var Lang = (function () {
+    /*jshint browser:true */
+    /*global PEG */
+    "use strict";
 
-    BUILTINS = {
+    var BUILTINS = {
 
         // Constants
         PI: Math.PI,
@@ -29,10 +32,10 @@ var Lang = (function () {
     Lang.prototype.calc = function (input) {
         var lines = input.split('\n'), output;
 
-        for (var i = 0, len = lines.length; i < len; ++i) {
+        for (var len = lines.length; this.parser.row < len;) {
 
             try {
-                output = this.parser.parse(lines[i]);
+                output = this.parser.parse(lines[this.parser.row]);
             } catch (e) {
                 if (e.name !== 'SyntaxError') throw e;
                 e.line = this.parser.row + 1;
