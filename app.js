@@ -1,6 +1,6 @@
 (function () {
     /*jshint browser:true */
-    /*global Lang ace CustomEvent */
+    /*global langEval ace CustomEvent */
     "use strict";
 
     var inEditor, outDisplay,
@@ -123,8 +123,7 @@
         var code = inEditor.getValue();
         if (recalculate.last === code) return;
 
-        var lang = new Lang();
-        outDisplay.setValues(lang.calc(code));
+        outDisplay.setValues(langEval(code));
 
         recalculate.last = code;
     }

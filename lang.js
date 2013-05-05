@@ -1,8 +1,9 @@
-var Lang = (function () {
+var langEval = (function () {
     /*jshint browser:true */
     /*global PEG */
     "use strict";
 
+    var parser = null;
     var BUILTINS = {
 
         // Constants
@@ -17,46 +18,57 @@ var Lang = (function () {
 
     };
 
-    function Lang() {
-        if (!Lang.grammar) throw new TypeError('Language grammar is not set');
-        this.parser = PEG.buildParser(Lang.grammar, {
-            trackLineAndColumn: true
-        });
-        this.parser.defaultScope = BUILTINS;
-        this.parser.scope = {};
-        this.parser.row = 0;
-        this.parser.headerRow = null;
-        this.parser.results = [];
-    }
+    function langEval(input) {
+        if (parser === null)
+            throw new TypeError('Parser is not loaded yet.');
 
-    Lang.prototype.calc = function (input) {
+        var env = clone(parser);
+        env.scope = {};
+        env.row = 0;
+        env.headerRow = null;
+        env.results = [];
+
         var lines = input.split('\n'), output;
 
-        for (var len = lines.length; this.parser.row < len;) {
+        for (var len = lines.length; env.row < len;) {
 
             try {
-                output = this.parser.parse(lines[this.parser.row]);
+                output = env.parse(lines[env.row]);
             } catch (e) {
                 if (e.name !== 'SyntaxError') throw e;
-                e.line = this.parser.row + 1;
+                e.line = env.row + 1;
                 output = {ok: false, error: e};
             }
 
-            this.parser.results[this.parser.row++] = output;
+            env.results[env.row++] = output;
 
-            if (this.parser.headerRow && output.hasValue)
-                this.parser.results[this.parser.headerRow] = output;
+            if (env.headerRow && output.hasValue)
+                env.results[env.headerRow] = output;
         }
 
-        return this.parser.results;
-    };
+        return env.results;
+    }
 
+    function initParser(grammar) {
+        parser = PEG.buildParser(grammar, {trackLineAndColumn: true});
+        parser.defaultScope = BUILTINS;
+    }
+
+    function clone(obj) {
+        var obj2 = {};
+        for (var key in obj)
+            if (obj.hasOwnProperty(key))
+                obj2[key] = obj[key];
+        return obj2;
+    }
+
+    // TODO: Make async.
     var xhr = new XMLHttpRequest();
     xhr.onload = function () {
-        Lang.grammar = this.responseText;
+        initParser(this.responseText);
     };
     xhr.open('get', 'grammar.pegjs', false);
     xhr.send();
 
-    return Lang;
+    return langEval;
 }());
