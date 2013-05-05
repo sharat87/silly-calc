@@ -29,14 +29,32 @@
                 i = 0,
                 len = this.values.length;
 
+            inEditor.session.clearAnnotations();
+
             while (i < len) {
-                var val = this.values[i],
+                var result = this.values[i],
+                    val = result,
                     isCollapsed = this.isRowCollapsed(i),
                     isCurrent = this.currentLine === i + 1;
 
-                if (typeof val === 'number')
-                    val = parseFloat(this.values[i]
+                if (!result.ok) {
+                    val = '';
+                    inEditor.session.setAnnotations([{
+                        row: result.error.line - 1,
+                        column: result.error.column - 1,
+                        text: result.error.message,
+                        type: 'error',
+                        raw: result
+                    }]);
+
+                } else if (result.hasValue) {
+                    val = parseFloat(result.value
                                         .toFixed(localStorage.confFix));
+
+                } else {
+                    val = '';
+
+                }
 
                 extend(outputMarkup, '<div class="line',
                     (isCurrent ? ' current' : ''),
@@ -105,25 +123,9 @@
 
         var lang = new Lang(), results = null;
 
-        try {
-            results = lang.calc(code);
-        } catch (e) {
-            if (e.name === 'LangError') {
-                inEditor.session.setAnnotations([{
-                    row: e.line - 1,
-                    column: e.column - 1,
-                    text: e.message,
-                    type: 'error',
-                    raw: e
-                }]);
-            } else throw e;
-        }
+        results = lang.calc(code);
 
-
-        if (results !== null) {
-            outDisplay.setValues(results);
-            inEditor.session.clearAnnotations();
-        }
+        outDisplay.setValues(results);
 
         recalculate.last = code;
     }

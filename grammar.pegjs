@@ -9,6 +9,10 @@
   function setVar(name, value) {
     return self.scope[name] = value;
   }
+
+  function wrap(result) {
+    return {ok: true, hasValue: typeof result == 'number', value: result};
+  }
 }
 
 start = exprLine
@@ -18,11 +22,11 @@ start = exprLine
 exprLine
   = [^\n:]* ':'
     { self.headerRow = self.row;
-      return ''; }
+      return wrap(''); }
   / expr:expr (';' [^\n]*)?
-    { return expr; }
+    { return wrap(expr); }
   / (';' .*)?
-    { return ''; }
+    { return wrap(''); }
 
 expr
   = result:(assignment / addition) __

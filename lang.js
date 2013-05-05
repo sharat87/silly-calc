@@ -35,14 +35,13 @@ var Lang = (function () {
                 output = this.parser.parse(lines[i]);
             } catch (e) {
                 if (e.name !== 'SyntaxError') throw e;
-                e.name = 'LangError';
                 e.line = this.parser.row + 1;
-                throw e;
+                output = {ok: false, error: e};
             }
 
             this.parser.results[this.parser.row++] = output;
 
-            if (this.parser.headerRow && typeof output == 'number')
+            if (this.parser.headerRow && output.hasValue)
                 this.parser.results[this.parser.headerRow] = output;
         }
 
