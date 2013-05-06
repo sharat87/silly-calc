@@ -122,7 +122,7 @@ button:active {
 
 #input-editor, #output-display {
     height: 100%;
-    font: 20px 'Inconsolata', monospace;
+    font: 20px Inconsolata, monospace;
 }
 
 #input-editor {

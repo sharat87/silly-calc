@@ -265,7 +265,8 @@
 
         initSettings();
         document.addEventListener('conf-change', function (e) {
-            if (e.detail.name === 'fix') {
+            var name = e.detail.name;
+            if (name === 'fix') {
                 outDisplay.render();
             }
         });
