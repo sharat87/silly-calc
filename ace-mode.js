@@ -116,7 +116,7 @@ var LakeHighlightRules = function() {
             {token: 'variable', regex: /[a-zA-Z][a-zA-Z0-9_]*/},
             {token: 'keyword.operator', regex: /[=\-\+\*\/\^%]+/},
             {token: 'lineref.keyword.other', regex: /_\d+/},
-            {token: 'constant.numeric', regex: /\d+/},
+            {token: 'constant.numeric', regex: /\d+(\.\d+)?/},
             {token: 'comment.line.semicolon', regex: /;.*$/}
         ]
     };
