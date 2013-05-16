@@ -1,9 +1,7 @@
 var langEval = (function () {
     /*jshint browser:true */
-    /*global PEG */
     "use strict";
 
-    var parser = null;
     var BUILTINS = {
 
         // Constants
@@ -19,10 +17,10 @@ var langEval = (function () {
     };
 
     function langEval(input) {
-        if (parser === null)
+        if (window.LangParser === null)
             throw new TypeError('Parser is not loaded yet.');
 
-        var env = clone(parser);
+        var env = clone(window.LangParser);
         env.scope = {};
         env.row = 0;
         env.headerRow = null;
@@ -49,11 +47,6 @@ var langEval = (function () {
         return env.results;
     }
 
-    function initParser(grammar) {
-        parser = PEG.buildParser(grammar, {trackLineAndColumn: true});
-        parser.defaultScope = BUILTINS;
-    }
-
     function clone(obj) {
         var obj2 = {};
         for (var key in obj)
@@ -61,14 +54,6 @@ var langEval = (function () {
                 obj2[key] = obj[key];
         return obj2;
     }
-
-    // TODO: Make async.
-    var xhr = new XMLHttpRequest();
-    xhr.onload = function () {
-        initParser(this.responseText);
-    };
-    xhr.open('get', 'grammar.pegjs', false);
-    xhr.send();
 
     return langEval;
 }());
