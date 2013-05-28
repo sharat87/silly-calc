@@ -3,7 +3,7 @@
 
   function getVar(name) {
     return self.scope.hasOwnProperty(name) ?
-              self.scope[name] : self.defaultScope[name];
+              self.scope[name] : 0;
   }
 
   function setVar(name, value) {
@@ -23,9 +23,9 @@ exprLine
   = [^\n:]* ':'
     { self.headerRow = self.row;
       return wrap(''); }
-  / expr:expr (';' [^\n]*)?
+  / expr:expr ('#' [^\n]*)?
     { return wrap(expr); }
-  / (';' .*)?
+  / ('#' .*)?
     { return wrap(''); }
 
 expr
@@ -85,7 +85,7 @@ atom
 // Functions cannot not take any arguments. Currently.
 // TODO: Error checking.
 functionCall
-  = name:identifier '(' arg1:expr rest:(',' expr)* ')'
+  = name:identifier '(' arg1:expr rest:(';' expr)* ')'
     { var args = [arg1];
       for (var i = 0; i < rest.length; i++)
         args.push(rest[i][1]);

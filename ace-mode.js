@@ -79,7 +79,7 @@ oop.inherits(Mode, TextMode);
 (function() {
 
     // TODO: What the hell is this for?
-    this.lineCommentStart = ';';
+    this.lineCommentStart = '#';
 
     // TODO: Use the lake parser here.
     // this.createWorker = function(session) {
@@ -117,7 +117,7 @@ var LakeHighlightRules = function() {
             {token: 'keyword.operator', regex: /[=\-\+\*\/\^%]+/},
             {token: 'lineref.keyword.other', regex: /_\d+/},
             {token: 'constant.numeric', regex: /\d+(\.\d+)?/},
-            {token: 'comment.line.semicolon', regex: /;.*$/}
+            {token: 'comment.line.semicolon', regex: /#.*$/}
         ]
     };
 

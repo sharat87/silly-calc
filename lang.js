@@ -12,7 +12,15 @@ var langEval = (function () {
         sqrt: Math.sqrt,
         log: Math.log,
         sin: Math.sin,
-        cos: Math.cos
+        cos: Math.cos,
+
+        // Sum of given numbers
+        sum: function () {
+            var sum = 0;
+            for (var i = arguments.length; i-- > 0;)
+                sum += arguments[i];
+            return sum;
+        }
 
     };
 
@@ -21,7 +29,7 @@ var langEval = (function () {
             throw new TypeError('Parser is not loaded yet.');
 
         var env = clone(window.LangParser);
-        env.scope = {};
+        env.scope = BUILTINS;
         env.row = 0;
         env.headerRow = null;
         env.results = [];
