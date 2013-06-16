@@ -102,12 +102,17 @@ button:active {
     color: #F77;
 }
 
-#dirty-indicator.dirty:before {
-    content: "Unsaved ";
-    color: red;
+#dirty-indicator:before {
+    content: "Saved ";
+    color: green;
     text-transform: uppercase;
     letter-spacing: -1px;
     opacity: .6;
+}
+
+#dirty-indicator.dirty:before {
+    content: "Unsaved ";
+    color: red;
 }
 
 #app-container {
