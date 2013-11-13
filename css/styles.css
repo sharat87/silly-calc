@@ -1,11 +1,11 @@
-@import url(http://fonts.googleapis.com/css?family=Source+Code+Pro|Bree+Serif|Lato);
+@import url(http://fonts.googleapis.com/css?family=Source+Sans+Pro|Source+Code+Pro|Permanent+Marker);
 
 * { box-sizing: border-box; }
 
 html, body {
     background-color: white;
     height: 100%;
-    font-family: Lato, sans-serif;
+    font-family: 'Source Sans Pro', sans-serif;
 }
 
 body {
@@ -40,7 +40,7 @@ button:active {
 
 #topbar .left {
     float: left;
-    font-family: 'Bree Serif', cursive;
+    font-family: 'Permanent Marker', cursive;
     font-size: 20px;
 }
 
@@ -103,15 +103,13 @@ button:active {
 }
 
 #dirty-indicator:before {
-    content: "Saved ";
+    content: "SAVED ";
     color: green;
-    text-transform: uppercase;
-    letter-spacing: -1px;
     opacity: .6;
 }
 
 #dirty-indicator.dirty:before {
-    content: "Unsaved ";
+    content: "UNSAVED ";
     color: red;
 }
 
