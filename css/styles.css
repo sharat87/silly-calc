@@ -103,7 +103,7 @@ button {
 }
 
 #dirty-indicator:before {
-    content: 'SAVED ';
+    content: '✓ SAVED ';
     color: green;
     opacity: .6;
 }
