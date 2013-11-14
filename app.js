@@ -164,46 +164,34 @@
     }());
 
     function setupPopups() {
-        var buttons = document.getElementById('topbar')
-                .querySelectorAll('[data-popup]'),
-            popups = document.getElementsByClassName('popup');
+        var triggers = document.getElementById('topbar').querySelectorAll('[popup]'),
+            openedPopup = null;
 
-        var i, len;
-        for (i = 0, len = buttons.length; i < len; ++i) {
-            buttons[i].addEventListener('click', onBtnClick);
+        for (var i = triggers.length; i-- > 0;) {
+            triggers[i].addEventListener('click', openPopup);
         }
 
-        for (i = 0, len = popups.length; i < len; ++i) {
-            popups[i].addEventListener('click', onPopupClick);
+        function openPopup(e) {
+            closePopup();
+            openedPopup = document.querySelector(e.currentTarget.getAttribute('popup'));
+            openedPopup.classList.add('open');
         }
 
-        document.addEventListener('keydown', function (e) {
-            // ESC key.
-            if (e.which === 27) {
-                var activePopups =
-                    document.getElementsByClassName('active popup');
-                if (activePopups.length)
-                    activePopups[activePopups.length - 1]
-                        .classList.remove('active');
-            }
+        function closePopup() {
+            if (openedPopup)
+                openedPopup.classList.remove('open');
+            openedPopup = null;
+        }
+
+        document.addEventListener('click', function (e) {
+            if (e.target.classList.contains('popup-close'))
+                closePopup();
         });
 
-        function onBtnClick(e) {
-            e.preventDefault();
-            var btn = e.currentTarget,
-                popups = document.getElementsByClassName('popup'),
-                popup = document.querySelector(btn.dataset.popup);
-            for (var i = 0, len = popups.length; i < len; ++i) {
-                popups[i].classList[
-                    popup === popups[i] ? 'toggle' : 'remove']('active');
-            }
-        }
-
-        function onPopupClick(e) {
-            if (e.target.classList.contains('close')) {
-                e.currentTarget.classList.remove('active');
-            }
-        }
+        document.addEventListener('keydown', function (e) {
+            if (e.which === 27) // ESC key
+                closePopup();
+        });
     }
 
     function initSettings() {

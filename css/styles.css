@@ -72,7 +72,7 @@ button:active {
     z-index: 8;
 }
 
-.popup.active {
+.popup.open {
     top: 36px;
     opacity: .95;
     box-shadow: 0 3px 18px rgba(0, 0, 0, .5);
@@ -82,7 +82,7 @@ button:active {
     margin: 0 0 12px 0;
 }
 
-.popup .close {
+.popup .popup-close {
     position: absolute;
     top: 6px;
     right: 6px;
@@ -93,12 +93,12 @@ button:active {
     color: #BBB;
 }
 
-.popup .close:after {
+.popup .popup-close:after {
     content: "×ESC";
 }
 
-.popup .close:hover,
-.popup .close:focus {
+.popup .popup-close:hover,
+.popup .popup-close:focus {
     color: #F77;
 }
 
