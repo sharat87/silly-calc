@@ -49,8 +49,9 @@
                     });
 
                 } else if (result.hasValue) {
-                    val = parseFloat(result.value
-                                        .toFixed(localStorage.confFix));
+                    // See http://stackoverflow.com/a/2901298/151048
+                    // result.value.toFixed(localStorage.confFix).replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+                    val = result.value.toLocaleString();
 
                 } else {
                     val = '';
