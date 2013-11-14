@@ -157,7 +157,7 @@ body {
 }
 
 #output-display .line:empty:before {
-    content: ' ';
+    content: '-';
     visibility: hidden;
 }
 
