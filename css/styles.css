@@ -1,11 +1,11 @@
-@import url(http://fonts.googleapis.com/css?family=Source+Sans+Pro|Source+Code+Pro|Permanent+Marker);
+@import url(http://fonts.googleapis.com/css?family=Permanent+Marker);
 
 * { box-sizing: border-box; }
 
 html, body {
     background-color: white;
     height: 100%;
-    font-family: 'Source Sans Pro', sans-serif;
+    font-family: sans-serif;
 }
 
 body {
@@ -89,7 +89,7 @@ button:active {
     display: inline-block;
     border: none;
     background: none;
-    font-family: 'Source Code Pro';
+    font-family: monospace;
     color: #BBB;
 }
 
@@ -125,7 +125,7 @@ button:active {
 
 #input-editor, #output-display {
     height: 100%;
-    font: 20px 'Source Code Pro', monospace;
+    font: 20px monospace;
 }
 
 #input-editor {
