@@ -77,6 +77,7 @@ atom
   / '(' expr:expr ')'?
     { return expr; }
   / percentage
+  / denominated
   / number
   / lineRef
   / name:identifier
@@ -94,6 +95,16 @@ functionCall
 percentage
   = num:(float / integer) '%'
     { return num / 100; }
+
+denominated
+  = num:(float / integer) 'm'
+    { return num * 1000000; }
+  / num:(float / integer) 'b'
+    { return num * 1000000000; }
+  / num:(float / integer) 'l'
+    { return num * 100000; }
+  / num:(float / integer) 'c'
+    { return num * 10000000; }
 
 number "a number"
   = float
