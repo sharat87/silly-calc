@@ -111,9 +111,6 @@
 
         // Hide the editor's builtin scrollbar.
         inEditor.renderer.scrollBar.element.style.display = 'none';
-
-        // Remove the small gap at the right edge, reserved for the vertical
-        // scrollbar.
         inEditor.renderer.scrollBar.width = 0;
 
         inEditor.session.setMode('lang/ace-mode-js');
@@ -123,9 +120,7 @@
     function recalculate() {
         var code = inEditor.getValue();
         if (recalculate.last === code) return;
-
         outDisplay.setValues(langEval(code));
-
         recalculate.last = code;
     }
 
@@ -139,7 +134,7 @@
     }
 
     function save() {
-        localStorage.setItem('input', inEditor.getValue());
+        localStorage.input = inEditor.getValue();
     }
 
     var updateSheet = (function () {
