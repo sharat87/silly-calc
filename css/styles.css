@@ -49,7 +49,6 @@ button:active {
     width: 36px;
     border: none;
     background: none;
-    cursor: pointer;
 }
 
 .popup {
@@ -57,12 +56,13 @@ button:active {
     top: -80%;
     right: 120px;
     border-radius: 0 0 6px 6px;
-    width: 50%;
+    min-width: 400px;
+    max-width: 50%;
     min-height: 120px;
     max-height: 80%;
     padding: 12px;
     opacity: 0;
-    transition: all .5s ease;
+    transition: all .2s ease;
     overflow-y: auto;
     background-color: white;
     background-image: linear-gradient(to bottom, #FFF 0%, #EEE 100%); /* W3C */
@@ -79,7 +79,7 @@ button:active {
 }
 
 .popup h2 {
-    margin: 0 0 12px 0;
+    margin: 0 0 12px;
 }
 
 .popup .popup-close {
@@ -89,12 +89,11 @@ button:active {
     display: inline-block;
     border: none;
     background: none;
-    font-family: monospace;
     color: #BBB;
 }
 
 .popup .popup-close:after {
-    content: "×ESC";
+    content: '× ESC';
 }
 
 .popup .popup-close:hover,
@@ -103,13 +102,13 @@ button:active {
 }
 
 #dirty-indicator:before {
-    content: "SAVED ";
+    content: 'SAVED ';
     color: green;
     opacity: .6;
 }
 
 #dirty-indicator.dirty:before {
-    content: "UNSAVED ";
+    content: 'UNSAVED ';
     color: red;
 }
 
