@@ -41,8 +41,19 @@ button {
 
 #topbar .left {
     float: left;
+}
+
+#topbar .brand {
     font-family: 'Permanent Marker', cursive;
     font-size: 20px;
+    margin: 0;
+    display: inline-block;
+}
+
+#topbar em {
+    opacity: .5;
+    font-size: .8em;
+    margin-left: 12px;
 }
 
 #topbar button {
