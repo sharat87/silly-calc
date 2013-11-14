@@ -10,7 +10,13 @@ html, body {
 
 body {
     color: #333;
-    text-shadow: rgba(0, 0, 0, .1) 0px 1px 1px;
+    text-shadow: rgba(0, 0, 0, .2) 0px 1px 1px;
+    margin: 0;
+}
+
+button {
+    font: inherit;
+    cursor: pointer;
 }
 
 #topbar {
