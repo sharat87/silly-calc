@@ -13,11 +13,6 @@ body {
     text-shadow: rgba(0, 0, 0, .1) 0px 1px 1px;
 }
 
-button:active {
-    -webkit-transform: translatey(1px);
-    transform: translatey(1px);
-}
-
 #topbar {
     position: relative;
     width: 100%;
@@ -26,10 +21,10 @@ button:active {
     line-height: 36px;
     box-shadow: 0 0 4px rgba(0, 0, 0, .6);
     background-color: white;
-    background-image: linear-gradient(to bottom, #FFFFFF 0%, #E2DEDE 100%); /* W3C */
-    background-image: -moz-linear-gradient(top, #FFFFFF 0%, #E2DEDE 100%); /* FF3.6+ */
-    background-image: -o-linear-gradient(top, #FFFFFF 0%, #E2DEDE 100%); /* Opera 11.10+ */
-    background-image: -ms-linear-gradient(top, #FFFFFF 0%, #E2DEDE 100%); /* IE10+ */
+    background-image: linear-gradient(to bottom, #FFF 0%, #EEE 100%); /* W3C */
+    background-image: -moz-linear-gradient(top, #FFF 0%, #EEE 100%); /* FF3.6+ */
+    background-image: -o-linear-gradient(top, #FFF 0%, #EEE 100%); /* Opera 11.10+ */
+    background-image: -ms-linear-gradient(top, #FFF 0%, #EEE 100%); /* IE10+ */
     z-index: 10;
 }
 
@@ -162,8 +157,8 @@ button:active {
 }
 
 #output-display .line:empty:before {
-    content: "-";
-    opacity: 0;
+    content: ' ';
+    visibility: hidden;
 }
 
 #output-display .line.current {
@@ -172,28 +167,4 @@ button:active {
 
 #output-display .collapsed {
     display: none;
-}
-
-#app-container .result:before {
-    content: attr(data-label);
-    opacity: .4;
-}
-
-#app-container .result {
-    line-height: 30px;
-}
-
-#app-container .result {
-    height: 30px;
-}
-
-#settings label .title {
-    float: left;
-    width: 160px;
-    text-align: right;
-    padding-top: 2px;
-}
-
-#settings label .controls {
-    margin-left: 180px;
 }
