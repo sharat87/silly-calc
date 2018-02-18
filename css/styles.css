@@ -1,5 +1,3 @@
-@import url(http://fonts.googleapis.com/css?family=Permanent+Marker);
-
 * { box-sizing: border-box; }
 
 html, body {
@@ -10,7 +8,7 @@ html, body {
 
 body {
     color: #333;
-    text-shadow: rgba(0, 0, 0, .2) 0px 1px 1px;
+    text-shadow: rgba(0, 0, 0, .2) 0 1px 1px;
     margin: 0;
 }
 
@@ -44,7 +42,7 @@ button {
 }
 
 #topbar .brand {
-    font-family: 'Permanent Marker', cursive;
+    font-family: monospace;
     font-size: 20px;
     margin: 0;
     display: inline-block;
