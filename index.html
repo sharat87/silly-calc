@@ -1,41 +1,43 @@
 <!doctype html>
+<html lang="en">
 <meta charset=utf-8>
 <title>Silly simple calculator</title>
 <link rel=stylesheet href=css/styles.css>
+<link href="https://fonts.googleapis.com/css?family=Fira+Mono" rel="stylesheet">
 
 <header id=topbar>
-  <section class=left>
-    <h1 class=brand>Silly Calculator</h1>
-    <em>&mdash; A calculator that does <b>math</b>!</em>
-  </section>
-  <section class=right>
-    <span id=dirty-indicator></span>
-    <button popup=#help title=Help><img src=img/help.png></button>
-    <button popup=#settings title=Settings><img src=img/settings.png></button>
-  </section>
+    <section class=left>
+        <h1 class=brand>Silly Calculator</h1>
+        <em>&mdash; A calculator that does <b>math</b>!</em>
+    </section>
+    <section class=right>
+        <span id=dirty-indicator></span>
+        <button popup=#help title=Help><img src=img/help.png></button>
+        <button popup=#settings title=Settings><img src=img/settings.png></button>
+    </section>
 </header>
 
 <section id=app-container>
-  <section id=input-editor></section>
-  <section id=output-display></section>
+    <section id=input-editor></section>
+    <section id=output-display></section>
 </section>
 
 <section id=help class=popup>
-  <h2>Huh?</h2>
-  <p>This is an annoyingly simple worksheet style calculator. It is currently a
-    work-in-progress, but I frequently use it for my studies. If you find any
-    problem or a missing function/functionality, feel free to drop me a line.</p>
-  <p>Find me on twitter <a target=_blank href='http://twitter.com/sharat87'>@sharat87</a>.
-    Or you can <strong>G</strong>mail me at <i>shrikantsharat.k</i>.</p>
-  <p>The source code for this project (available under GPLv3) can
-    be accessed from its
-    <a target=_blank href='http://github.com/sharat87/silly-calc'>Github project page</a>.</p>
-  <button class=popup-close></button>
+    <h2>Huh?</h2>
+    <p>This is an annoyingly simple worksheet style calculator. It is currently a
+        work-in-progress, but I frequently use it for my studies. If you find any
+        problem or a missing function/functionality, feel free to drop me a line.</p>
+    <p>Find me on twitter <a target=_blank href='http://twitter.com/sharat87'>@sharat87</a>.
+        Or you can <strong>G</strong>mail me at <i>shrikantsharat.k</i>.</p>
+    <p>The source code for this project (available under GPLv3) can
+        be accessed from its
+        <a target=_blank href='http://github.com/sharat87/silly-calc'>Github project page</a>.</p>
+    <button class=popup-close></button>
 </section>
 
 <section id=settings class=popup>
-  <p>Nothing here yet.</p>
-  <button class=popup-close></button>
+    <p>Nothing here yet.</p>
+    <button class=popup-close></button>
 </section>
 
 <script src=vendor/ace/ace.js></script>

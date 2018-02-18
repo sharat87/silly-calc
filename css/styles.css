@@ -8,7 +8,7 @@ html, body {
 
 body {
     color: #333;
-    text-shadow: rgba(0, 0, 0, .2) 0 1px 1px;
+    text-shadow: rgba(0, 0, 0, .1) 0 1px 1px;
     margin: 0;
 }
 
@@ -59,6 +59,10 @@ button {
     width: 36px;
     border: none;
     background: none;
+}
+
+#input-editor, #output-display, #topbar .brand {
+    font-family: 'Fira Mono', monospace;
 }
 
 .popup {
@@ -134,7 +138,7 @@ button {
 
 #input-editor, #output-display {
     height: 100%;
-    font: 20px monospace;
+    font-size: 20px;
 }
 
 #input-editor {
