@@ -282,15 +282,14 @@
             outDisplay.setFolds(inEditor.session.getAllFolds());
         });
 
-        inEditor.setValue(localStorage.input || [
-            'a = 3',
-            'a ^ 2',
-            '',
-            'Using functions and line references:',
-            'sin(PI/4) * sqrt(a) + 41',
-            'ans + 10',
-            ''
-        ].join('\n'));
+        inEditor.setValue(localStorage.input || (
+            'a = 3\n'
+            + 'a ^ 2\n'
+            + '\n'
+            + 'Using functions and line references:\n'
+            + 'sin(PI/4) * sqrt(a) + 41\n'
+            + 'ans + 10\n'
+        ));
 
         window.addEventListener('storage', function (e) {
             inEditor.setValue(localStorage.input);
