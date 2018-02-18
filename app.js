@@ -140,7 +140,7 @@
         var lastChangeAt = 0;
 
         setInterval(function () {
-            if (lastChangeAt === null || Date.now() - lastChangeAt < 150)
+            if (window.math === null || lastChangeAt === null || Date.now() - lastChangeAt < 150)
                 return;
             lastChangeAt = null;
             recalculate();
