@@ -48,6 +48,9 @@
                         raw: result
                     });
 
+                } else if (result.value instanceof Function) {
+                    val = '[Function ' + result.value.name + ']';
+
                 } else {
                     // See http://stackoverflow.com/a/2901298/151048
                     // result.value.toFixed(localStorage.confFix).replace(/\B(?=(\d{3})+(?!\d))/g, ',');
