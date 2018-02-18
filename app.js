@@ -207,9 +207,14 @@
         }
 
         function openPopup(e) {
-            closePopup();
-            openedPopup = document.querySelector(e.currentTarget.getAttribute('popup'));
-            openedPopup.classList.add('open');
+            var popupId = e.currentTarget.getAttribute('popup');
+            if (openedPopup && openedPopup.id === popupId) {
+                closePopup();
+            } else {
+                closePopup();
+                openedPopup = document.getElementById(popupId);
+                openedPopup.classList.add('open');
+            }
         }
 
         function closePopup() {
@@ -244,17 +249,21 @@
 
         settingsElem.addEventListener('change', function (e) {
             localStorage.setItem(e.target.dataset.keyName, e.target.value);
-            var event = new CustomEvent('conf-change', { detail: {
-                name: e.target.name,
-                key: e.target.dataset.keyName,
-                value: e.target.value,
-                input: e.target
-            }});
+            var event = new CustomEvent('conf-change', {
+                detail: {
+                    name: e.target.name,
+                    key: e.target.dataset.keyName,
+                    value: e.target.value,
+                    input: e.target
+                }
+            });
             document.dispatchEvent(event);
         });
 
         function titleCase(text) {
-            return text.replace(/^./, function (m) { return m.toUpperCase(); });
+            return text.replace(/^./, function (m) {
+                return m.toUpperCase();
+            });
         }
 
     }
