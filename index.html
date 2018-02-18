@@ -15,6 +15,7 @@
     </section>
     <section class=right>
         <span id=dirty-indicator></span>
+        <button popup=open title=Settings>New / Open</button>
         <button popup=settings title=Settings>Config</button>
         <button popup=help title=Help>Help</button>
     </section>
@@ -23,6 +24,23 @@
 <section id=app-container>
     <section id=input-editor></section>
     <section id=output-display></section>
+</section>
+
+<section id=open class=popup>
+    <ul id="open-listing">
+    </ul>
+    <form action="#">
+        <label>
+            <span>New:</span>
+            <input id="newSheetInput">
+        </label>
+    </form>
+    <button class=popup-close></button>
+</section>
+
+<section id=settings class=popup>
+    <p>Nothing here yet.</p>
+    <button class=popup-close></button>
 </section>
 
 <section id=help class=popup>
@@ -44,11 +62,6 @@
         The source code for this project (available under GPLv3) can be accessed from the
         <a target=_blank href='http://github.com/sharat87/silly-calc'>Github project page</a>.
     </p>
-    <button class=popup-close></button>
-</section>
-
-<section id=settings class=popup>
-    <p>Nothing here yet.</p>
     <button class=popup-close></button>
 </section>
 

@@ -2,6 +2,8 @@
     var inEditor, outDisplay,
         dirtyIndicator = document.getElementById('dirty-indicator');
 
+    var currentFile = null;
+
     function OutputDisplay(elementId) {
         this.container = document.getElementById(elementId);
         this.values = [];
@@ -178,7 +180,20 @@
     }
 
     function save() {
-        localStorage.input = inEditor.getValue();
+        localStorage.setItem('src:' + currentFile.name, inEditor.getValue());
+    }
+
+    function loadFile(name) {
+        currentFile = {name: name};
+        if (!localStorage['src:' + name])
+            localStorage.setItem('src:' + name,
+                'a = 3\n'
+                + 'a ^ 2\n'
+                + '\n'
+                + 'Using functions and line references:\n'
+                + 'sin(PI/4) * sqrt(a) + 41\n'
+                + 'ans + 10\n');
+        inEditor.setValue(localStorage['src:' + name]);
     }
 
     var updateSheet = (function () {
@@ -237,6 +252,29 @@
         });
     }
 
+    function setupFiles() {
+        var files = [];
+        for (var i = 0; i < localStorage.length; i++) {
+            var key = localStorage.key(i);
+            if (key.substr(0, 4) === 'src:')
+                files.push(key.substr(4));
+        }
+        files.sort();
+
+        var openListing = document.getElementById('open-listing');
+        for (i = 0; i < files.length; ++i) {
+            openListing.innerHTML += '<li><a href="#">' + files[i] + '</a>';
+        }
+
+        openListing.addEventListener('click', function (event) {
+            if (event.target.tagName !== 'a')
+                return;
+            event.preventDefault();
+            var name = event.target.innerText;
+            loadFile(name);
+        });
+    }
+
     function initSettings() {
         var settingsElem = document.getElementById('settings'),
             inputs = settingsElem.querySelectorAll('input[name], select');
@@ -274,6 +312,7 @@
     function main() {
         setupEditor();
         setupPopups();
+        setupFiles();
 
         inEditor.on('change', updateSheet);
 
@@ -285,14 +324,7 @@
             outDisplay.setFolds(inEditor.session.getAllFolds());
         });
 
-        inEditor.setValue(localStorage.input || (
-            'a = 3\n'
-            + 'a ^ 2\n'
-            + '\n'
-            + 'Using functions and line references:\n'
-            + 'sin(PI/4) * sqrt(a) + 41\n'
-            + 'ans + 10\n'
-        ));
+        loadFile('default');
 
         window.addEventListener('storage', function () {
             inEditor.setValue(localStorage.input);
