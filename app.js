@@ -128,15 +128,22 @@
         var lines = input.split('\n'),
             results = [],
             parser = math.parser(),
+            currentHeader = null,
             i = 0,
             len = lines.length;
 
-        while (i++ < len) {
-            var res = {ok: true, line: i};
+        while (i < len) {
+            var src = lines[i++], res = {ok: true, lineNo: i, src: src};
             results.push(res);
 
+            if (src[src.length - 1] === ':') {
+                updateCurrentHeader();
+                currentHeader = res;
+                continue;
+            }
+
             try {
-                res.value = parser.eval(lines[i - 1]);
+                res.value = parser.eval(src);
             } catch (e) {
                 if (e.name !== 'SyntaxError') throw e;
                 res.ok = false;
@@ -147,7 +154,14 @@
                 parser.set('ans', res.value);
         }
 
+        updateCurrentHeader();
+        console.debug(results);
         return results;
+
+        function updateCurrentHeader() {
+            if (currentHeader)
+                currentHeader.value = parser.get('ans');
+        }
     }
 
     function resizeEditor() {
