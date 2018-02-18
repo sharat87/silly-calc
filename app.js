@@ -38,7 +38,7 @@
                     isCurrent = this.currentLine === i + 1;
 
                 if (!result.ok) {
-                    val = '';
+                    val = result.error && !(result.error instanceof SyntaxError) ? result.error.message : '';
                     annotations.push({
                         row: result.error.line - 1,
                         column: result.error.column - 1,
@@ -144,7 +144,6 @@
             try {
                 res.value = parser.eval(src);
             } catch (e) {
-                if (e.name !== 'SyntaxError') throw e;
                 res.ok = false;
                 res.error = e;
             }
