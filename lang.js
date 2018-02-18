@@ -32,32 +32,31 @@ var langEval = (function () {
 
         var env = clone(window.LangParser);
         env.scope = BUILTINS;
-        env.row = 0;
         env.headerRow = null;
-        env.results = [];
 
-        var lines = input.split('\n'), output;
+        var row = 0;
+        var results = [];
+        var lines = input.split('\n');
+        var parser = math.parser();
 
-        for (var len = lines.length; env.row < len;) {
+        for (var len = lines.length; row < len; ++row) {
+            var output = {ok: true, line: row + 1};
+            results.push(output);
 
             try {
-                output = env.parse(lines[env.row]);
+                output.value = parser.eval(lines[row]);
             } catch (e) {
                 if (e.name !== 'SyntaxError') throw e;
-                e.line = env.row + 1;
-                output = {ok: false, error: e};
+                output.ok = false;
+                output.error = e;
             }
 
-            env.results[env.row++] = output;
-
-            if (output.ok && output.hasValue)
-                env.scope.ans = output.value;
-
-            if (env.headerRow && output.hasValue)
-                env.results[env.headerRow] = output;
+            if (output.value)
+                parser.set('ans', output.value);
         }
 
-        return env.results;
+        console.log(results);
+        return results;
     }
 
     function clone(obj) {

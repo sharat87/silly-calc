@@ -48,13 +48,10 @@
                         raw: result
                     });
 
-                } else if (result.hasValue) {
+                } else {
                     // See http://stackoverflow.com/a/2901298/151048
                     // result.value.toFixed(localStorage.confFix).replace(/\B(?=(\d{3})+(?!\d))/g, ',');
-                    val = result.value.toLocaleString();
-
-                } else {
-                    val = '';
+                    val = result.value && result.value.toLocaleString();
 
                 }
 
