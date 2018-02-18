@@ -218,14 +218,14 @@
     }());
 
     function setupPopups() {
-        var triggers = document.querySelector('nav').querySelectorAll('[popup]'),
+        var triggers = document.querySelector('nav').getElementsByTagName('button'),
             openedPopup = null;
 
         for (var i = triggers.length; i-- > 0;)
             triggers[i].addEventListener('click', openPopup);
 
         function openPopup(e) {
-            var popupId = e.currentTarget.getAttribute('popup');
+            var popupId = e.currentTarget.dataset.popup;
             if (openedPopup && openedPopup.id === popupId) {
                 closePopup();
             } else {
