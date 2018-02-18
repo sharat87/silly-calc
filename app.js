@@ -130,6 +130,17 @@
             var src = lines[i++], res = {ok: true, lineNo: i, src: src};
             results.push(res);
 
+            if (src[0] === '@') {
+                var parts = src.substr(1).split('='), conf = {};
+                if (parts.length < 2)
+                    continue;
+                conf[parts[0].trim()] = parts[1].trim();
+                console.debug('Setting config', conf);
+                // FIXME: Options can only be set globally. They need to be reset after this `@` line is removed.
+                math.config(conf);
+                continue;
+            }
+
             if (src[src.length - 1] === ':') {
                 updateCurrentHeader();
                 currentHeader = res;
