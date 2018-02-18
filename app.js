@@ -218,7 +218,7 @@
     }());
 
     function setupPopups() {
-        var triggers = document.getElementById('topbar').querySelectorAll('[popup]'),
+        var triggers = document.querySelector('nav').querySelectorAll('[popup]'),
             openedPopup = null;
 
         for (var i = triggers.length; i-- > 0;)

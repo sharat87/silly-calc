@@ -17,7 +17,7 @@ button {
     cursor: pointer;
 }
 
-#topbar {
+nav {
     position: relative;
     width: 100%;
     padding: 0 6px;
@@ -28,38 +28,38 @@ button {
     z-index: 10;
 }
 
-#topbar .right {
+nav .right {
     float: right;
     height: 100%;
 }
 
-#topbar .left {
+nav .left {
     float: left;
 }
 
-#topbar .brand {
+nav .brand {
     font-family: monospace;
     font-size: 20px;
     margin: 0;
     display: inline-block;
 }
 
-#topbar em {
+nav em {
     opacity: .5;
     font-size: .8em;
     margin-left: 12px;
 }
 
-#topbar button {
+nav button {
     border: none;
     background: none;
 }
 
-#topbar button:hover {
+nav button:hover {
     background-color: rgba(0, 0, 0, .1);
 }
 
-#input-editor, #output-display, #topbar .brand {
+#input-editor, #output-display, nav .brand {
     font-family: 'Fira Mono', monospace;
 }
 
