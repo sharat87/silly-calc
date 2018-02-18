@@ -1,8 +1,4 @@
 (function () {
-    /*jshint browser:true */
-    /*global evalCode ace CustomEvent */
-    "use strict";
-
     var inEditor, outDisplay,
         dirtyIndicator = document.getElementById('dirty-indicator');
 
