@@ -12,7 +12,7 @@
         array.splice.apply(array, args);
     }
 
-    function OutputDisplay(elementId, value) {
+    function OutputDisplay(elementId) {
         this.container = document.getElementById(elementId);
         this.values = [];
         this.folds = [];
@@ -25,7 +25,6 @@
         render: function () {
             var gutterMarkup = [],
                 outputMarkup = [],
-                foldNo = 0,
                 i = 0,
                 len = this.values.length,
                 annotations = [];
@@ -202,9 +201,8 @@
         var triggers = document.getElementById('topbar').querySelectorAll('[popup]'),
             openedPopup = null;
 
-        for (var i = triggers.length; i-- > 0;) {
+        for (var i = triggers.length; i-- > 0;)
             triggers[i].addEventListener('click', openPopup);
-        }
 
         function openPopup(e) {
             var popupId = e.currentTarget.getAttribute('popup');
@@ -274,7 +272,7 @@
 
         inEditor.on('change', updateSheet);
 
-        inEditor.selection.on('changeCursor', function (e) {
+        inEditor.selection.on('changeCursor', function () {
             outDisplay.setCurrentLine(inEditor.selection.getCursor().row + 1);
         });
 
@@ -291,7 +289,7 @@
             + 'ans + 10\n'
         ));
 
-        window.addEventListener('storage', function (e) {
+        window.addEventListener('storage', function () {
             inEditor.setValue(localStorage.input);
         });
 
