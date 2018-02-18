@@ -2,12 +2,6 @@
     var inEditor, outDisplay,
         dirtyIndicator = document.getElementById('dirty-indicator');
 
-    function extend(array) {
-        var args = array.slice.call(arguments, 1);
-        args.splice(0, 0, array.length, 0);
-        array.splice.apply(array, args);
-    }
-
     function OutputDisplay(elementId) {
         this.container = document.getElementById(elementId);
         this.values = [];
@@ -28,10 +22,7 @@
             inEditor.session.clearAnnotations();
 
             while (i < len) {
-                var result = this.values[i],
-                    val = result,
-                    isCollapsed = this.isRowCollapsed(i),
-                    isCurrent = this.currentLine === i + 1;
+                var val, result = this.values[i];
 
                 if (!result.ok) {
                     val = result.error && !(result.error instanceof SyntaxError) ? result.error.message : '';
@@ -49,17 +40,25 @@
                 } else {
                     // See http://stackoverflow.com/a/2901298/151048
                     // result.value.toFixed(localStorage.confFix).replace(/\B(?=(\d{3})+(?!\d))/g, ',');
-                    val = result.value && result.value.toLocaleString();
+                    val = result.value ? result.value.toLocaleString() : '';
 
                 }
 
-                extend(outputMarkup, '<div class="line',
-                    (isCurrent ? ' current' : ''),
-                    (isCollapsed ? ' collapsed' : ''), '">', val, '</div>');
-                extend(gutterMarkup, '<div class="',
-                    (isCurrent ? ' current' : ''),
-                    (isCollapsed ? ' collapsed' : ''), '">', i + 1,
-                    '</div>');
+                outputMarkup.push('<div class="line');
+                gutterMarkup.push('<div class="');
+
+                if (this.currentLine === i + 1) {
+                    outputMarkup.push(' current');
+                    gutterMarkup.push(' current');
+                }
+
+                if (this.isRowCollapsed(i)) {
+                    outputMarkup.push(' collapsed');
+                    gutterMarkup.push(' collapsed');
+                }
+
+                outputMarkup.push('">' + val + '</div>');
+                gutterMarkup.push('">' + (i + 1) + '</div>');
 
                 ++i;
             }
@@ -88,7 +87,7 @@
         },
 
         isRowCollapsed: function (rowNo) {
-            for (var i = this.folds.length - 1; i >= 0; i--) {
+            for (var i = this.folds.length; i--;) {
                 var fold = this.folds[i];
                 if (fold.start.row < rowNo && rowNo <= fold.end.row)
                     return true;
