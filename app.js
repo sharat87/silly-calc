@@ -288,7 +288,7 @@
             '',
             'Using functions and line references:',
             'sin(PI/4) * sqrt(a) + 41',
-            '_1 + 10',
+            'ans + 10',
             ''
         ].join('\n'));
 
