@@ -253,26 +253,38 @@
     }
 
     function setupFiles() {
-        var files = [];
-        for (var i = 0; i < localStorage.length; i++) {
-            var key = localStorage.key(i);
-            if (key.substr(0, 4) === 'src:')
-                files.push(key.substr(4));
-        }
-        files.sort();
-
         var openListing = document.getElementById('open-listing');
-        for (i = 0; i < files.length; ++i) {
-            openListing.innerHTML += '<li><a href="#">' + files[i] + '</a>';
-        }
+        updateListing();
 
         openListing.addEventListener('click', function (event) {
-            if (event.target.tagName !== 'a')
+            if (event.target.tagName !== 'A')
                 return;
             event.preventDefault();
             var name = event.target.innerText;
             loadFile(name);
         });
+
+        document.getElementById('new-sheet-form').addEventListener('submit', function (event) {
+            event.preventDefault();
+            loadFile(event.target.sheetName.value);
+            updateListing();
+        });
+
+        function updateListing() {
+            var files = [];
+            for (var i = 0; i < localStorage.length; i++) {
+                var key = localStorage.key(i);
+                if (key.substr(0, 4) === 'src:')
+                    files.push(key.substr(4));
+            }
+            files.sort();
+
+            openListing.innerHTML = '';
+            for (i = 0; i < files.length; ++i) {
+                openListing.innerHTML += '<li><a href="#"' + (files[i] === currentFile.name ? ' class=active' : '') +
+                    '>' + files[i] + '</a>';
+            }
+        }
     }
 
     function initSettings() {
@@ -312,7 +324,6 @@
     function main() {
         setupEditor();
         setupPopups();
-        setupFiles();
 
         inEditor.on('change', updateSheet);
 
@@ -325,6 +336,7 @@
         });
 
         loadFile('default');
+        setupFiles();
 
         window.addEventListener('storage', function () {
             inEditor.setValue(localStorage.input);
