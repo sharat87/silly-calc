@@ -1,6 +1,6 @@
 (function () {
     /*jshint browser:true */
-    /*global langEval ace CustomEvent */
+    /*global evalCode ace CustomEvent */
     "use strict";
 
     var inEditor, outDisplay,
@@ -116,9 +116,35 @@
 
     function recalculate() {
         var code = inEditor.getValue();
-        if (recalculate.last === code) return;
-        outDisplay.setValues(langEval(code));
-        recalculate.last = code;
+        if (recalculate.__last === code) return;
+        outDisplay.setValues(evalCode(code));
+        recalculate.__last = code;
+    }
+
+    function evalCode(input) {
+        var lines = input.split('\n'),
+            results = [],
+            parser = math.parser(),
+            i = 0,
+            len = lines.length;
+
+        while (i++ < len) {
+            var res = {ok: true, line: i};
+            results.push(res);
+
+            try {
+                res.value = parser.eval(lines[i - 1]);
+            } catch (e) {
+                if (e.name !== 'SyntaxError') throw e;
+                res.ok = false;
+                res.error = e;
+            }
+
+            if (res.value)
+                parser.set('ans', res.value);
+        }
+
+        return results;
     }
 
     function resizeEditor() {
