@@ -185,3 +185,26 @@ button {
 #output-display .collapsed {
     display: none;
 }
+
+#open-listing {
+    padding: 0;
+    margin: 0;
+    list-style: none;
+    margin-bottom: 1em;
+}
+
+#open-listing a {
+    display: block;
+    padding: 6px;
+    color: inherit;
+    text-decoration: none;
+    max-width: 80%;
+}
+
+#open-listing a:hover {
+    background-color: rgba(0, 0, 250, .1);
+}
+
+#open-listing a.active:after {
+    content: ' (current)';
+}
