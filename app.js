@@ -202,7 +202,7 @@
         var lastChangeAt = 0;
 
         setInterval(function () {
-            if (window.math === null || lastChangeAt === null || Date.now() - lastChangeAt < 150)
+            if (lastChangeAt === null || Date.now() - lastChangeAt < 150)
                 return;
             lastChangeAt = null;
             recalculate();
@@ -322,6 +322,11 @@
     }
 
     function main() {
+        math.config({
+            number: 'BigNumber',
+            precision: 15
+        });
+
         setupEditor();
         setupPopups();
 
