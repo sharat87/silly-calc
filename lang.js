@@ -3,6 +3,8 @@ var langEval = (function () {
     "use strict";
 
     var BUILTINS = {
+        // Answer of previous operation
+        ans: null,
 
         // Constants
         PI: Math.PI,
@@ -47,6 +49,9 @@ var langEval = (function () {
             }
 
             env.results[env.row++] = output;
+
+            if (output.ok && output.hasValue)
+                env.scope.ans = output.value;
 
             if (env.headerRow && output.hasValue)
                 env.results[env.headerRow] = output;
