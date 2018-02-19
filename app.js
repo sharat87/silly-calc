@@ -3,22 +3,54 @@ const dirtyIndicator = document.getElementById('dirty-indicator');
 
 let currentFile = null;
 
-class OutputDisplay {
+class InputPane {
 
-    constructor(aceEditor, elementId) {
-        this.aceEditor = aceEditor;
+    constructor(bus) {
+        this.bus = bus;
+
+        this.editor = ace.edit('input-editor');
+        this.editor.setShowPrintMargin(false);
+
+        // Hide the editor's builtin scrollbar.
+        this.editor.renderer.scrollBar.element.style.display = 'none';
+        this.editor.renderer.scrollBar.width = 0;
+
+        this.session.setMode('lang/ace-mode-js');
+        // inSession.setUseWorker(true);
+
+        bus.on('ace-annotations', this.session.setAnnotations.bind(this.session));
+
+        this.editor.selection.on('changeCursor', () => {
+            bus._emit('ace-change-cursor', {row: this.editor.selection.getCursor().row});
+        });
+
+        this.editor.session.on('changeFold', () => {
+            bus._emit('ace-change-folds', {folds: this.session.getAllFolds()});
+        });
+    }
+
+    get session() {
+        return this.editor.session;
+    }
+
+}
+
+class OutputPane {
+
+    constructor(bus, aceEditor, elementId) {
+        this.bus = bus;
         this.container = document.getElementById(elementId);
         this.values = [];
         this.folds = [];
         this.currentLine = 1;
         this.render();
 
-        aceEditor.selection.on('changeCursor', () => {
-            this.currentLine = aceEditor.selection.getCursor().row + 1;
+        bus.on('ace-change-cursor', (event) => {
+            this.currentLine = event.row + 1;
         });
 
-        aceEditor.session.on('changeFold', () => {
-            this.folds = aceEditor.session.getAllFolds();
+        bus.on('ace-change-folds', (event) => {
+            this.folds = event.folds;
         });
     }
 
@@ -79,7 +111,7 @@ class OutputDisplay {
             '<div class=gutter>' + gutterMarkup.join('') + '</div>' +
             '<div class=output>' + outputMarkup.join('') + '</div>';
 
-        this.aceEditor.session.setAnnotations(annotations);
+        this.bus._emit('ace-annotations', annotations);
     }
 
     get values() {
@@ -119,20 +151,6 @@ class OutputDisplay {
         return false;
     }
 
-}
-
-function setupEditor() {
-    inEditor = ace.edit('input-editor');
-    inEditor.setShowPrintMargin(false);
-
-    // Hide the editor's builtin scrollbar.
-    inEditor.renderer.scrollBar.element.style.display = 'none';
-    inEditor.renderer.scrollBar.width = 0;
-
-    inEditor.session.setMode('lang/ace-mode-js');
-    // inSession.setUseWorker(true);
-
-    outDisplay = new OutputDisplay(inEditor, 'output-display');
 }
 
 function recalculate() {
@@ -350,14 +368,18 @@ function initSettings() {
 }
 
 function main() {
-    const bus = Object.assign(bus, ace.require('./lib/event_emitter').EventEmitter)
+    const bus = Object.assign({}, ace.require('./lib/event_emitter').EventEmitter);
 
     math.config({
         number: 'BigNumber',
         precision: 15
     });
 
-    setupEditor();
+    const inputPane = new InputPane(bus);
+    inEditor = inputPane.editor;
+
+    outDisplay = new OutputPane(bus, inEditor, 'output-display');
+
     setupPopups();
 
     inEditor.on('change', updateSheet);
