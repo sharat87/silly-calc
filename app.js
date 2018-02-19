@@ -24,9 +24,20 @@ class InputPane {
             bus._emit('ace-change-cursor', {row: this.editor.selection.getCursor().row});
         });
 
-        this.editor.session.on('changeFold', () => {
+        this.session.on('changeFold', () => {
             bus._emit('ace-change-folds', {folds: this.session.getAllFolds()});
         });
+
+        this.editor.on('change', () => {
+            const height = this.session.getScreenLength() *
+                this.editor.renderer.lineHeight +
+                this.editor.renderer.scrollBar.getWidth();
+            this.editor.container.style.minHeight = height + 'px';
+            this.editor.resize();
+            bus._emit('ace-change-height', {height: height});
+        });
+
+        this.editor.on('change', updateSheet);
     }
 
     get session() {
@@ -51,6 +62,10 @@ class OutputPane {
 
         bus.on('ace-change-folds', (event) => {
             this.folds = event.folds;
+        });
+
+        bus.on('ace-change-height', (event) => {
+            this.container.style.minHeight = event.height + 'px';
         });
     }
 
@@ -216,15 +231,6 @@ function evalCode(input) {
     }
 }
 
-function resizeEditor() {
-    const height = inEditor.session.getScreenLength() *
-        inEditor.renderer.lineHeight +
-        inEditor.renderer.scrollBar.getWidth();
-    inEditor.container.style.minHeight = height + 'px';
-    inEditor.resize();
-    outDisplay.container.style.minHeight = height + 'px';
-}
-
 function save() {
     localStorage.setItem('src:' + currentFile.name, inEditor.getValue());
 }
@@ -257,7 +263,6 @@ const updateSheet = (function () {
     }, 100);
 
     return function updateSheet() {
-        resizeEditor();
         lastChangeAt = Date.now();
         dirtyIndicator.classList.add('dirty');
     };
@@ -381,8 +386,6 @@ function main() {
     outDisplay = new OutputPane(bus, 'output-display');
 
     setupPopups();
-
-    inEditor.on('change', updateSheet);
 
     loadFile('default');
     setupFiles();
