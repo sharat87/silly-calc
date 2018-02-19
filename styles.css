@@ -167,6 +167,11 @@ nav button:hover {
     background-color: rgba(0, 0, 0, .2);
 }
 
+#output-display .gutter .annotation-error {
+    background-color: red;
+    color: beige;
+}
+
 #output-display .output {
     width: calc(100% - 43px);
     float: left;
@@ -180,6 +185,11 @@ nav button:hover {
 
 #output-display .line.current {
     background-color: rgba(0, 0, 0, .1);
+}
+
+#output-display .line.annotation-error {
+    background-color: #F002;
+    color: maroon;
 }
 
 #output-display .collapsed {

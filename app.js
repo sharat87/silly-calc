@@ -28,13 +28,6 @@
 
                 if (!result.ok) {
                     val = result.error && !(result.error instanceof SyntaxError) ? result.error.message : '';
-                    annotations.push({
-                        row: result.error.line - 1,
-                        column: result.error.column - 1,
-                        text: result.error.message,
-                        type: 'error',
-                        raw: result
-                    });
 
                 } else if (result.value instanceof Function) {
                     val = '[Function ' + result.value.name + ']';
@@ -57,6 +50,13 @@
                 if (this.isRowCollapsed(i)) {
                     outputMarkup.push(' collapsed');
                     gutterMarkup.push(' collapsed');
+                }
+
+                if (result.annotation) {
+                    annotations.push(result.annotation);
+                    var cls = ' annotation-' + result.annotation.type;
+                    outputMarkup.push(cls);
+                    gutterMarkup.push(cls);
                 }
 
                 outputMarkup.push('">' + val + '</div>');
@@ -154,6 +154,12 @@
             } catch (e) {
                 res.ok = false;
                 res.error = e;
+                res.annotation = {
+                    row: i - 1,
+                    column: 0,
+                    text: e.message,
+                    type: 'error'
+                };
             }
 
             if (res.value)
