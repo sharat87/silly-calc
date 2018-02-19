@@ -3,17 +3,17 @@ const dirtyIndicator = document.getElementById('dirty-indicator');
 
 let currentFile = null;
 
-function OutputDisplay(elementId) {
-    this.container = document.getElementById(elementId);
-    this.values = [];
-    this.folds = [];
-    this.currentLine = 1;
-    this.render();
-}
+class OutputDisplay {
 
-OutputDisplay.prototype = {
+    constructor(elementId) {
+        this.container = document.getElementById(elementId);
+        this.values = [];
+        this.folds = [];
+        this.currentLine = 1;
+        this.render();
+    }
 
-    render: function () {
+    render() {
         const gutterMarkup = [],
             outputMarkup = [],
             len = this.values.length,
@@ -73,25 +73,25 @@ OutputDisplay.prototype = {
             '<div class=output>' + outputMarkup.join('') + '</div>';
 
         inEditor.session.setAnnotations(annotations);
-    },
+    }
 
-    setValues: function (values) {
+    setValues(values) {
         this.values = values;
         this.render();
-    },
+    }
 
-    setFolds: function (folds) {
+    setFolds(folds) {
         this.folds = folds;
         this.render();
-    },
+    }
 
-    setCurrentLine: function (lineNo) {
+    setCurrentLine(lineNo) {
         if (this.currentLine === lineNo) return;
         this.currentLine = lineNo;
         this.render();
-    },
+    }
 
-    isRowCollapsed: function (rowNo) {
+    isRowCollapsed(rowNo) {
         for (let i = this.folds.length; i--;) {
             const fold = this.folds[i];
             if (fold.start.row < rowNo && rowNo <= fold.end.row)
@@ -100,7 +100,7 @@ OutputDisplay.prototype = {
         return false;
     }
 
-};
+}
 
 function setupEditor() {
     inEditor = ace.edit('input-editor');
