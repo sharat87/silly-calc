@@ -13,7 +13,7 @@ class OutputDisplay {
         this.currentLine = 1;
         this.render();
 
-        aceEditor.selection.on('changeCursor', (event) => {
+        aceEditor.selection.on('changeCursor', () => {
             this.currentLine = aceEditor.selection.getCursor().row + 1;
         });
 
@@ -29,8 +29,6 @@ class OutputDisplay {
             annotations = [];
 
         let i = 0;
-
-        inEditor.session.clearAnnotations();
 
         while (i < len) {
             let val;
@@ -81,7 +79,7 @@ class OutputDisplay {
             '<div class=gutter>' + gutterMarkup.join('') + '</div>' +
             '<div class=output>' + outputMarkup.join('') + '</div>';
 
-        inEditor.session.setAnnotations(annotations);
+        this.aceEditor.session.setAnnotations(annotations);
     }
 
     get values() {
@@ -127,14 +125,14 @@ function setupEditor() {
     inEditor = ace.edit('input-editor');
     inEditor.setShowPrintMargin(false);
 
-    outDisplay = new OutputDisplay(inEditor, 'output-display');
-
     // Hide the editor's builtin scrollbar.
     inEditor.renderer.scrollBar.element.style.display = 'none';
     inEditor.renderer.scrollBar.width = 0;
 
     inEditor.session.setMode('lang/ace-mode-js');
     // inSession.setUseWorker(true);
+
+    outDisplay = new OutputDisplay(inEditor, 'output-display');
 }
 
 function recalculate() {
