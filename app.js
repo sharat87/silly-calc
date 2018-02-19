@@ -1,7 +1,7 @@
-var inEditor, outDisplay,
-    dirtyIndicator = document.getElementById('dirty-indicator');
+let inEditor, outDisplay;
+const dirtyIndicator = document.getElementById('dirty-indicator');
 
-var currentFile = null;
+let currentFile = null;
 
 function OutputDisplay(elementId) {
     this.container = document.getElementById(elementId);
@@ -14,16 +14,18 @@ function OutputDisplay(elementId) {
 OutputDisplay.prototype = {
 
     render: function () {
-        var gutterMarkup = [],
+        const gutterMarkup = [],
             outputMarkup = [],
-            i = 0,
             len = this.values.length,
             annotations = [];
+
+        let i = 0;
 
         inEditor.session.clearAnnotations();
 
         while (i < len) {
-            var val, result = this.values[i];
+            let val;
+            const result = this.values[i];
 
             if (!result.ok) {
                 val = result.error && !(result.error instanceof SyntaxError) ? result.error.message : '';
@@ -42,18 +44,20 @@ OutputDisplay.prototype = {
             gutterMarkup.push('<div class="');
 
             if (this.currentLine === i + 1) {
-                outputMarkup.push(' current');
-                gutterMarkup.push(' current');
+                let cls = ' current';
+                outputMarkup.push(cls);
+                gutterMarkup.push(cls);
             }
 
             if (this.isRowCollapsed(i)) {
-                outputMarkup.push(' collapsed');
-                gutterMarkup.push(' collapsed');
+                let cls = ' collapsed';
+                outputMarkup.push(cls);
+                gutterMarkup.push(cls);
             }
 
             if (result.annotation) {
                 annotations.push(result.annotation);
-                var cls = ' annotation-' + result.annotation.type;
+                let cls = ' annotation-' + result.annotation.type;
                 outputMarkup.push(cls);
                 gutterMarkup.push(cls);
             }
@@ -88,8 +92,8 @@ OutputDisplay.prototype = {
     },
 
     isRowCollapsed: function (rowNo) {
-        for (var i = this.folds.length; i--;) {
-            var fold = this.folds[i];
+        for (let i = this.folds.length; i--;) {
+            const fold = this.folds[i];
             if (fold.start.row < rowNo && rowNo <= fold.end.row)
                 return true;
         }
@@ -113,26 +117,26 @@ function setupEditor() {
 }
 
 function recalculate() {
-    var code = inEditor.getValue();
+    const code = inEditor.getValue();
     if (recalculate.__last === code) return;
     outDisplay.setValues(evalCode(code));
     recalculate.__last = code;
 }
 
 function evalCode(input) {
-    var lines = input.split('\n'),
+    const lines = input.split('\n'),
         results = [],
         parser = math.parser(),
-        currentHeader = null,
-        i = 0,
         len = lines.length;
 
+    let currentHeader = null, i = 0;
+
     while (i < len) {
-        var src = lines[i++], res = {ok: true, lineNo: i, src: src};
+        const src = lines[i++], res = {ok: true, lineNo: i, src: src};
         results.push(res);
 
         if (src[0] === '@') {
-            var parts = src.substr(1).split('='), conf = {};
+            const parts = src.substr(1).split('='), conf = {};
             if (parts.length < 2)
                 continue;
             conf[parts[0].trim()] = parts[1].trim();
@@ -176,7 +180,7 @@ function evalCode(input) {
 }
 
 function resizeEditor() {
-    var height = inEditor.session.getScreenLength() *
+    const height = inEditor.session.getScreenLength() *
         inEditor.renderer.lineHeight +
         inEditor.renderer.scrollBar.getWidth();
     inEditor.container.style.minHeight = height + 'px';
@@ -201,10 +205,10 @@ function loadFile(name) {
     inEditor.setValue(localStorage['src:' + name]);
 }
 
-var updateSheet = (function () {
+const updateSheet = (function () {
     // `lastChangeAt` is `null` when input is not dirty, and the time of
     // last change, when input is dirty.
-    var lastChangeAt = 0;
+    let lastChangeAt = 0;
 
     setInterval(function () {
         if (lastChangeAt === null || Date.now() - lastChangeAt < 150)
@@ -223,14 +227,14 @@ var updateSheet = (function () {
 }());
 
 function setupPopups() {
-    var triggers = document.querySelector('nav').getElementsByTagName('button'),
-        openedPopup = null;
+    const triggers = document.querySelector('nav').getElementsByTagName('button');
+    let openedPopup = null;
 
-    for (var i = triggers.length; i-- > 0;)
+    for (let i = triggers.length; i-- > 0;)
         triggers[i].addEventListener('click', openPopup);
 
     function openPopup(e) {
-        var popupId = e.currentTarget.dataset.popup;
+        const popupId = e.currentTarget.dataset.popup;
         if (openedPopup && openedPopup.id === popupId) {
             closePopup();
         } else {
@@ -258,14 +262,14 @@ function setupPopups() {
 }
 
 function setupFiles() {
-    var openListing = document.getElementById('open-listing');
+    const openListing = document.getElementById('open-listing');
     updateListing();
 
     openListing.addEventListener('click', function (event) {
         if (event.target.tagName !== 'A')
             return;
         event.preventDefault();
-        var name = event.target.innerText;
+        const name = event.target.innerText;
         loadFile(name);
     });
 
@@ -276,16 +280,16 @@ function setupFiles() {
     });
 
     function updateListing() {
-        var files = [];
-        for (var i = 0; i < localStorage.length; i++) {
-            var key = localStorage.key(i);
+        const files = [];
+        for (let i = 0; i < localStorage.length; i++) {
+            const key = localStorage.key(i);
             if (key.substr(0, 4) === 'src:')
                 files.push(key.substr(4));
         }
         files.sort();
 
         openListing.innerHTML = '';
-        for (i = 0; i < files.length; ++i) {
+        for (let i = 0; i < files.length; ++i) {
             openListing.innerHTML += '<li><a href="#"' + (files[i] === currentFile.name ? ' class=active' : '') +
                 '>' + files[i] + '</a>';
         }
@@ -293,11 +297,11 @@ function setupFiles() {
 }
 
 function initSettings() {
-    var settingsElem = document.getElementById('settings'),
+    const settingsElem = document.getElementById('settings'),
         inputs = settingsElem.querySelectorAll('input[name], select');
 
-    for (var i = inputs.length; i-- > 0;) {
-        var input = inputs[i],
+    for (let i = inputs.length; i-- > 0;) {
+        const input = inputs[i],
             key = input.dataset.keyName = 'conf' + titleCase(input.name);
         if (localStorage.hasOwnProperty(key))
             input.value = localStorage[key];
@@ -307,7 +311,7 @@ function initSettings() {
 
     settingsElem.addEventListener('change', function (e) {
         localStorage.setItem(e.target.dataset.keyName, e.target.value);
-        var event = new CustomEvent('conf-change', {
+        const event = new CustomEvent('conf-change', {
             detail: {
                 name: e.target.name,
                 key: e.target.dataset.keyName,
@@ -354,7 +358,7 @@ function main() {
 
     initSettings();
     document.addEventListener('conf-change', function (e) {
-        var name = e.detail.name;
+        const name = e.detail.name;
         if (name === 'fix') {
             outDisplay.render();
         }
