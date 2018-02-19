@@ -5,12 +5,21 @@ let currentFile = null;
 
 class OutputDisplay {
 
-    constructor(elementId) {
+    constructor(aceEditor, elementId) {
+        this.aceEditor = aceEditor;
         this.container = document.getElementById(elementId);
         this.values = [];
         this.folds = [];
         this.currentLine = 1;
         this.render();
+
+        aceEditor.selection.on('changeCursor', (event) => {
+            this.currentLine = aceEditor.selection.getCursor().row + 1;
+        });
+
+        aceEditor.session.on('changeFold', () => {
+            this.folds = aceEditor.session.getAllFolds();
+        });
     }
 
     render() {
@@ -118,7 +127,7 @@ function setupEditor() {
     inEditor = ace.edit('input-editor');
     inEditor.setShowPrintMargin(false);
 
-    outDisplay = new OutputDisplay('output-display');
+    outDisplay = new OutputDisplay(inEditor, 'output-display');
 
     // Hide the editor's builtin scrollbar.
     inEditor.renderer.scrollBar.element.style.display = 'none';
@@ -353,19 +362,11 @@ function main() {
 
     inEditor.on('change', updateSheet);
 
-    inEditor.selection.on('changeCursor', function () {
-        outDisplay.setCurrentLine(inEditor.selection.getCursor().row + 1);
-    });
-
-    inEditor.session.on('changeFold', function () {
-        outDisplay.folds = inEditor.session.getAllFolds();
-    });
-
     loadFile('default');
     setupFiles();
 
-    window.addEventListener('storage', function () {
-        inEditor.setValue(localStorage.input);
+    window.addEventListener('storage', () => {
+        loadFile(currentFile.name);
     });
 
     initSettings();
