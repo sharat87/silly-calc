@@ -9,13 +9,21 @@ class InputPane {
         this.bus = bus;
 
         this.editor = ace.edit('input-editor');
-        this.editor.setShowPrintMargin(false);
+
+        this.editor.setOptions({
+            highlightActiveLine: true,
+            highlightSelectedWord: true,
+            enableBasicAutocompletion: true,
+            enableLiveAutocompletion: true,
+            showPrintMargin: false
+        });
+
+        ace.require('./ext/language_tools').setCompleters([Completer]);
 
         // Hide the editor's builtin scrollbar.
         this.editor.renderer.scrollBar.element.style.display = 'none';
         this.editor.renderer.scrollBar.width = 0;
 
-        this.session.setMode('lang/ace-mode-js');
         // inSession.setUseWorker(true);
 
         bus.on('ace-annotations', this.session.setAnnotations.bind(this.session));
