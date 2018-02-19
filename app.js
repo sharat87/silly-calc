@@ -37,7 +37,7 @@ class InputPane {
 
 class OutputPane {
 
-    constructor(bus, aceEditor, elementId) {
+    constructor(bus, elementId) {
         this.bus = bus;
         this.container = document.getElementById(elementId);
         this.values = [];
@@ -378,7 +378,7 @@ function main() {
     const inputPane = new InputPane(bus);
     inEditor = inputPane.editor;
 
-    outDisplay = new OutputPane(bus, inEditor, 'output-display');
+    outDisplay = new OutputPane(bus, 'output-display');
 
     setupPopups();
 
