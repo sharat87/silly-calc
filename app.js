@@ -75,19 +75,31 @@ class OutputDisplay {
         inEditor.session.setAnnotations(annotations);
     }
 
-    setValues(values) {
-        this.values = values;
+    get values() {
+        return this._values;
+    }
+
+    set values(values) {
+        this._values = values;
         this.render();
     }
 
-    setFolds(folds) {
-        this.folds = folds;
+    get folds() {
+        return this._folds;
+    }
+
+    set folds(folds) {
+        this._folds = folds;
         this.render();
     }
 
-    setCurrentLine(lineNo) {
+    get currentLine() {
+        return this._currentLine;
+    }
+
+    set currentLine(lineNo) {
         if (this.currentLine === lineNo) return;
-        this.currentLine = lineNo;
+        this._currentLine = lineNo;
         this.render();
     }
 
@@ -119,7 +131,7 @@ function setupEditor() {
 function recalculate() {
     const code = inEditor.getValue();
     if (recalculate.__last === code) return;
-    outDisplay.setValues(evalCode(code));
+    outDisplay.values = evalCode(code);
     recalculate.__last = code;
 }
 
@@ -346,7 +358,7 @@ function main() {
     });
 
     inEditor.session.on('changeFold', function () {
-        outDisplay.setFolds(inEditor.session.getAllFolds());
+        outDisplay.folds = inEditor.session.getAllFolds();
     });
 
     loadFile('default');
