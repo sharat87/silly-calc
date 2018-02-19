@@ -3,25 +3,6 @@ const dirtyIndicator = document.getElementById('dirty-indicator');
 
 let currentFile = null;
 
-class Bus {
-    constructor() {
-        this.callbacks = new Map();
-    }
-
-    on(name, fn) {
-        if (!this.callbacks.has(name))
-            this.callbacks.set(name, []);
-        this.callbacks.get(name).push(fn);
-    }
-
-    fire(name, ...data) {
-        const fns = this.callbacks.get(name);
-        if (fns)
-            for (let fn of fns)
-                fn(...data);
-    }
-}
-
 class OutputDisplay {
 
     constructor(aceEditor, elementId) {
@@ -369,6 +350,8 @@ function initSettings() {
 }
 
 function main() {
+    const bus = Object.assign(bus, ace.require('./lib/event_emitter').EventEmitter)
+
     math.config({
         number: 'BigNumber',
         precision: 15
