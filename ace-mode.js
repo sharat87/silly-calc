@@ -61,24 +61,50 @@ const FoldMode = (function () {
     return FoldMode;
 }());
 
-const Completer = {
-    getCompletions: function (state, session, pos, prefix) {
-        console.log('getCompletions', state, session, pos, prefix);
+class Completer {
+    constructor() {
+        this.fnNames = Object.keys(math);
     }
-};
 
-ace.define('lang/ace-mode-js', function (require, exports, module) {
+    getCompletions(state, session, pos, prefix, callback) {
+        console.log('getCompletions', state, session, pos, prefix);
+        callback(null, this.fnNames);
+        return this.fnNames;
+    }
+}
 
-    const oop = require('ace/lib/oop'),
-        TextMode = require('ace/mode/text').Mode,
-        Tokenizer = require('ace/tokenizer').Tokenizer,
-        LakeHighlightRules = require('lake/highlight-rules').LakeHighlightRules,
-        Range = require('ace/range').Range,
-        WorkerClient = require('ace/worker/worker_client').WorkerClient,
-        CstyleBehaviour = require('ace/mode/behaviour/cstyle').CstyleBehaviour;
+const HighlightRules = (function () {
+
+    const oop = ace.require('ace/lib/oop');
+    const TextHighlightRules = ace.require('ace/mode/text_highlight_rules').TextHighlightRules;
+
+    const HighlightRules = function () {
+
+        this.$rules = {
+            start: [
+                {token: 'comment.block.documentation', regex: /[^\n:]+:/},
+                {token: 'variable', regex: /[a-zA-Z][a-zA-Z0-9_]*/},
+                {token: 'keyword.operator', regex: /[=\-+*\/^%]+/},
+                {token: 'lineref.keyword.other', regex: /_\d+/},
+                {token: 'constant.numeric', regex: /\d+(\.\d+)?/},
+                {token: 'comment.line.semicolon', regex: /#.*$/}
+            ]
+        };
+
+    };
+    oop.inherits(HighlightRules, TextHighlightRules);
+
+    return HighlightRules;
+}());
+
+const Mode = (function () {
+    const oop = ace.require('ace/lib/oop'),
+        TextMode = ace.require('ace/mode/text').Mode,
+        Tokenizer = ace.require('ace/tokenizer').Tokenizer,
+        CstyleBehaviour = ace.require('ace/mode/behaviour/cstyle').CstyleBehaviour;
 
     const Mode = function () {
-        this.$tokenizer = new Tokenizer(new LakeHighlightRules().getRules());
+        this.$tokenizer = new Tokenizer(new HighlightRules().getRules());
         this.$behaviour = new CstyleBehaviour();
         this.foldingRules = new FoldMode();
     };
@@ -107,35 +133,8 @@ ace.define('lang/ace-mode-js', function (require, exports, module) {
 
     });
 
-    exports.Mode = Mode;
-});
-
-
-ace.define('lake/highlight-rules', function (require, exports, module) {
-
-    const oop = require('ace/lib/oop');
-    const TextHighlightRules = require('ace/mode/text_highlight_rules').TextHighlightRules;
-
-    const LakeHighlightRules = function () {
-
-        this.$rules = {
-            start: [
-                {token: 'comment.block.documentation', regex: /[^\n:]+\:/},
-                {token: 'variable', regex: /[a-zA-Z][a-zA-Z0-9_]*/},
-                {token: 'keyword.operator', regex: /[=\-\+\*\/\^%]+/},
-                {token: 'lineref.keyword.other', regex: /_\d+/},
-                {token: 'constant.numeric', regex: /\d+(\.\d+)?/},
-                {token: 'comment.line.semicolon', regex: /#.*$/}
-            ]
-        };
-
-    };
-
-    oop.inherits(LakeHighlightRules, TextHighlightRules);
-
-    exports.LakeHighlightRules = LakeHighlightRules;
-});
-
+    return Mode;
+}());
 
 ace.define('ace/mode/behaviour/cstyle', ['require', 'exports', 'module', 'ace/lib/oop', 'ace/mode/behaviour', 'ace/token_iterator', 'ace/lib/lang'], function (require, exports, module) {
 

@@ -18,7 +18,8 @@ class InputPane {
             showPrintMargin: false
         });
 
-        ace.require('./ext/language_tools').setCompleters([Completer]);
+        this.session.setMode(new Mode);
+        ace.require('./ext/language_tools').setCompleters([new Completer]);
 
         // Hide the editor's builtin scrollbar.
         this.editor.renderer.scrollBar.element.style.display = 'none';
