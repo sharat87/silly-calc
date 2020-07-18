@@ -28,6 +28,8 @@
  *
  * ***** END LICENSE BLOCK ***** */
 
+import math from "./math";
+
 const FoldMode = (function () {
     const oop = ace.require('ace/lib/oop'),
         BaseFoldMode = ace.require('ace/mode/folding/fold_mode').FoldMode,
@@ -61,7 +63,7 @@ const FoldMode = (function () {
     return FoldMode;
 }());
 
-class Completer {
+export class Completer {
     constructor() {
         this.fnNames = Object.keys(math);
     }
@@ -97,7 +99,7 @@ const HighlightRules = (function () {
     return HighlightRules;
 }());
 
-const Mode = (function () {
+export const Mode = (function () {
     const oop = ace.require('ace/lib/oop'),
         TextMode = ace.require('ace/mode/text').Mode,
         Tokenizer = ace.require('ace/tokenizer').Tokenizer,

@@ -1,0 +1,22 @@
+{
+	"name": "silly-calc",
+	"version": "1.0.0",
+	"description": "A silly notepad-style calculator.",
+	"repository": "https://github.com/sharat87/silly-calc.git",
+	"author": "Shrikant Sharat Kandula",
+	"license": "MIT",
+	"scripts": {
+		"start": "parcel serve --port 3050 --no-autoinstall index.html",
+		"prestart": "rm -rf .cache dist",
+		"build": "parcel build --no-cache --no-autoinstall --no-source-maps index.html",
+		"prebuild": "rm -rf .cache dist",
+		"deploy": "gh-pages -d dist"
+	},
+	"private": true,
+	"devDependencies": {
+		"gh-pages": "^3.1.0",
+		"mathjs": "^7.1.0",
+		"parcel-bundler": "^1.12.4",
+		"parcel-plugin-static-files-copy": "^2.4.3"
+	}
+}

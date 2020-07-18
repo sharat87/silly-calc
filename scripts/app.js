@@ -1,3 +1,6 @@
+import math from "./math";
+import { Mode, Completer } from "./ace-mode";
+
 let inEditor, outDisplay;
 const dirtyIndicator = document.getElementById('dirty-indicator');
 
@@ -214,7 +217,7 @@ function evalCode(input) {
         }
 
         try {
-            res.value = parser.eval(src);
+            res.value = parser.evaluate(src);
         } catch (e) {
             res.ok = false;
             res.error = e;
