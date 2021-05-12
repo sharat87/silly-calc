@@ -15,7 +15,7 @@
 	"private": true,
 	"devDependencies": {
 		"gh-pages": "^3.1.0",
-		"mathjs": "^7.1.0",
+		"mathjs": "^7.5.1",
 		"parcel-bundler": "^1.12.4",
 		"parcel-plugin-static-files-copy": "^2.4.3"
 	}
